@@ -7,7 +7,7 @@ You can change start position for generation simply changing its sequense(all sq
 
 
 
-Quiries
+REST API endpoints
 ========
 
 get- loanList (DashboardLoan)
