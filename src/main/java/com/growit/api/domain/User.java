@@ -25,7 +25,7 @@ import java.util.Set;
 public class User extends AbstractEntity implements UserDetails {
 
     /** Google oAuth2 id */
-    protected String id;
+    protected String oauthId;
 
     @Column(name = "name", length = 50)
     protected String name;

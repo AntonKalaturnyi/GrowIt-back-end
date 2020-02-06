@@ -45,7 +45,7 @@ public class UserRegistrationDto extends AbstractDto {
 
 
     public UserRegistrationDto (User user) {
-        this.id = user.getLongId();
+        this.id = user.getId();
         this.name = user.getName();
         this.middleName = user.getMiddleName();
         this.lastName = user.getLastName();
