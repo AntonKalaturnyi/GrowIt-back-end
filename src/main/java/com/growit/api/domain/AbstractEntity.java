@@ -18,7 +18,7 @@ public abstract class AbstractEntity implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    protected Long ID;
+    protected Long longId;
 
     @Column(name = "created", updatable = false)
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss.SSS")

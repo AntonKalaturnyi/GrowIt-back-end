@@ -21,18 +21,17 @@ import org.springframework.security.web.AuthenticationEntryPoint;
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
-    private final AuthenticationEntryPoint authenticationEntryPoint;
-    private final PasswordEncoder passwordEncoder;
-    private final TokenProvider tokenProvider;
-    private final UserService userService;
+    @Autowired
+    private AuthenticationEntryPoint authenticationEntryPoint;
 
     @Autowired
-    public WebSecurityConfig(AuthenticationEntryPoint authenticationEntryPoint, TokenProvider tokenProvider, PasswordEncoder passwordEncoder, UserService userService) {
-        this.authenticationEntryPoint = authenticationEntryPoint;
-        this.passwordEncoder = passwordEncoder;
-        this.tokenProvider = tokenProvider;
-        this.userService = userService;
-    }
+    private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    private TokenProvider tokenProvider;
+
+    @Autowired
+    private UserService userService;
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {

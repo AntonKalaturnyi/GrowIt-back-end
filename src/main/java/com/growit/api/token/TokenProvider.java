@@ -5,6 +5,7 @@ import io.jsonwebtoken.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -17,14 +18,15 @@ import java.util.Date;
 import java.util.List;
 
 @Component
+@PropertySource(ignoreResourceNotFound = true, value = "classpath:application.properties")
 public class TokenProvider {
 
     private final UserDetailsService userDetailsService;
 
-    @Value("${security.jwt.token.secret-key}")
+    @Value("$ {security.jwt.token.secret-key}")
     private String secret;
 
-    @Value("${security.jwt.token.expire-length}")
+    @Value("$ {security.jwt.token.expire-length}")
     private String validityInMilliseconds;
 
     @Autowired

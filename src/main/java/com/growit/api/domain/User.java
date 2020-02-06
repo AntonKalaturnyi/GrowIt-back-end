@@ -13,6 +13,7 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
 import java.util.Collection;
+import java.util.Set;
 
 @Data
 @Entity
@@ -70,13 +71,18 @@ public class User extends AbstractEntity implements UserDetails {
 
     protected int monthlyIncomeTotal;
 
+    @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)
+    @CollectionTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"))
+    @Enumerated(EnumType.STRING)
+    protected Set<Role> roles;
+
     @Column(name = "active", nullable = true)
     protected boolean active;
 
-    @Transient
-    protected Collection<? extends GrantedAuthority> authorities;
+/*    @Transient
+    protected Collection<? extends GrantedAuthority> authorities;*/
 
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss.SSS")
     protected LocalDateTime birthday;
 
     public User(User user) {
@@ -97,7 +103,7 @@ public class User extends AbstractEntity implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return authorities;
+        return getRoles();
     }
 
     @Override
