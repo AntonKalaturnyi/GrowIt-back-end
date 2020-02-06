@@ -17,8 +17,8 @@ import java.time.LocalDateTime;
 public abstract class AbstractEntity implements Serializable {
 
     @Id
-//    @GeneratedValue(strategy = GenerationType.AUTO)
-    protected String id;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    protected Long ID;
 
     @Column(name = "created", updatable = false)
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss.SSS")

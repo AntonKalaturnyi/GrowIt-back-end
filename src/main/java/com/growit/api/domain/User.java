@@ -23,6 +23,9 @@ import java.util.Collection;
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 public class User extends AbstractEntity implements UserDetails {
 
+    /** Google oAuth2 id */
+    protected String id;
+
     @Column(name = "name", length = 50)
     protected String name;
 

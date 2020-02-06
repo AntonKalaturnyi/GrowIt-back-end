@@ -1,24 +1,46 @@
 package com.growit.api.config;
 
-import com.growit.api.domain.User;
-import com.growit.api.repo.UserDetailsRepo;
+import com.growit.api.service.UserService;
+import com.growit.api.token.TokenProvider;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.security.oauth2.client.EnableOAuth2Sso;
-import org.springframework.boot.autoconfigure.security.oauth2.resource.PrincipalExtractor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-
-import java.time.LocalDateTime;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.AuthenticationEntryPoint;
 
 @Configuration
 @EnableWebSecurity
 @EnableOAuth2Sso
+@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
+
+    private final AuthenticationEntryPoint authenticationEntryPoint;
+    private final PasswordEncoder passwordEncoder;
+    private final TokenProvider tokenProvider;
+    private final UserService userService;
+
+    @Autowired
+    public WebSecurityConfig(AuthenticationEntryPoint authenticationEntryPoint, TokenProvider tokenProvider, PasswordEncoder passwordEncoder, UserService userService) {
+        this.authenticationEntryPoint = authenticationEntryPoint;
+        this.passwordEncoder = passwordEncoder;
+        this.tokenProvider = tokenProvider;
+        this.userService = userService;
+    }
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
+                .httpBasic().disable()
+                .csrf().disable()
+                .exceptionHandling().authenticationEntryPoint(authenticationEntryPoint)
+                .and()
                 .antMatcher("/**")
                 .authorizeRequests()
                 .antMatchers("/", "/csrf",
@@ -33,6 +55,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                         "/auth/signin",
                         "/forgotPassword/",
                         "/forgotPassword/resetPassword",
+
                         //!!!
                         "/register/**",
                         "/credit-history/**",
@@ -43,19 +66,18 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                         "/employer/**",
                         "/borrower/**").permitAll()
                 .anyRequest().authenticated()
-                .and().logout().logoutSuccessUrl("/").permitAll()
                 .and()
-                .csrf().disable();
+                .apply(new JwtAuthConfig(tokenProvider))
+                .and().logout().logoutSuccessUrl("/").permitAll();
     }
 
-    @Bean
+/*    @Bean
     public PrincipalExtractor principalExtractor(UserDetailsRepo userDetailsRepo) {
         return map -> {
             String id = map.get("sub").toString();
 
             User user = userDetailsRepo.findById(id).orElseGet(() -> {
                 User newUser = new User();
-
                 newUser.setId(id);
                 newUser.setName((String) map.get("name"));
                 newUser.setEmail((String) map.get("email"));
@@ -70,5 +92,16 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
             return userDetailsRepo.save(user);
         };
+    }*/
+
+    @Override
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+        auth.userDetailsService(userService)
+                .passwordEncoder(passwordEncoder);
+    }
+
+    @Bean
+    public PasswordEncoder getPasswordEncoder() {
+        return new BCryptPasswordEncoder(8);
     }
 }

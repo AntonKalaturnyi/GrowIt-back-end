@@ -12,7 +12,7 @@ public abstract class AbstractDto implements Serializable {
 
     @Null(groups = {New.class},message = "This field must be empty due to auto generation")
     @NotNull(message = "This field can't be empty")
-    String id;
+    Long id;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss.SSS")
     LocalDateTime created;
