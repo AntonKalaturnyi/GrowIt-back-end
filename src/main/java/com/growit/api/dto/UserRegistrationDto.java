@@ -27,6 +27,8 @@ public class UserRegistrationDto extends AbstractDto {
     @NotBlank(message = "Please, provide a middle name")
     private String middleName;
 
+    protected String userpic;
+
     private int age;
 
     @NotBlank(message = "Please, provide your gender")
@@ -34,6 +36,9 @@ public class UserRegistrationDto extends AbstractDto {
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss.SSS")
     private LocalDateTime birthday;
+
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
+    protected LocalDateTime lastVisit;
 
     @NotBlank(message = "Please, provide an email")
     @Email(message = "Please, provide valid email")
@@ -57,8 +62,10 @@ public class UserRegistrationDto extends AbstractDto {
         this.lastName = user.getLastName();
         this.gender = user.getGender();
         this.birthday = user.getBirthday();
+        this.lastVisit = user.getLastVisit();
         this.email = user.getEmail();
         this.password = null;
+        this.userpic = user.getUserpic();
         this.age = user.getAge();
         this.phone = user.getPhone();
         this.roles = user.getRoles();

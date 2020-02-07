@@ -33,6 +33,7 @@ public class UserService implements UserDetailsService {
         user.setPassword(passwordEncoder.encode(userDto.getPassword()));
         user.setRoles(Collections.singleton(Role.REGISTERED_USER));
         user.setAge(Period.between(user.getBirthday().toLocalDate(), LocalDateTime.now().toLocalDate()).getYears());
+        user.setLastVisit(LocalDateTime.now());
         user.setActive(true);
         return new UserRegistrationDto(userRepo.save(user)); //new UserRegistrationDto(userRepo.save(user));
     }
