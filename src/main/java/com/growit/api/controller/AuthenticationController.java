@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
 import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -24,14 +23,14 @@ import static org.springframework.http.ResponseEntity.ok;
 
 @RestController
 @RequestMapping("/auth")
-public class AuthController {
+public class AuthenticationController {
 
     private final AuthenticationManager authenticationManager;
     private final TokenProvider tokenProvider;
     private final UserService userDetailsService;
 
     @Autowired
-    public AuthController(AuthenticationManager authenticationManager, TokenProvider tokenProvider, UserService userDetailsService) {
+    public AuthenticationController(AuthenticationManager authenticationManager, TokenProvider tokenProvider, UserService userDetailsService) {
         this.authenticationManager = authenticationManager;
         this.tokenProvider = tokenProvider;
         this.userDetailsService = userDetailsService;
