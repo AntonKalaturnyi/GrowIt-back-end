@@ -1,6 +1,7 @@
 package com.growit.api.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.growit.api.domain.Role;
 import com.growit.api.domain.User;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -10,6 +11,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
+import java.util.Set;
 
 @Data
 @NoArgsConstructor
@@ -24,6 +26,8 @@ public class UserRegistrationDto extends AbstractDto {
 
     @NotBlank(message = "Please, provide a middle name")
     private String middleName;
+
+    private int age;
 
     @NotBlank(message = "Please, provide your gender")
     private String gender;
@@ -43,6 +47,8 @@ public class UserRegistrationDto extends AbstractDto {
     @Pattern(regexp = "\\d{10}|(?:\\d{3}-){2}\\d{4}|\\(\\d{3}\\)\\d{3}-?\\d{4}", message = "Please provide valid phone number")
     private String phone;
 
+    private Set<Role> roles;
+
 
     public UserRegistrationDto (User user) {
         this.id = user.getId();
@@ -53,7 +59,9 @@ public class UserRegistrationDto extends AbstractDto {
         this.birthday = user.getBirthday();
         this.email = user.getEmail();
         this.password = null;
+        this.age = user.getAge();
         this.phone = user.getPhone();
+        this.roles = user.getRoles();
         this.created = user.getCreated();
         this.updated = user.getUpdated();
     }
