@@ -43,7 +43,6 @@ public class InvestorService {
         account.setInvestor(investor);
         account = investorAccountRepo.save(account);
         investor.setAccount(account);
-        investor.setLastVisit(LocalDateTime.now());
         return new UserRegistrationDto(investorRepo.save(investor) );
     }
 

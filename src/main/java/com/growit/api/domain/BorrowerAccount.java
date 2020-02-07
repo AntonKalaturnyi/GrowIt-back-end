@@ -18,4 +18,12 @@ public class BorrowerAccount extends Account {
 
     @OneToMany(mappedBy = "account", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Set<Transaction> transactions;
+
+    @Override
+    public String toString() {
+        return "BorrowerAccount{" +
+                "borrowerId=" + borrower.getId() +
+                ", transactions=" + transactions +
+                '}';
+    }
 }

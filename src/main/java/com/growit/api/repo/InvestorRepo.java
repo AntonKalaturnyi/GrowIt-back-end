@@ -6,5 +6,10 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface InvestorRepo extends CrudRepository<Investor, Long> {
+
+
+
+    Investor findByEmail(String email);
+
 }
 

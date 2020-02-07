@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -43,7 +44,7 @@ public class AuthenticationController {
             String username = data.getUsername();
             User user = userDetailsService.loadUserByUsername(username);
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, data.getPassword()));
-            String token = tokenProvider.createToken(username, user.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList()));
+            String token = tokenProvider.createToken(username, user.getRoles().stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList()));
             Map<Object, Object> model = new HashMap<>();
             model.put("username", username);
             model.put("token", token);

@@ -55,7 +55,7 @@ public class TokenProvider {
         claims.put("roles", roles);
 
         Date now = new Date();
-        Date validity = new Date(now.getTime() + Long.parseLong(validityInMilliseconds));
+        Date validity = new Date(now.getTime() + 3600000); // 1 hour validity
 
         return Jwts.builder()
                 .setClaims(claims)

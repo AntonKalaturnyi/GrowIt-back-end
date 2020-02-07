@@ -47,4 +47,9 @@ public class BorrowerController {
 
         return new CreditCardDto();
     }
+
+    /*
++Itn
+ +Address
+ +Passport*/
 }

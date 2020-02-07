@@ -41,4 +41,21 @@ public class InvestorAccount extends Account {
     @OneToMany(mappedBy = "account", cascade = CascadeType.ALL, fetch = FetchType.LAZY )
     private Set<MonthlyStatement> monthlyStatements;
 
+    @Override
+    public String toString() {
+        return "InvestorAccount{" +
+                "investorId=" + investor.getId() +
+                ", transactions=" + transactions +
+                ", expectedProfitability=" + expectedProfitability +
+                ", currentActiveLoans=" + currentActiveLoans +
+                ", gracePeriodLoans=" + gracePeriodLoans +
+                ", late6To15Days=" + late6To15Days +
+                ", late16To30Days=" + late16To30Days +
+                ", late31To120DaysLoans=" + late31To120DaysLoans +
+                ", chargedOffLoans=" + chargedOffLoans +
+                ", currentBalanceAvailable=" + currentBalanceAvailable +
+                ", investedFunds=" + investedFunds +
+                ", monthlyStatements=" + monthlyStatements +
+                '}';
+    }
 }

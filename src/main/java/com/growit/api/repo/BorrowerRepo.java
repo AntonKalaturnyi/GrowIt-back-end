@@ -6,4 +6,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface BorrowerRepo extends CrudRepository<Borrower, Long> {
+
+    Borrower findByEmail(String email);
+
 }
