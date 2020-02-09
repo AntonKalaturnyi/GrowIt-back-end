@@ -1,8 +1,27 @@
 
+insert into loan_status (id, created, updated, status_eng, status_ua) values (70, '2020-01-31 18:05:19.554', '2020-01-31 18:05:19.554', 'On funding', 'Фінансується');
+insert into loan_status (id, created, updated, status_eng, status_ua) values (71, '2020-01-31 18:05:19.554', '2020-01-31 18:05:19.554', 'Issued', 'Займ виданий');
+insert into loan_status (id, created, updated, status_eng, status_ua) values (72, '2020-01-31 18:05:19.554', '2020-01-31 18:05:19.554', 'Fully returned', 'Повністю повернутий');
+insert into loan_status (id, created, updated, status_eng, status_ua) values (73, '2020-01-31 18:05:19.554', '2020-01-31 18:05:19.554', 'Partially returned', 'Частково повернутий');
+insert into loan_status (id, created, updated, status_eng, status_ua) values (74, '2020-01-31 18:05:19.554', '2020-01-31 18:05:19.554', 'Sold to another investor', 'Проданий іншому інвестору');
+insert into loan_status (id, created, updated, status_eng, status_ua) values (75, '2020-01-31 18:05:19.554', '2020-01-31 18:05:19.554', 'Sold to collector', 'Проданий колектору');
+insert into loan_status (id, created, updated, status_eng, status_ua) values (76, '2020-01-31 18:05:19.554', '2020-01-31 18:05:19.554', 'On grace period', 'На безштрафному періоді');
+insert into loan_status (id, created, updated, status_eng, status_ua) values (77, '2020-01-31 18:05:19.554', '2020-01-31 18:05:19.554', '6 to 14 days late', '6-14 днів протермінування');
+insert into loan_status (id, created, updated, status_eng, status_ua) values (78, '2020-01-31 18:05:19.554', '2020-01-31 18:05:19.554', '15 to 31 days late', '15-31 днів протермінування');
+insert into loan_status (id, created, updated, status_eng, status_ua) values (79, '2020-01-31 18:05:19.554', '2020-01-31 18:05:19.554', '32 to 120 days late', '32-120 днів протермінування');
+insert into loan_status (id, created, updated, status_eng, status_ua) values (80, '2020-01-31 18:05:19.554', '2020-01-31 18:05:19.554', 'Charged off', 'Списано як безнадійна заборгованість');
+insert into loan_status (id, created, updated, status_eng, status_ua) values (81, '2020-01-31 18:05:19.554', '2020-01-31 18:05:19.554', 'Created', 'Заявка створена');
 
 
-
-
+insert into loan_purpose (id, created, updated, purpose_eng, purpose_ua) values (82, '2020-01-31 18:05:19.554', '2020-01-31 18:05:19.554', 'Car service', 'Сервіс автомобіля');
+insert into loan_purpose (id, created, updated, purpose_eng, purpose_ua) values (83, '2020-01-31 18:05:19.554', '2020-01-31 18:05:19.554', 'Home improvements', 'Ремонт оселі');
+insert into loan_purpose (id, created, updated, purpose_eng, purpose_ua) values (84, '2020-01-31 18:05:19.554', '2020-01-31 18:05:19.554', 'Medical bills', 'Оплата лікування');
+insert into loan_purpose (id, created, updated, purpose_eng, purpose_ua) values (85, '2020-01-31 18:05:19.554', '2020-01-31 18:05:19.554', 'Debt consolidation', 'Погашення іншого боргу');
+insert into loan_purpose (id, created, updated, purpose_eng, purpose_ua) values (86, '2020-01-31 18:05:19.554', '2020-01-31 18:05:19.554', 'Vacation', 'Відпустка/відпочинок/поїздка');
+insert into loan_purpose (id, created, updated, purpose_eng, purpose_ua) values (87, '2020-01-31 18:05:19.554', '2020-01-31 18:05:19.554', 'Business expenses', 'Витрати на бізнес');
+insert into loan_purpose (id, created, updated, purpose_eng, purpose_ua) values (88, '2020-01-31 18:05:19.554', '2020-01-31 18:05:19.554', 'Electronics purchases', 'Покупка електроніки');
+insert into loan_purpose (id, created, updated, purpose_eng, purpose_ua) values (89, '2020-01-31 18:05:19.554', '2020-01-31 18:05:19.554', 'Special Event', 'Особлива подія');
+insert into loan_purpose (id, created, updated, purpose_eng, purpose_ua) values (90, '2020-01-31 18:05:19.554', '2020-01-31 18:05:19.554', 'Shopping', 'Шопінг');
 
 
 

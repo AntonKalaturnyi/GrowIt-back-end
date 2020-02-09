@@ -13,7 +13,9 @@ import javax.persistence.Table;
 @EqualsAndHashCode(callSuper = false)
 public class LoanPurpose extends AbstractEntity {
 
-    private String purpose;
+    private String purposeUa;
+
+    private String purposeEng;
 }
 
 /**

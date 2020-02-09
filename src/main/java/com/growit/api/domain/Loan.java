@@ -19,13 +19,13 @@ public class Loan extends AbstractEntity {
 
     private int amountRequested;
 
-    private int amountApproved;
+    private int amountApproved;  // +
 
-    private int amountToReturn;
+    private int amountToReturn;  // +
 
-    private int period;
+    private int period; // days
 
-    private double monthlyPayment;
+    private double monthlyPayment;  // +
 
     private double amountFunded;
 
@@ -37,7 +37,7 @@ public class Loan extends AbstractEntity {
     private double percentFunded;
 
     /* (monthlyPayment/salary) * 100%  */
-    private double dtiRatio;
+    private double dtiRatio;  // +
 
     @ManyToOne
     private LoanPurpose loanPurpose;

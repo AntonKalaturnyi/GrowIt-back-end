@@ -62,13 +62,6 @@ public class BorrowerService {
     }
 
     public BorrowerDto fill(BorrowerDto dto) {
-/*        Set<ContactPerson> personSet = new HashSet<>();
-        for (long id: dto.getContactPersonsIds()) {
-            personSet.add( contactPersonRepo.findById(id).get());
-        }
-        borrower.setContactPersons(personSet);
-        borrower.setHomeOwnership(homeOwnershipRepo.findById(dto.getHomeOwnershipId()).get()); // itn/homeOwnership/creditCard controller
-        borrower.setCreditCard( creditCardRepo.findById(dto.getCreditCardId()).get() );*/
 /**  + creditCard(service) /Passport(controller + service)  /ITN/Address
  =Verification apart post*/
         return mapper.toDto(borrowerRepo.save(fillBorrower(dto))); // +mapper

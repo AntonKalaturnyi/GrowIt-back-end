@@ -18,7 +18,7 @@ public class ContactPersonMapper extends AbstractMapper<ContactPerson, ContactPe
     private final ItnRepo itnRepo;
 
     @Autowired
-    public ContactPersonMapper(ModelMapper mapper, ContactPersonRepo contactPersonRepo, ItnRepo itnRepo) {
+    public ContactPersonMapper(ModelMapper mapper, ItnRepo itnRepo) {
         super(ContactPerson.class, ContactPersonDto.class);
         this.mapper = mapper;
         this.itnRepo = itnRepo;
