@@ -40,7 +40,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .csrf().disable()
                 .exceptionHandling().authenticationEntryPoint(authenticationEntryPoint)
                 .and()
-                .antMatcher("/**")
                 .authorizeRequests()
                 .antMatchers("/", "/csrf",
                         "/v2/api-docs",
@@ -61,7 +60,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                         "/contact-person/**",
                         "/itn/**",
                         "/home/**",
-                        "/card/**",
                         "/employer/**",
                         "/borrower/**").permitAll()
                 .anyRequest().authenticated()

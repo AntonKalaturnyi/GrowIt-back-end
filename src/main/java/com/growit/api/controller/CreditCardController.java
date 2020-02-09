@@ -21,7 +21,6 @@ public class CreditCardController {
         this.creditCardService = creditCardService;
     }
 
-    @PreAuthorize("hasAuthority('REGISTERED_USER')")
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping(value = "/new", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
     public CreditCard addCart(@Validated(New.class) @RequestBody CreditCard card) {
