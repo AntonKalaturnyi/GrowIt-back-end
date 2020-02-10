@@ -19,7 +19,8 @@ public class InvestorAccountService {
     }
 
     public InvestorAccountDto update(InvestorAccountDto dto) {
-       return mapper.toDto(investorAccountRepo.save(mapper.toEntity(dto)) );
+        dto.setCreated(investorAccountRepo.findById(dto.getId()).get().getCreated());
+        return mapper.toDto(investorAccountRepo.save(mapper.toEntity(dto)) );
     }
 
 
