@@ -25,12 +25,6 @@ public class CreditHistory extends AbstractEntity {
 
     private int defaultedCredits;
 
-    private int GrowitPayedOffCredits;
-
-    private int GrowitDelayedCredits;
-
-    private int GrowitDefaultedCredits;
-
     private int revolvingCreditBalance;
 
     private int revolvingLineUtilization; //(%)

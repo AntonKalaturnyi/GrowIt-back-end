@@ -28,6 +28,8 @@ public class LoanController {
         return loanService.create(loanDto);
     }
 
+    // returnLoan() {if amount == limit, borrowerverification.setFirstLimitReturned or second}
+
 
 
 
