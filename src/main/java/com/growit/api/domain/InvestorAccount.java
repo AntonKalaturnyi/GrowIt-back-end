@@ -26,15 +26,13 @@ public class InvestorAccount extends Account {
 
     private int gracePeriodLoans;
 
-    private int late6To15Days;
+    private int late6To14Days;
 
-    private int late16To30Days;
+    private int late15To31Days;
 
-    private int late31To120DaysLoans;
+    private int late32To120DaysLoans;
 
     private int chargedOffLoans;
-
-    private double currentBalanceAvailable;
 
     private double investedFunds;
 
@@ -49,11 +47,10 @@ public class InvestorAccount extends Account {
                 ", expectedProfitability=" + expectedProfitability +
                 ", currentActiveLoans=" + currentActiveLoans +
                 ", gracePeriodLoans=" + gracePeriodLoans +
-                ", late6To15Days=" + late6To15Days +
-                ", late16To30Days=" + late16To30Days +
-                ", late31To120DaysLoans=" + late31To120DaysLoans +
+                ", late6To15Days=" + late6To14Days +
+                ", late16To30Days=" + late15To31Days +
+                ", late31To120DaysLoans=" + late32To120DaysLoans +
                 ", chargedOffLoans=" + chargedOffLoans +
-                ", currentBalanceAvailable=" + currentBalanceAvailable +
                 ", investedFunds=" + investedFunds +
                 ", monthlyStatements=" + monthlyStatements +
                 '}';

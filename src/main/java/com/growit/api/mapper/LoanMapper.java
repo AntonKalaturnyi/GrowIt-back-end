@@ -28,6 +28,7 @@ public class LoanMapper extends AbstractMapper<Loan, LoanDto> {
         this.loanStatusRepo = loanStatusRepo;
         this.borrowerRepo = borrowerRepo;
     }
+
     @PostConstruct
     public void setupMapper() {
         mapper.createTypeMap(Loan.class, LoanDto.class)
