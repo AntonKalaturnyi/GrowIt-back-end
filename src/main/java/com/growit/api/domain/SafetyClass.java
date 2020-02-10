@@ -1,19 +1,10 @@
 package com.growit.api.domain;
 
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
-import javax.persistence.Entity;
+public enum SafetyClass {
+A, B, C, D;
 
-@Data
-@Entity
-@NoArgsConstructor
-@EqualsAndHashCode(callSuper = false)
-public class SafetyClass extends AbstractEntity {
-
-    private String safetyClass;
-
-    private double defaultProbabilityUbki;
-
-    private double rate;
+    @Override
+    public String toString() {
+        return name();
+    }
 }

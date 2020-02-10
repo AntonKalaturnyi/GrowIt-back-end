@@ -66,8 +66,15 @@ public class BorrowerVerification extends AbstractEntity {
 
     private double riskScore; // (consolidated, analysed)
 
-    @ManyToOne
+    @Enumerated(EnumType.STRING)
     private SafetyClass safetyClass;
+
+    private int GrowitReturnedCredits;
+
+    private int GrowitDelayedCredits;
+
+    private int GrowitDefaultedCredits;
+
 
 }
 
