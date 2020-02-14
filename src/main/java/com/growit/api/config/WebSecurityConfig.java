@@ -12,6 +12,7 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.AuthenticationEntryPoint;
 
@@ -35,10 +36,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http
+        http.cors()
+                .and()
                 .httpBasic().disable()
                 .csrf().disable()
                 .exceptionHandling().authenticationEntryPoint(authenticationEntryPoint)
+                .and()
+                .sessionManagement()
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
                 .antMatchers("/", "/csrf",
@@ -53,19 +58,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                         "/auth/signin",
                         "/forgotPassword/",
                         "/forgotPassword/resetPassword",
-
                         //!!!
-                        "/register/**",
-                        "/credit-history/**",
-                        "/contact-person/**",
-                        "/itn/**",
-                        "/home/**",
-                        "/employer/**",
-                        "/borrower/**").permitAll()
+                        "/register/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
-                .apply(new JwtAuthConfig(tokenProvider))
-                .and().logout().logoutSuccessUrl("/").permitAll();
+                .apply(new JwtAuthConfig(tokenProvider));
     }
 
     @Bean

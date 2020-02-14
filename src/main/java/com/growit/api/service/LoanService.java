@@ -24,6 +24,28 @@ public class LoanService {
         this.borrowerRepo = borrowerRepo;
     }
 
+    /**
+    {
+        "amountApproved": 6900,
+            "amountFunded": 0,
+            "amountRequested": 7800,
+            "amountToReturn": 7500,
+            "borrowerId": 10,
+            "created": null,
+            "dateReturnDue": "2020-06-12 15:00:00.000",
+            "description": "Хочу купити тостер",
+            "dtiRatio": 0,
+            "id": null,
+            "loanPurpose": "Debt consolidation",
+            "loanStatus": "Created",
+            "monthlyPayment": 0,
+            "percentFunded": 0,
+            "period": 35,
+            "profitability": 9.8,
+            "updated": null
+    }
+     */
+
     public LoanDto create(LoanDto dto) {
 
         Loan loan = mapper.toEntity(dto);

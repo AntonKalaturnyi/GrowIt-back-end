@@ -18,7 +18,9 @@ get- borrower cabinet data -> get borrower's previous loans
 get- legal contract
 
 post- login/registration for borrower/investor
-post- createLoan
+
+post- createLoan(LoanWishedDto: )
+
 post- investment    -> put- update loan 
 post- verificationData
 post- sign legal contract
