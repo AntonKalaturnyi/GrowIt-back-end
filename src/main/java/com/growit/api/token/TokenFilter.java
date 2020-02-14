@@ -17,7 +17,7 @@ import java.io.IOException;
 
 @Component
 public class TokenFilter extends GenericFilterBean {
-    
+
     private final TokenProvider tokenProvider;
 
     @Autowired
@@ -26,7 +26,7 @@ public class TokenFilter extends GenericFilterBean {
     }
 
     @Override
-    public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) 
+    public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain)
             throws IOException, ServletException {
 
         try {
