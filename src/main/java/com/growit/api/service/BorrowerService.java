@@ -76,7 +76,8 @@ public class BorrowerService {
         borrower.setMonthlyIncomeTotal(borrower.getMonthlyIncomeOfficial() + borrower.getMonthlyIncomeAdditional());
         borrower.setHomeOwnership(homeOwnershipRepo.findByHomeOwnershipEngLike(dto.getHomeOwnershipString()));
         borrower.setMarried(dto.isMarried());
-        borrower.setKids(dto.getKids());
+        borrower.setKidsBefore18yo(dto.getKidsBefore18yo());
+        borrower.setKidsAfter18yo(dto.getKidsAfter18yo());
         borrower.setHomePhone(dto.getHomePhone());
         borrower.setWorkPhone(dto.getWorkPhone());
         borrower.setFax(dto.getFax());
@@ -84,7 +85,6 @@ public class BorrowerService {
         borrower.setFacebook(dto.getFacebook());
         borrower.setWorkType(dto.getWorkType());
         borrower.setSpouseITN(dto.getSpouseITN());
-        borrower.setPhotoWithPassport(dto.getPhotoWithPassport());
         borrower.setEDRPOUcode(dto.getEDRPOUcode());
         borrower.setJobTitle(dto.getJobTitle());
         return borrower;

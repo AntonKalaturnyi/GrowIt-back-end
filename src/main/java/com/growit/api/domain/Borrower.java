@@ -36,7 +36,11 @@ public class Borrower extends User {
 
     private boolean married;
 
-    private int kids;
+    @Column(nullable = true)
+    private int kidsBefore18yo;
+
+    @Column(nullable = true)
+    private int kidsAfter18yo;
 
     @OneToOne
     private CreditHistory creditHistory;
@@ -61,7 +65,6 @@ public class Borrower extends User {
     @Column(name = "spouse_itn")
     private String spouseITN;
 
-    private String photoWithPassport;
 
     /** AFS (Anti Fraud System) UBKI */
 
@@ -96,7 +99,4 @@ public class Borrower extends User {
         super(dto);
     }
 
-    public void setUserFields(User user) {
-        //   set
-    }
 }

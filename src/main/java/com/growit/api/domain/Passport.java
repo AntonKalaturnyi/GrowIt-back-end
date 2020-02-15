@@ -16,16 +16,18 @@ public class Passport extends AbstractEntity {
 
     private boolean idPassport;
 
-    private boolean hasIdPassScan;
+    private boolean hasIdPassPhotoOrScan;
 
-    private String idPassScanFile;
+    private String idPassPhotoOrScan;
 
     private String idPassNumber;
 
-    private boolean hasPaperPassScan;
+    private boolean hasPaperPassPhotoOrScan;
 
     /** 1, 2, 11 pages of paper passport*/
-    private String paperPassScanFile;  // or photo
+    private String paperPassScanOrPhoto;  // or photo
+
+    private String photoWithPassport;
 
     private String paperPassSeries;
 
