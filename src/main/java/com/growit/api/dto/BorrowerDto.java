@@ -52,8 +52,6 @@ public class BorrowerDto extends AbstractDto {
 
     private String spouseITN;
 
-    private String photoWithPassport;
-
     /** AFS (Anti Fraud System) UBKI */
 
     /* In case 'workType'is 'entrepreneur' */

@@ -85,7 +85,6 @@ public class BorrowerService {
         borrower.setFacebook(dto.getFacebook());
         borrower.setWorkType(dto.getWorkType());
         borrower.setSpouseITN(dto.getSpouseITN());
-        borrower.setPhotoWithPassport(dto.getPhotoWithPassport());
         borrower.setEDRPOUcode(dto.getEDRPOUcode());
         borrower.setJobTitle(dto.getJobTitle());
         return borrower;

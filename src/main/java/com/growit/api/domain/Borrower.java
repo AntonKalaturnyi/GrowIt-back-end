@@ -65,7 +65,6 @@ public class Borrower extends User {
     @Column(name = "spouse_itn")
     private String spouseITN;
 
-    private String photoWithPassport;
 
     /** AFS (Anti Fraud System) UBKI */
 
@@ -100,7 +99,4 @@ public class Borrower extends User {
         super(dto);
     }
 
-    public void setUserFields(User user) {
-        //   set
-    }
 }
