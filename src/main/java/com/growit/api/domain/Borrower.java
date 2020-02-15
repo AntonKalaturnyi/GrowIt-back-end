@@ -36,7 +36,11 @@ public class Borrower extends User {
 
     private boolean married;
 
-    private int kids;
+    @Column(nullable = true)
+    private int kidsBefore18yo;
+
+    @Column(nullable = true)
+    private int kidsAfter18yo;
 
     @OneToOne
     private CreditHistory creditHistory;

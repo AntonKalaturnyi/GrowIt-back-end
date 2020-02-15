@@ -27,8 +27,12 @@ public class BorrowerDto extends AbstractDto {
     private boolean married;
 
     @NotNull(groups = {New.class, Existing.class},
-            message = "Please specify how many kids do you have")
-    private int kids;
+            message = "Please specify how many kids before 18 years old do you have")
+    private int kidsBefore18yo;
+
+    @NotNull(groups = {New.class, Existing.class},
+            message = "Please specify how many kids after 18 years old do you have")
+    private int kidsAfter18yo;
 
     private long creditHistoryId;
 
