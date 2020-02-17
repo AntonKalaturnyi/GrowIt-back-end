@@ -15,6 +15,8 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.time.Period;
 import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
 
 @Service
 @Qualifier("UserDetails")
@@ -37,7 +39,7 @@ public class UserService implements UserDetailsService {
 
     public UserRegistrationDto create(UserRegistrationDto userDto) {
         User user = new User(userDto);
-        user.setPassword(passwordEncoder.encode(userDto.getPassword()));
+//        user.setPassword(passwordEncoder.encode(userDto.getPassword()));
         user.setRoles(Collections.singleton(Role.REGISTERED_USER));
         user.setAge(Period.between(user.getBirthday().toLocalDate(), LocalDateTime.now().toLocalDate()).getYears());
         user.setLastVisit(LocalDateTime.now());
@@ -46,9 +48,29 @@ public class UserService implements UserDetailsService {
     }
     @Override
     public User loadUserByUsername(String email) throws UsernameNotFoundException {
-        User user = userRepo.findByEmail(email);
+  //      User user = userRepo.findByEmail(email);
         User investor = investorRepo.findByEmail(email);
         User borrower = borrowerRepo.findByEmail(email);
-        return borrower != null ? borrower : investor != null ? investor : user;
+        return borrower != null ? borrower : investor;
+    }
+
+    static void setRegisteredUserRole(User user) {
+        Set<Role> roles = new HashSet<>();
+        roles.add(Role.REGISTERED_USER);
+        user.setRoles(roles);
+    }
+
+    static void setUserFields(User user, UserRegistrationDto dto) {
+        user.setName(dto.getName());
+        user.setMiddleName(dto.getMiddleName());
+        user.setLastName(dto.getLastName());
+        user.setUserpic(dto.getUserpic());
+        user.setGender(dto.getGender());
+        user.setBirthday(dto.getBirthday());
+        user.setEmail(dto.getEmail());
+        user.setPhone(dto.getPhone());
+        user.setCreated(LocalDateTime.now());
+        user.setUpdated(user.getCreated());
+        user.setLastVisit(user.getUpdated());
     }
 }

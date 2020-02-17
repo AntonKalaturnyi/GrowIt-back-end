@@ -44,10 +44,6 @@ public class UserRegistrationDto extends AbstractDto {
     @Email(message = "Please, provide valid email")
     private String email;
 
-    @Size(min = 6, max = 32)
-    @NotBlank(message = "Please provide a password")
-    private String password;
-
     @NotBlank(message = "Please provide a phone number")
     @Pattern(regexp = "\\d{10}|(?:\\d{3}-){2}\\d{4}|\\(\\d{3}\\)\\d{3}-?\\d{4}", message = "Please provide valid phone number")
     private String phone;
@@ -64,7 +60,6 @@ public class UserRegistrationDto extends AbstractDto {
         this.birthday = user.getBirthday();
         this.lastVisit = user.getLastVisit();
         this.email = user.getEmail();
-        this.password = null;
         this.userpic = user.getUserpic();
         this.age = user.getAge();
         this.phone = user.getPhone();

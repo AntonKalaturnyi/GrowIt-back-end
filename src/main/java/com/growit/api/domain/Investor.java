@@ -6,6 +6,7 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.Set;
 
 @Data
@@ -32,5 +33,21 @@ public class Investor extends User {
     public Investor(UserRegistrationDto dto) {
         super(dto);
     }
+
+    public Investor(Borrower borrower) {
+        this.name = borrower.getName();
+        this.middleName = borrower.getMiddleName();
+        this.lastName = borrower.getLastName();
+        this.userpic = borrower.getUserpic();
+        this.gender = borrower.getGender();
+        this.birthday = borrower.getBirthday();
+        this.age = borrower.getAge();
+        this.email = borrower.getEmail();
+        this.phone = borrower.getPhone();
+        this.created = LocalDateTime.now();
+        this.updated = this.created;
+        this.lastVisit = this.created;
+    }
+
 
 }

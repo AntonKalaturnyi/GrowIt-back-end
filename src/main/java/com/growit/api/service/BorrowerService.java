@@ -3,12 +3,15 @@ package com.growit.api.service;
 import com.growit.api.domain.Borrower;
 import com.growit.api.domain.BorrowerAccount;
 import com.growit.api.domain.Role;
+import com.growit.api.domain.User;
 import com.growit.api.dto.BorrowerDto;
 import com.growit.api.dto.ItnDto;
 import com.growit.api.dto.UserRegistrationDto;
 import com.growit.api.mapper.BorrowerMapper;
 import com.growit.api.repo.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
@@ -17,7 +20,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Service
-public class BorrowerService {
+public class BorrowerService implements UserDetailsService {
 
     private final BorrowerRepo borrowerRepo;
     private final BorrowerAccountRepo borrowerAccountRepo;
@@ -48,10 +51,8 @@ public class BorrowerService {
     public UserRegistrationDto create(UserRegistrationDto dto) {
         Borrower borrower = borrowerRepo.save(new Borrower(dto));
         BorrowerAccount account = borrowerAccountRepo.save(new BorrowerAccount());
-        Set<Role> roles = new HashSet<>();
-        roles.add(Role.REGISTERED_USER);
-        borrower.setRoles(roles);
-        borrower.setPassword(passwordEncoder.encode(dto.getPassword()));
+        UserService.setRegisteredUserRole(borrower);
+//        borrower.setPassword(passwordEncoder.encode(dto.getPassword()));
         borrower.setAge(Period.between(borrower.getBirthday().toLocalDate(), LocalDateTime.now().toLocalDate()).getYears());
         borrower.setLastVisit(LocalDateTime.now());
         borrower.setActive(true);
@@ -94,5 +95,10 @@ public class BorrowerService {
         Borrower borrower = borrowerRepo.findById(dto.getUserId()).get();
         //    borrower.setItn(dto); //mapper
         borrowerRepo.save(borrower);
+    }
+
+    @Override
+    public User loadUserByUsername(String email) throws UsernameNotFoundException {
+        return borrowerRepo.findByEmail(email);
     }
 }
