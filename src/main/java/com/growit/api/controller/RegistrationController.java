@@ -1,5 +1,6 @@
 package com.growit.api.controller;
 
+import com.growit.api.dto.AuthDto;
 import com.growit.api.dto.New;
 import com.growit.api.dto.UserRegistrationDto;
 import com.growit.api.service.BorrowerService;
@@ -8,6 +9,7 @@ import com.growit.api.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -34,13 +36,25 @@ public class RegistrationController {
         return userService.create(dto);
     }
 
-    @ResponseStatus(HttpStatus.CREATED)
+
     @PostMapping(value = "/new-investor",
             produces = MediaType.APPLICATION_JSON_VALUE,
             consumes = MediaType.APPLICATION_JSON_VALUE)
-    public UserRegistrationDto registerInvestor(@Validated(New.class) @RequestBody UserRegistrationDto dto) {
+    public ResponseEntity registerCredsAndLogin(@RequestBody AuthDto creds) {
+        return investorService.createWithCredentialsAndLogin(creds);
+    }
+
+
+    @ResponseStatus(HttpStatus.OK)
+    @PostMapping(value = "/investor-fill",
+            produces = MediaType.APPLICATION_JSON_VALUE,
+            consumes = MediaType.APPLICATION_JSON_VALUE)
+    public UserRegistrationDto fillInvestor(@Validated(New.class) @RequestBody UserRegistrationDto dto) {
         return investorService.create(dto);
     }
+
+
+
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping(value = "/new-borrower",

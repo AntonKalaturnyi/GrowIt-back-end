@@ -86,7 +86,7 @@ public class User extends AbstractEntity implements UserDetails {
     protected LocalDateTime birthday;
 
     public User(User user) {
-        //    this(new UserRegistrationDto(user));
+        this(new UserRegistrationDto(user));
     }
 
     public User (UserRegistrationDto dto) {
@@ -99,7 +99,8 @@ public class User extends AbstractEntity implements UserDetails {
         this.email = dto.getEmail();
         this.phone = dto.getPhone();
         this.created = dto.getCreated();
-        this.updated = this.created;
+        this.updated = LocalDateTime.now();
+        this.lastVisit = this.updated;
     }
 
     @Override

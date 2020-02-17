@@ -11,14 +11,16 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/invest")
-public class InvestController {
+public class InvestorController {
 
     private final InvestorService investorService;
 
     @Autowired
-    public InvestController(InvestorService investorService) {
+    public InvestorController(InvestorService investorService) {
         this.investorService = investorService;
     }
+
+
 
     //  @PreAuthorize("hasAnyRole" + "(@securityConfiguration.getTaskControllerUpdateTaskAllowedRoles())")
     @ResponseStatus(HttpStatus.CREATED)

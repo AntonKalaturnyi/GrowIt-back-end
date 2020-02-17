@@ -37,10 +37,10 @@ public class Borrower extends User {
     private boolean married;
 
     @Column(nullable = true)
-    private int kidsBefore18yo;
+    private Integer kidsBefore18yo;
 
     @Column(nullable = true)
-    private int kidsAfter18yo;
+    private Integer kidsAfter18yo;
 
     @OneToOne
     private CreditHistory creditHistory;
