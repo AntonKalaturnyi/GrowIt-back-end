@@ -62,7 +62,7 @@ public class InvestorService implements UserDetailsService {
         return new UserRegistrationDto(investorRepo.save(investor) );
     }
 
-    @Transactional
+//    @Transactional
     public ResponseEntity createWithCredentialsAndLogin(AuthDto creds) {
         Investor investor;
         Borrower borrower = borrowerRepo.findByEmail(creds.getUsername());
@@ -77,7 +77,6 @@ public class InvestorService implements UserDetailsService {
         UserService.setRegisteredUserRole(investor);
         investor.setActive(true); // add email activation for this
         investorRepo.save(investor);
-        creds.setUsername(creds.getUsername());
         return authService.signIn(creds);
     }
 

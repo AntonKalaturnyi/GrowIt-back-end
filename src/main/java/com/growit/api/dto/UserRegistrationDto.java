@@ -27,7 +27,9 @@ public class UserRegistrationDto extends AbstractDto {
     @NotBlank(message = "Please, provide a middle name")
     private String middleName;
 
-    protected String userpic;
+    private String password;
+
+    private String userpic;
 
     private int age;
 

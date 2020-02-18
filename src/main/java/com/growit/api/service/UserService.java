@@ -46,6 +46,23 @@ public class UserService implements UserDetailsService {
         user.setActive(true);
         return new UserRegistrationDto(userRepo.save(user)); //new UserRegistrationDto(userRepo.save(user));
     }
+
+    public User findByUsernameAndPassword(String email, String encodedPass) {
+
+        User investor = investorRepo.findByEmail(email);
+
+        if (investor !=  null)
+        System.out.println("===INVESTOR===" + investor + "==="
+                + '\n' + "+++" + investor.getPassword().equals(encodedPass) + "+++");
+
+        User borrower = borrowerRepo.findByEmail(email);
+
+        if (investor != null && investor.getPassword().equals(encodedPass)) { return investor; }
+        if (borrower != null && borrower.getPassword().equals(encodedPass)) { return borrower; }
+        else return userRepo.findByEmail(email);
+
+    }
+
     @Override
     public User loadUserByUsername(String email) throws UsernameNotFoundException {
   //      User user = userRepo.findByEmail(email);

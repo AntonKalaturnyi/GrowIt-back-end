@@ -52,7 +52,7 @@ public class BorrowerService implements UserDetailsService {
         Borrower borrower = borrowerRepo.save(new Borrower(dto));
         BorrowerAccount account = borrowerAccountRepo.save(new BorrowerAccount());
         UserService.setRegisteredUserRole(borrower);
-//        borrower.setPassword(passwordEncoder.encode(dto.getPassword()));
+        borrower.setPassword(passwordEncoder.encode(dto.getPassword()));
         borrower.setAge(Period.between(borrower.getBirthday().toLocalDate(), LocalDateTime.now().toLocalDate()).getYears());
         borrower.setLastVisit(LocalDateTime.now());
         borrower.setActive(true);

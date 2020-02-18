@@ -49,5 +49,27 @@ public class Investor extends User {
         this.lastVisit = this.created;
     }
 
-
+    @Override
+    public String toString() {
+        return "Investor{" +
+                "name='" + name + '\'' +
+                ", userpic='" + userpic + '\'' +
+                ", gender='" + gender + '\'' +
+                ", locale='" + locale + '\'' +
+                ", lastVisit=" + lastVisit +
+                ", lastName='" + lastName + '\'' +
+                ", middleName='" + middleName + '\'' +
+                ", age=" + age +
+                ", address=" + address +
+                ", passport=" + passport +
+                ", married=" + married +
+                ", email='" + email + '\'' +
+                ", password='" + password + '\'' +
+                ", phone='" + phone + '\'' +
+                ", monthlyIncomeTotal=" + monthlyIncomeTotal +
+                ", roles=" + roles +
+                ", active=" + active +
+                ", birthday=" + birthday +
+                '}';
+    }
 }

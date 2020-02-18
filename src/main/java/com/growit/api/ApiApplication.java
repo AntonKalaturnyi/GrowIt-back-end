@@ -1,5 +1,6 @@
 package com.growit.api;
 
+import com.growit.api.util.Encrypter;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.boot.SpringApplication;
@@ -32,7 +33,7 @@ public class ApiApplication {
 
 	@Bean
 	public PasswordEncoder getPasswordEncoder() {
-		return new BCryptPasswordEncoder(8);
+		return new Encrypter();
 	}
 
 }

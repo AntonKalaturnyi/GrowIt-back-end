@@ -10,6 +10,7 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import java.util.HashMap;
 import java.util.Map;
@@ -25,19 +26,21 @@ public class AuthService {
     private final UserService userDetailsService;
     private final InvestorService investorService;
     private final BorrowerService borrowerService;
+    private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    public AuthService(AuthenticationManager authenticationManager, TokenProvider tokenProvider, UserService userDetailsService, InvestorService investorService, BorrowerService borrowerService) {
+    public AuthService(AuthenticationManager authenticationManager, TokenProvider tokenProvider, UserService userDetailsService, InvestorService investorService, BorrowerService borrowerService, PasswordEncoder passwordEncoder) {
         this.authenticationManager = authenticationManager;
         this.tokenProvider = tokenProvider;
         this.userDetailsService = userDetailsService;
         this.investorService = investorService;
         this.borrowerService = borrowerService;
+        this.passwordEncoder = passwordEncoder;
     }
 
     public ResponseEntity signIn(AuthDto creds) {
         String username = creds.getUsername();
-        User user = userDetailsService.loadUserByUsername(username);
+        User user = userDetailsService.findByUsernameAndPassword(username, passwordEncoder.encode(creds.getPassword()));
 /*
         User user;
         String username;
@@ -54,8 +57,6 @@ public class AuthService {
                username = creds.getUsername();
                user = userDetailsService.loadUserByUsername(username);
             }*/
-
-
 
         try {
 
