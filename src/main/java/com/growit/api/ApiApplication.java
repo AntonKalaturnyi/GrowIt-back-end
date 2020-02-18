@@ -33,7 +33,7 @@ public class ApiApplication {
 
 	@Bean
 	public PasswordEncoder getPasswordEncoder() {
-		return new Encrypter();
+		return new BCryptPasswordEncoder(8);
 	}
 
 }

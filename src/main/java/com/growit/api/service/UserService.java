@@ -1,5 +1,7 @@
 package com.growit.api.service;
 
+import com.growit.api.domain.Borrower;
+import com.growit.api.domain.Investor;
 import com.growit.api.domain.Role;
 import com.growit.api.domain.User;
 import com.growit.api.dto.UserRegistrationDto;
@@ -49,17 +51,20 @@ public class UserService implements UserDetailsService {
 
     public User findByUsernameAndPassword(String email, String encodedPass) {
 
-        User investor = investorRepo.findByEmail(email);
+        Investor investor = investorRepo.findByEmail(email);
 
         if (investor !=  null)
         System.out.println("===INVESTOR===" + investor + "==="
                 + '\n' + "+++" + investor.getPassword().equals(encodedPass) + "+++");
 
-        User borrower = borrowerRepo.findByEmail(email);
+        Borrower borrower = borrowerRepo.findByEmail(email);
 
-        if (investor != null && investor.getPassword().equals(encodedPass)) { return investor; }
+        if (investor != null && investor.getPassword().equals(encodedPass)) { return investor; } else
         if (borrower != null && borrower.getPassword().equals(encodedPass)) { return borrower; }
+        else return null;
+/*
         else return userRepo.findByEmail(email);
+*/
 
     }
 
@@ -74,6 +79,12 @@ public class UserService implements UserDetailsService {
     static void setRegisteredUserRole(User user) {
         Set<Role> roles = new HashSet<>();
         roles.add(Role.REGISTERED_USER);
+        user.setRoles(roles);
+    }
+
+    static void addInvestorRole(User user) {
+        Set<Role> roles = user.getRoles();
+        roles.add(Role.INVESTOR);
         user.setRoles(roles);
     }
 
