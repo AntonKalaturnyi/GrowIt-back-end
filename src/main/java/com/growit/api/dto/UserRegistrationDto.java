@@ -1,6 +1,7 @@
 package com.growit.api.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.growit.api.domain.Investor;
 import com.growit.api.domain.Role;
 import com.growit.api.domain.User;
 import lombok.Data;
@@ -62,9 +63,19 @@ public class UserRegistrationDto extends AbstractDto {
         this.birthday = user.getBirthday();
         this.lastVisit = user.getLastVisit();
         this.email = user.getEmail();
+        this.password = null;
         this.userpic = user.getUserpic();
-        this.age = user.getAge();
+//        this.age = user.getAge();
         this.phone = user.getPhone();
+        this.roles = user.getRoles();
+        this.created = user.getCreated();
+        this.updated = user.getUpdated();
+    }
+
+    public UserRegistrationDto (Investor user) {
+        this.id = user.getId();
+        this.lastVisit = user.getLastVisit();
+        this.email = user.getEmail();
         this.roles = user.getRoles();
         this.created = user.getCreated();
         this.updated = user.getUpdated();

@@ -1,9 +1,7 @@
 package com.growit.api.service;
 
-import com.growit.api.domain.Borrower;
-import com.growit.api.domain.BorrowerAccount;
-import com.growit.api.domain.Role;
-import com.growit.api.domain.User;
+import com.growit.api.domain.*;
+import com.growit.api.dto.AuthDto;
 import com.growit.api.dto.BorrowerDto;
 import com.growit.api.dto.ItnDto;
 import com.growit.api.dto.UserRegistrationDto;
@@ -17,7 +15,6 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.time.Period;
 import java.util.HashSet;
-import java.util.Set;
 
 @Service
 public class BorrowerService implements UserDetailsService {
@@ -27,6 +24,7 @@ public class BorrowerService implements UserDetailsService {
     private final WorkSphereRepo workSphereRepo;
     private final CreditHistoryRepo creditHistoryRepo;
     private final ContactPersonRepo contactPersonRepo;
+    private final InvestorRepo investorRepo;
     private final HomeOwnershipRepo homeOwnershipRepo;
     private final PasswordEncoder passwordEncoder;
     private final CreditCardRepo creditCardRepo;
@@ -35,13 +33,14 @@ public class BorrowerService implements UserDetailsService {
     @Autowired
     public BorrowerService(BorrowerRepo borrowerRepo, BorrowerAccountRepo borrowerAccountRepo, WorkSphereRepo workSphereRepo,
                            CreditHistoryRepo creditHistoryRepo, ContactPersonRepo contactPersonRepo,
-                           HomeOwnershipRepo homeOwnershipRepo, PasswordEncoder passwordEncoder, CreditCardRepo creditCardRepo,
+                           InvestorRepo investorRepo, HomeOwnershipRepo homeOwnershipRepo, PasswordEncoder passwordEncoder, CreditCardRepo creditCardRepo,
                            BorrowerMapper mapper) {
         this.borrowerRepo = borrowerRepo;
         this.borrowerAccountRepo = borrowerAccountRepo;
         this.workSphereRepo = workSphereRepo;
         this.creditHistoryRepo = creditHistoryRepo;
         this.contactPersonRepo = contactPersonRepo;
+        this.investorRepo = investorRepo;
         this.homeOwnershipRepo = homeOwnershipRepo;
         this.passwordEncoder = passwordEncoder;
         this.creditCardRepo = creditCardRepo;
@@ -100,5 +99,32 @@ public class BorrowerService implements UserDetailsService {
     @Override
     public User loadUserByUsername(String email) throws UsernameNotFoundException {
         return borrowerRepo.findByEmail(email);
+    }
+
+    public UserRegistrationDto createWithCredentials(AuthDto creds) {
+        Borrower borrower;
+        Investor investor = investorRepo.findByEmail(creds.getUsername());
+
+        borrower = new Borrower();
+
+        if (investor != null) {
+            borrower = new Borrower(investor);
+            borrower.setActive(investor.isActive());
+            borrower.setBirthday(investor.getBirthday());
+            borrower.setGender(investor.getGender());
+            borrower.setAge(Period.between(borrower.getBirthday().toLocalDate(), LocalDateTime.now().toLocalDate()).getYears());
+            borrower.setName(investor.getName());
+            borrower.setMiddleName(investor.getMiddleName());
+            borrower.setLastName(investor.getLastName());
+            borrower.setLastVisit(LocalDateTime.now());
+            borrower.setPhone(investor.getPhone());
+            borrower.setUserpic(investor.getUserpic());
+        }
+
+        borrower.setEmail(creds.getUsername());
+        borrower.setPassword(passwordEncoder.encode(creds.getPassword()));
+        UserService.setRegisteredUserRole(borrower);
+        borrower.setActive(true); // add email activation for this
+        return new UserRegistrationDto(borrowerRepo.save(borrower));
     }
 }

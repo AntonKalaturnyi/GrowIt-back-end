@@ -97,6 +97,7 @@ public class User extends AbstractEntity implements UserDetails {
         this.gender = dto.getGender();
         this.birthday = dto.getBirthday();
         this.email = dto.getEmail();
+        this.roles = dto.getRoles();
         this.phone = dto.getPhone();
         this.created = dto.getCreated();
         this.updated = LocalDateTime.now();

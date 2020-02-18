@@ -39,27 +39,10 @@ public class AuthService {
     }
 
     public ResponseEntity signIn(AuthDto creds) {
-        String username = creds.getUsername();
-        User user = userDetailsService.findByUsernameAndPassword(username, passwordEncoder.encode(creds.getPassword()));
-/*
-        User user;
-        String username;
-        String first = new StringBuilder(creds.getUsername().charAt(0)).toString();
-
-        if (first.equals("*") || first.equals("&")) {
-            username = creds.getUsername().substring(1);
-            if (first.equals("*")) {
-                user = investorService.loadUserByUsername(username);
-            } else {
-                user = borrowerService.loadUserByUsername(username);
-            }
-        } else {
-               username = creds.getUsername();
-               user = userDetailsService.loadUserByUsername(username);
-            }*/
 
         try {
-
+            String username = creds.getUsername();
+            User user = userDetailsService.loadUserByUsername(username);
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, creds.getPassword()));
             String token = tokenProvider.createToken(username, user.getRoles().stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList()));
             Map<Object, Object> model = new HashMap<>();
