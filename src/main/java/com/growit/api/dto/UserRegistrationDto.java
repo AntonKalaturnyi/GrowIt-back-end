@@ -10,7 +10,6 @@ import lombok.NoArgsConstructor;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
-import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
 import java.util.Set;
 
@@ -27,8 +26,6 @@ public class UserRegistrationDto extends AbstractDto {
 
     @NotBlank(message = "Please, provide a middle name")
     private String middleName;
-
-    private String password;
 
     private String userpic;
 
@@ -63,7 +60,6 @@ public class UserRegistrationDto extends AbstractDto {
         this.birthday = user.getBirthday();
         this.lastVisit = user.getLastVisit();
         this.email = user.getEmail();
-        this.password = null;
         this.userpic = user.getUserpic();
 //        this.age = user.getAge();
         this.phone = user.getPhone();

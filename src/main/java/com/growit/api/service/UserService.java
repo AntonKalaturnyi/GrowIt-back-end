@@ -29,8 +29,6 @@ public class UserService implements UserDetailsService {
     private final BorrowerRepo borrowerRepo;
     private final PasswordEncoder passwordEncoder;
 
-
-
     @Autowired
     public UserService(PasswordEncoder passwordEncoder, UserRepo userRepo, InvestorRepo investorRepo, BorrowerRepo borrowerRepo) {
         this.passwordEncoder = passwordEncoder;
@@ -71,9 +69,10 @@ public class UserService implements UserDetailsService {
     @Override
     public User loadUserByUsername(String email) throws UsernameNotFoundException {
   //      User user = userRepo.findByEmail(email);
-        User investor = investorRepo.findByEmail(email);
-        User borrower = borrowerRepo.findByEmail(email);
-        return borrower != null ? borrower : investor;
+        Investor investor = investorRepo.findByEmail(email);
+        Borrower borrower = borrowerRepo.findByEmail(email);
+        return (borrower != null && borrower.getEmail() != null) ? borrower :
+                (investor != null && investor.getEmail() != null) ? investor : new User();
     }
 
     static void setRegisteredUserRole(User user) {
@@ -100,5 +99,12 @@ public class UserService implements UserDetailsService {
         user.setCreated(LocalDateTime.now());
         user.setUpdated(user.getCreated());
         user.setLastVisit(user.getUpdated());
+    }
+
+    public boolean activate(Long id) {
+        User user = userRepo.findById(id).get();
+        user.setActive(true);
+        userRepo.save(user);
+        return true;
     }
 }
