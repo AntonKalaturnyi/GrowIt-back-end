@@ -61,7 +61,12 @@ public class UserRegistrationDto extends AbstractDto {
         this.lastVisit = user.getLastVisit();
         this.email = user.getEmail();
         this.userpic = user.getUserpic();
-//        this.age = user.getAge();
+        try {
+            this.age = user.getAge();
+        } catch (NullPointerException npe) {
+            System.out.println("Age is null at UserRegistrationDto (User user) constructor");
+        }
+
         this.phone = user.getPhone();
         this.roles = user.getRoles();
         this.created = user.getCreated();
