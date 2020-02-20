@@ -12,6 +12,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import java.time.LocalDateTime;
 import java.time.Period;
 import java.util.HashSet;
@@ -47,6 +49,7 @@ public class BorrowerService implements UserDetailsService {
         this.mapper = mapper;
     }
 
+    @Transactional
     public UserRegistrationDto fillBasicInfo(UserRegistrationDto dto) {
 
         Borrower borrower = borrowerRepo.findByEmail(dto.getEmail());

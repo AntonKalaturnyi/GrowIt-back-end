@@ -3,6 +3,7 @@ package com.growit.api.controller;
 import com.growit.api.dto.BorrowerDto;
 import com.growit.api.dto.CreditCardDto;
 import com.growit.api.dto.New;
+import com.growit.api.dto.UserRegistrationDto;
 import com.growit.api.service.BorrowerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -19,6 +20,14 @@ public class BorrowerController {
     @Autowired
     public BorrowerController(BorrowerService borrowerService) {
         this.borrowerService = borrowerService;
+    }
+
+    @ResponseStatus(HttpStatus.CREATED)
+    @PostMapping(value = "/add-basic-info",
+            produces = MediaType.APPLICATION_JSON_VALUE,
+            consumes = MediaType.APPLICATION_JSON_VALUE)
+    public UserRegistrationDto fillBasicData(@Validated(New.class) @RequestBody UserRegistrationDto dto) {
+        return borrowerService.fillBasicInfo(dto);
     }
 
 

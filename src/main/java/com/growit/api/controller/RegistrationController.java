@@ -63,14 +63,6 @@ public class RegistrationController {
     }
 
 
-    @ResponseStatus(HttpStatus.CREATED)
-    @PostMapping(value = "/n-borrower",
-            produces = MediaType.APPLICATION_JSON_VALUE,
-            consumes = MediaType.APPLICATION_JSON_VALUE)
-    public UserRegistrationDto fillBasicData(@Validated(New.class) @RequestBody UserRegistrationDto dto) {
-        return borrowerService.fillBasicInfo(dto);
-    }
-
     @PreAuthorize("hasRole('REGISTERED_USER')")
     @PostMapping(value = "/activate/{id}")
     public boolean activateUser(@PathVariable("id") Long id) {
