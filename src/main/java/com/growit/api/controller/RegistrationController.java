@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -62,14 +63,19 @@ public class RegistrationController {
     }
 
 
-
-
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping(value = "/n-borrower",
             produces = MediaType.APPLICATION_JSON_VALUE,
             consumes = MediaType.APPLICATION_JSON_VALUE)
-    public UserRegistrationDto registerBorrower(@Validated(New.class) @RequestBody UserRegistrationDto dto) {
-        return borrowerService.create(dto);
+    public UserRegistrationDto fillBasicData(@Validated(New.class) @RequestBody UserRegistrationDto dto) {
+        return borrowerService.fillBasicInfo(dto);
     }
+
+    @PreAuthorize("hasRole('REGISTERED_USER')")
+    @PostMapping(value = "/activate/{id}")
+    public boolean activateUser(@PathVariable("id") Long id) {
+        return userService.activate(id);
+    }
+
 
 }

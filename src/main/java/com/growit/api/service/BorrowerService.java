@@ -47,14 +47,20 @@ public class BorrowerService implements UserDetailsService {
         this.mapper = mapper;
     }
 
-    public UserRegistrationDto create(UserRegistrationDto dto) {
-        Borrower borrower = borrowerRepo.save(new Borrower(dto));
+    public UserRegistrationDto fillBasicInfo(UserRegistrationDto dto) {
+
+        Borrower borrower = borrowerRepo.findByEmail(dto.getEmail());
+        borrower.setName(dto.getName());
+        borrower.setMiddleName(dto.getMiddleName());
+        borrower.setLastName(dto.getLastName());
+        borrower.setBirthday(dto.getBirthday());
+        borrower.setGender(dto.getGender());
+        borrower.setUserpic(dto.getUserpic());
+        borrower.setPhone(dto.getPhone());
         BorrowerAccount account = borrowerAccountRepo.save(new BorrowerAccount());
         UserService.setRegisteredUserRole(borrower);
-        borrower.setPassword(passwordEncoder.encode(dto.getPassword()));
         borrower.setAge(Period.between(borrower.getBirthday().toLocalDate(), LocalDateTime.now().toLocalDate()).getYears());
         borrower.setLastVisit(LocalDateTime.now());
-        borrower.setActive(true);
         account.setBorrower(borrower);
         account = borrowerAccountRepo.save(account);
         borrower.setBorrowerAccount(account);
@@ -109,22 +115,13 @@ public class BorrowerService implements UserDetailsService {
 
         if (investor != null) {
             borrower = new Borrower(investor);
-            borrower.setActive(investor.isActive());
-            borrower.setBirthday(investor.getBirthday());
-            borrower.setGender(investor.getGender());
-            borrower.setAge(Period.between(borrower.getBirthday().toLocalDate(), LocalDateTime.now().toLocalDate()).getYears());
-            borrower.setName(investor.getName());
-            borrower.setMiddleName(investor.getMiddleName());
-            borrower.setLastName(investor.getLastName());
-            borrower.setLastVisit(LocalDateTime.now());
-            borrower.setPhone(investor.getPhone());
-            borrower.setUserpic(investor.getUserpic());
         }
 
+        borrower.setActive(true);
         borrower.setEmail(creds.getUsername());
         borrower.setPassword(passwordEncoder.encode(creds.getPassword()));
         UserService.setRegisteredUserRole(borrower);
-        borrower.setActive(true); // add email activation for this
+//        borrower.setActive(true); // add email activation for this
         return new UserRegistrationDto(borrowerRepo.save(borrower));
     }
 }
