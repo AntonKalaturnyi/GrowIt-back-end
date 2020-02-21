@@ -27,7 +27,8 @@ post- Address(1 за пропискою, 2 фактична адреса, мож
 post- HomeOwnership
 post- family(married, kids (before and after 18 y.o) )
 post- education(with level)
-post- employer info
+post- employer info +
+post- put- set ContactPersons
 [LOAN]post- comment(loan purpose, plan on return)
 
 put- update married, kids, address, Employment, jobTitle, homeOwnership, incomes, work sphere, phone, Instagram, FB
@@ -125,7 +126,7 @@ put- update Employment
 
 
 
-
++email verification
 +static storage config for uploaded photo with passport, ipn
 
 +write tests with UBKI test url sending POST requests

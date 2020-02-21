@@ -1,10 +1,7 @@
 package com.growit.api.service;
 
 import com.growit.api.domain.*;
-import com.growit.api.dto.AuthDto;
-import com.growit.api.dto.BorrowerDto;
-import com.growit.api.dto.ItnDto;
-import com.growit.api.dto.UserRegistrationDto;
+import com.growit.api.dto.*;
 import com.growit.api.mapper.BorrowerMapper;
 import com.growit.api.repo.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +11,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import java.time.Period;
 import java.util.HashSet;
@@ -51,25 +49,17 @@ public class BorrowerService implements UserDetailsService {
 
     @Transactional
     public UserRegistrationDto fillBasicInfo(UserRegistrationDto dto) {
-
-        Borrower borrower = borrowerRepo.findByEmail(dto.getEmail());
-        borrower.setName(dto.getName());
-        borrower.setMiddleName(dto.getMiddleName());
-        borrower.setLastName(dto.getLastName());
+        Borrower borrower = setFromDto(dto);
         borrower.setBirthday(dto.getBirthday());
-        borrower.setGender(dto.getGender());
-        borrower.setUserpic(dto.getUserpic());
-        borrower.setPhone(dto.getPhone());
         BorrowerAccount account = borrowerAccountRepo.save(new BorrowerAccount());
         UserService.setRegisteredUserRole(borrower);
-        borrower.setAge(Period.between(borrower.getBirthday().toLocalDate(), LocalDateTime.now().toLocalDate()).getYears());
-        borrower.setLastVisit(LocalDateTime.now());
         account.setBorrower(borrower);
         account = borrowerAccountRepo.save(account);
         borrower.setBorrowerAccount(account);
         return new UserRegistrationDto(borrowerRepo.save(borrower));
     }
 
+    @Transactional
     public BorrowerDto fill(BorrowerDto dto) {
 /**  + creditCard(service) /Passport(controller + service)  /ITN/Address
  =Verification apart post*/
@@ -78,24 +68,10 @@ public class BorrowerService implements UserDetailsService {
 
     private Borrower fillBorrower(BorrowerDto dto) {
         Borrower borrower = borrowerRepo.findById(dto.getBorrowerId()).get();
+        setBorrowerDtoFields(borrower, dto);
         borrower.setWorkSphere(workSphereRepo.findBySphereEngLike(dto.getWorkSphereString()));
-        borrower.setCreditHistory(creditHistoryRepo.findById(dto.getCreditHistoryId()).get());
-        borrower.setMonthlyIncomeOfficial(dto.getMonthlyIncomeOfficial());
-        borrower.setMonthlyIncomeAdditional(dto.getMonthlyIncomeAdditional());
-        borrower.setMonthlyIncomeTotal(borrower.getMonthlyIncomeOfficial() + borrower.getMonthlyIncomeAdditional());
         borrower.setHomeOwnership(homeOwnershipRepo.findByHomeOwnershipEngLike(dto.getHomeOwnershipString()));
-        borrower.setMarried(dto.isMarried());
-        borrower.setKidsBefore18yo(dto.getKidsBefore18yo());
-        borrower.setKidsAfter18yo(dto.getKidsAfter18yo());
-        borrower.setHomePhone(dto.getHomePhone());
-        borrower.setWorkPhone(dto.getWorkPhone());
-        borrower.setFax(dto.getFax());
-        borrower.setInstagram(dto.getInstagram());
-        borrower.setFacebook(dto.getFacebook());
-        borrower.setWorkType(dto.getWorkType());
-        borrower.setSpouseITN(dto.getSpouseITN());
-        borrower.setEDRPOUcode(dto.getEDRPOUcode());
-        borrower.setJobTitle(dto.getJobTitle());
+        borrower.setMonthlyIncomeTotal(borrower.getMonthlyIncomeOfficial() + borrower.getMonthlyIncomeAdditional());
         return borrower;
     }
 
@@ -110,6 +86,7 @@ public class BorrowerService implements UserDetailsService {
         return borrowerRepo.findByEmail(email);
     }
 
+    @Transactional
     public UserRegistrationDto createWithCredentials(AuthDto creds) {
         Borrower borrower;
         Investor investor = investorRepo.findByEmail(creds.getUsername());
@@ -120,11 +97,57 @@ public class BorrowerService implements UserDetailsService {
             borrower = new Borrower(investor);
         }
 
-        borrower.setActive(true);
+        borrower.setActive(true); // add email activation for this
         borrower.setEmail(creds.getUsername());
         borrower.setPassword(passwordEncoder.encode(creds.getPassword()));
         UserService.setRegisteredUserRole(borrower);
-//        borrower.setActive(true); // add email activation for this
         return new UserRegistrationDto(borrowerRepo.save(borrower));
+    }
+
+    @Transactional
+    public BorrowerUpdateDto updateBorrower(BorrowerUpdateDto dto) {
+        Borrower borrower = setFromDto(dto);
+        setBorrowerDtoFields(borrower, dto);
+        if (!dto.getWorkSphereString().equals(borrower.getWorkSphere().getSphereEng())) {
+            borrower.setWorkSphere(workSphereRepo.findBySphereEngLike(dto.getWorkSphereString()));
+        }
+        if (!dto.getHomeOwnershipString().equals(borrower.getHomeOwnership().getHomeOwnershipEng())) {
+            borrower.setHomeOwnership(homeOwnershipRepo.findByHomeOwnershipEngLike(dto.getHomeOwnershipString()));
+        }
+        return new BorrowerUpdateDto(borrowerRepo.save(borrower));
+    }
+
+    private Borrower setFromDto(UserRegistrationDto dto) {
+        Borrower borrower = borrowerRepo.findByEmail(dto.getEmail());
+        borrower.setName(dto.getName());
+        borrower.setMiddleName(dto.getMiddleName());
+        borrower.setLastName(dto.getLastName());
+        borrower.setGender(dto.getGender());
+        borrower.setUserpic(dto.getUserpic());
+        borrower.setPhone(dto.getPhone());
+        borrower.setLastVisit(LocalDateTime.now());
+        borrower.setUpdated(borrower.getLastVisit());
+        borrower.setAge(Period.between(borrower.getBirthday().toLocalDate(), LocalDateTime.now().toLocalDate()).getYears());
+        return borrower;
+    }
+
+    private Borrower setBorrowerDtoFields(Borrower borrower, BorrowerTransferObject dto) {
+
+        borrower.setMonthlyIncomeOfficial(dto.getMonthlyIncomeOfficial());
+        borrower.setMonthlyIncomeAdditional(dto.getMonthlyIncomeAdditional());
+        borrower.setMarried(dto.isMarried());
+        borrower.setDivorced(dto.isDivorced());
+        borrower.setKidsBefore18yo(dto.getKidsBefore18yo());
+        borrower.setKidsAfter18yo(dto.getKidsAfter18yo());
+        borrower.setHomePhone(dto.getHomePhone());
+        borrower.setWorkPhone(dto.getWorkPhone());
+        borrower.setFax(dto.getFax());
+        borrower.setSpouseITN(dto.getSpouseITN());
+        borrower.setInstagram(dto.getInstagram());
+        borrower.setFacebook(dto.getFacebook());
+        borrower.setWorkType(dto.getWorkType());
+        borrower.setEDRPOUcode(dto.getEDRPOUcode());
+        borrower.setJobTitle(dto.getJobTitle());
+        return borrower;
     }
 }

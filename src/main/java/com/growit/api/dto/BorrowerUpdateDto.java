@@ -1,5 +1,6 @@
 package com.growit.api.dto;
 
+import com.growit.api.domain.Borrower;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -8,9 +9,7 @@ import javax.validation.constraints.NotNull;
 @Data
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = false)
-public class BorrowerDto extends AbstractDto implements BorrowerTransferObject {
-
-    private long borrowerId;
+public class BorrowerUpdateDto extends UserRegistrationDto implements BorrowerTransferObject {
 
     private String workSphereString;
 
@@ -29,12 +28,6 @@ public class BorrowerDto extends AbstractDto implements BorrowerTransferObject {
     @NotNull(groups = {New.class, Existing.class},
             message = "Please specify how many kids after 18 years old do you have")
     private int kidsAfter18yo;
-
-    // For test purposes
-//    private long creditHistoryId;
-//    private long creditCardId; - not in mapper
-//    long[] contactPersonsIds;
-
 
     private String homePhone;
 
@@ -61,4 +54,23 @@ public class BorrowerDto extends AbstractDto implements BorrowerTransferObject {
 
     private String jobTitle;
 
+    public BorrowerUpdateDto(Borrower bwr) {
+        super(bwr);
+        this.workSphereString = bwr.getWorkSphere().getSphereEng();
+        this.monthlyIncomeOfficial = bwr.getMonthlyIncomeOfficial();
+        this.monthlyIncomeAdditional = bwr.getMonthlyIncomeAdditional();
+        this.married = bwr.isMarried();
+        this.divorced = bwr.getDivorced();
+        this.kidsBefore18yo = bwr.getKidsBefore18yo();
+        this.kidsAfter18yo = bwr.getKidsAfter18yo();
+        this.homePhone = bwr.getHomePhone();
+        this.workPhone = bwr.getWorkPhone();
+        this.fax = bwr.getFax();
+        this.instagram = bwr.getInstagram();
+        this.facebook = bwr.getFacebook();
+        this.workType = bwr.getWorkType();
+        this.EDRPOUcode = bwr.getEDRPOUcode();
+        this.homeOwnershipString = bwr.getHomeOwnership().getHomeOwnershipEng();
+        this.jobTitle = bwr.getJobTitle();
+    }
 }
