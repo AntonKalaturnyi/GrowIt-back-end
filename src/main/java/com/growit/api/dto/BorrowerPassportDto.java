@@ -16,6 +16,10 @@ public class BorrowerPassportDto extends AbstractDto {
             message = "Please specify id of borrower")
     private long borrowerId;
 
+    private long passportId;
+
+    private long addressId;
+
     @NotNull(groups = {New.class},
             message = "Please specify if you have ID passport")
     private boolean idPassport;

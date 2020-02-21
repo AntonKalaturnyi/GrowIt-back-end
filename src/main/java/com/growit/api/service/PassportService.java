@@ -33,6 +33,23 @@ public class PassportService {
         Borrower borrower = borrowerRepo.findById(dto.getBorrowerId()).get();
         Passport passport = new Passport();
         Address addressOfRegistration = new Address();
+        return setFields(passport, borrower, addressOfRegistration, dto);
+    }
+
+    @Transactional
+    public InvestorPassportDto createInvestorPass(InvestorPassportDto card) {
+        return null;
+    }
+
+    @PreAuthorize("hasAuthority('BORROWER')")
+    public Passport updateBorrowerPass(BorrowerPassportDto dto) {
+        Borrower borrower = borrowerRepo.findById(dto.getBorrowerId()).get();
+        Passport passport = passportRepo.findById(dto.getPassportId()).get();
+        Address addressOfRegistration = addressRepo.findById(dto.getAddressId()).get();
+        return setFields(passport, borrower, addressOfRegistration, dto);
+    }
+
+    private Passport setFields(Passport passport, Borrower borrower, Address addressOfRegistration, BorrowerPassportDto dto) {
 
         if (dto.isIdPassport()) {
             if (dto.isHasIdPassPhotoOrScan()) {
@@ -59,10 +76,5 @@ public class PassportService {
         borrower.setPassport(passportRepo.save(passport));
         borrowerRepo.save(borrower);
         return passport;
-    }
-
-    @Transactional
-    public InvestorPassportDto createInvestorPass(InvestorPassportDto card) {
-        return null;
     }
 }
