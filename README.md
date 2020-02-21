@@ -16,13 +16,14 @@ One user can be both borrower and investor(profile per table):
 3) Password can be common for both profiles
 
 =BORROWER=
-post- login
-post- registration
+=post- login
+=post- registration
 // asks for a wished loan
 post- phones, fax + SMS phone verification
 
 post- name, Passport(...)
 post- ITN
+post- CreditCard
 post- Address(1 за пропискою, 2 фактична адреса, можна клікнути, що співпадає з адр. реєстрації)
 post- HomeOwnership
 post- family(married, kids (before and after 18 y.o) )

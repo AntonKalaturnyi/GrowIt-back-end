@@ -10,6 +10,8 @@ import javax.validation.constraints.NotNull;
 @EqualsAndHashCode(callSuper = false)
 public class BorrowerDto extends AbstractDto implements BorrowerTransferObject {
 
+    @NotNull(groups = {New.class, Existing.class},
+            message = "Please specify borrower's id")
     private long borrowerId;
 
     private String workSphereString;
