@@ -27,16 +27,16 @@ insert into loan_purpose (id, created, updated, purpose_eng, purpose_ua) values 
 
 insert into work_sphere(id, sphere_eng, sphere_ua, created, updated) values
 (1, 'Car servicing / Transport / Logistics', 'Автосервіс / Транспорт / Логістика', '2020-01-31 18:05:19.554', '2020-01-31 18:05:19.554');
-insert into work_sphere(id, sphere_eng, sphere_ua, created, created, updated) values
-(2, 'Audit / Legal / Consulting', 'Аудит / Юр. сфера / Консалтинг', '2020-01-31 18:05:19.554', '2020-01-31 18:05:19.554');
-insert into work_sphere(id, sphere_eng, sphere_ua, created, created, updated) values
-(3, 'Building / Architecture', 'Будівництво / Архітектура', '2020-01-31 18:05:19.554', '2020-01-31 18:05:19.554');
-insert into work_sphere(id, sphere_eng, sphere_ua, created, created, updated) values
-(4, 'Heavy industry', 'Важка промисловість', '2020-01-31 18:05:19.554', '2020-01-31 18:05:19.554');
-insert into work_sphere(id, sphere_eng, sphere_ua, created, created, updated) values
-(5, 'Hotels / Restaurants / Gambling', 'Готелі / Ресторани / Казино', '2020-01-31 18:05:19.554', '2020-01-31 18:05:19.554');
-insert into work_sphere(id, sphere_eng, sphere_ua, created, created, updated) values
-(6, 'Wholesale / Storages', 'Оптова торгівля / Склади', '2020-01-31 18:05:19.554', '2020-01-31 18:05:19.554');
+insert into work_sphere(id, sphere_eng, sphere_ua, created, updated) values
+(153, 'Audit / Legal / Consulting', 'Аудит / Юр. сфера / Консалтинг', '2020-01-31 18:05:19.554', '2020-01-31 18:05:19.554');
+insert into work_sphere(id, sphere_eng, sphere_ua, created, updated) values
+(154, 'Building / Architecture', 'Будівництво / Архітектура', '2020-01-31 18:05:19.554', '2020-01-31 18:05:19.554');
+insert into work_sphere(id, sphere_eng, sphere_ua, created, updated) values
+(155, 'Heavy industry', 'Важка промисловість', '2020-01-31 18:05:19.554', '2020-01-31 18:05:19.554');
+insert into work_sphere(id, sphere_eng, sphere_ua, created, updated) values
+(156, 'Hotels / Restaurants / Gambling', 'Готелі / Ресторани / Казино', '2020-01-31 18:05:19.554', '2020-01-31 18:05:19.554');
+insert into work_sphere(id, sphere_eng, sphere_ua, created, updated) values
+(157, 'Wholesale / Storages', 'Оптова торгівля / Склади', '2020-01-31 18:05:19.554', '2020-01-31 18:05:19.554');
 insert into work_sphere(id, sphere_eng, sphere_ua, created, created, updated) values
 (7, 'Local Governance', '2020-01-31 18:05:19.554', '2020-01-31 18:05:19.554');
 insert into work_sphere(id, sphere_eng, sphere_ua, created, created, updated) values

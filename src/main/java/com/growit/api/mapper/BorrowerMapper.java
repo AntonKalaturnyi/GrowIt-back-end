@@ -32,7 +32,7 @@ public class BorrowerMapper extends AbstractMapper<Borrower, BorrowerDto> {
     @PostConstruct
     public void setupMapper() {
         mapper.createTypeMap(Borrower.class, BorrowerDto.class)
-                .addMappings(m -> m.skip(BorrowerDto::setCreditHistoryId)).setPostConverter(toDtoConverter())
+            //    .addMappings(m -> m.skip(BorrowerDto::setCreditHistoryId)).setPostConverter(toDtoConverter())
                 .addMappings(m -> m.skip(BorrowerDto::setWorkSphereString)).setPostConverter(toDtoConverter())
                 .addMappings(m -> m.skip(BorrowerDto::setHomeOwnershipString)).setPostConverter(toDtoConverter());
 
@@ -44,14 +44,14 @@ public class BorrowerMapper extends AbstractMapper<Borrower, BorrowerDto> {
 
     @Override
     public void mapSpecificFields(Borrower source, BorrowerDto destination) {
-        destination.setCreditHistoryId(getCreditHistoryId(source));
+    //    destination.setCreditHistoryId(getCreditHistoryId(source));
         destination.setWorkSphereString(getWorkSphereString(source));
         destination.setHomeOwnershipString(getWorkSphereString(source));
     }
 
     @Override
     void mapSpecificFields(BorrowerDto source, Borrower destination) {
-        destination.setCreditHistory(creditHistoryRepo.findById(source.getCreditHistoryId()).orElse(null));
+ //       destination.setCreditHistory(creditHistoryRepo.findById(source.getCreditHistoryId()).orElse(null));
         destination.setWorkSphere(workSphereRepo.findBySphereEngLike(source.getWorkSphereString()));
         destination.setHomeOwnership(homeOwnershipRepo.findByHomeOwnershipEngLike(source.getHomeOwnershipString()));
 

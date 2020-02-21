@@ -1,9 +1,6 @@
 package com.growit.api.controller;
 
-import com.growit.api.dto.BorrowerDto;
-import com.growit.api.dto.CreditCardDto;
-import com.growit.api.dto.New;
-import com.growit.api.dto.UserRegistrationDto;
+import com.growit.api.dto.*;
 import com.growit.api.service.BorrowerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -28,6 +25,22 @@ public class BorrowerController {
             consumes = MediaType.APPLICATION_JSON_VALUE)
     public UserRegistrationDto fillBasicData(@Validated(New.class) @RequestBody UserRegistrationDto dto) {
         return borrowerService.fillBasicInfo(dto);
+    }
+
+
+    @ResponseStatus(HttpStatus.OK)
+    @PutMapping(value = "/update", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public UserRegistrationDto update(@Validated(Existing.class) @RequestBody BorrowerUpdateDto dto) {
+        return borrowerService.updateBorrower(dto);
+    }
+
+
+    /***  Implement  ***/
+    @ResponseStatus(HttpStatus.OK)
+    @PutMapping(value = "/change-email", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public UserRegistrationDto changeEmail(@Validated(Existing.class) @RequestBody UserRegistrationDto dto) {
+      //  return borrowerService.updateEmail(dto);
+        return null;
     }
 
 
