@@ -50,9 +50,6 @@ public class User extends AbstractEntity implements UserDetails {
     @Column(name = "age", length = 3)
     protected Integer age;
 
-    @ManyToOne
-    @JoinColumn(name = "address_id")
-    protected Address address;
 
     @OneToOne
     protected Passport passport;
