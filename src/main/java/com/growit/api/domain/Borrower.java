@@ -21,6 +21,10 @@ public class Borrower extends User {
 
     private int monthlyIncomeAdditional;
 
+    @ManyToOne
+    @JoinColumn(name = "address_id")
+    protected Address address;
+
     @OneToOne
     protected ITN itn;
 
@@ -33,8 +37,6 @@ public class Borrower extends User {
             joinColumns = { @JoinColumn(name = "borrower_id") },
             inverseJoinColumns = { @JoinColumn(name = "employer_id")} )
     private Set<Employer> employers = new HashSet<>();
-
-    private boolean married;
 
     private Boolean divorced;
 
