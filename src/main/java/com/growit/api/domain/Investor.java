@@ -60,7 +60,6 @@ public class Investor extends User {
                 ", lastName='" + lastName + '\'' +
                 ", middleName='" + middleName + '\'' +
                 ", age=" + age +
-                ", address=" + address +
                 ", passport=" + passport +
                 ", married=" + married +
                 ", email='" + email + '\'' +
