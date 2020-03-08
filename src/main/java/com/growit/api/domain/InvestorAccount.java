@@ -26,11 +26,19 @@ public class InvestorAccount extends Account {
 
     private int gracePeriodLoans;
 
+    @Column(nullable = true)
     private int late6To14Days;
 
-    private int late15To31Days;
+    @Column(nullable = true)
+    private int late15To30Days;
 
-    private int late32To120DaysLoans;
+    @Column(nullable = true)
+
+    private int late31To60DaysLoans;
+
+    @Column(nullable = true)
+
+    private int late61To120DaysLoans;
 
     private int chargedOffLoans;
 
@@ -47,9 +55,10 @@ public class InvestorAccount extends Account {
                 ", expectedProfitability=" + expectedProfitability +
                 ", currentActiveLoans=" + currentActiveLoans +
                 ", gracePeriodLoans=" + gracePeriodLoans +
-                ", late6To15Days=" + late6To14Days +
-                ", late16To30Days=" + late15To31Days +
-                ", late31To120DaysLoans=" + late32To120DaysLoans +
+                ", late6To14Days=" + late6To14Days +
+                ", late15To30Days=" + late15To30Days +
+                ", late31To60DaysLoans=" + late31To60DaysLoans +
+                ", late61To120DaysLoans=" + late61To120DaysLoans +
                 ", chargedOffLoans=" + chargedOffLoans +
                 ", investedFunds=" + investedFunds +
                 ", monthlyStatements=" + monthlyStatements +
