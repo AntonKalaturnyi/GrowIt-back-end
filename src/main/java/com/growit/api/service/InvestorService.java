@@ -3,23 +3,21 @@ package com.growit.api.service;
 import com.growit.api.domain.*;
 import com.growit.api.dto.AuthDto;
 import com.growit.api.dto.InvestmentDto;
+import com.growit.api.dto.InvestorRegDto;
 import com.growit.api.dto.UserRegistrationDto;
 import com.growit.api.exceptions.AccountOverdraftException;
 import com.growit.api.repo.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.time.LocalDateTime;
 import java.time.Period;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.Random;
 
 @Service
 public class InvestorService implements UserDetailsService {
@@ -45,38 +43,40 @@ public class InvestorService implements UserDetailsService {
     }
 
     @Transactional
-    public UserRegistrationDto create(UserRegistrationDto dto) {
-        Investor investor =  investorRepo.findByEmail(dto.getEmail());
-
-        if (investor.getBirthday() == null) {
-          UserService.setUserFields(investor, dto);
-        }
-
-            investor.setAge(Period.between(investor.getBirthday().toLocalDate(), LocalDateTime.now().toLocalDate()).getYears());
-            investor.setActive(true);
-            InvestorAccount account = investorAccountRepo.save(new InvestorAccount());
-            account.setInvestor(investor);
-            account = investorAccountRepo.save(account);
-            investor.setAccount(account);
-
-        return new UserRegistrationDto(investorRepo.save(investor) );
+    public Integer fillPersonalInfoAndSendSmsCode(InvestorRegDto dto) {
+        Investor investor = investorRepo.findByEmail(dto.getEmail());
+        investor.setName(dto.getName());
+        investor.setMiddleName(dto.getMiddleName());
+        investor.setLastName(dto.getLastName());
+        investor.setGender(dto.getGender());
+        investor.setBirthday(dto.getBirthday());
+        investor.setPhone(dto.getPhone());
+        investor.setAge(Period.between(investor.getBirthday().toLocalDate(), LocalDateTime.now().toLocalDate()).getYears());
+        investor.setLastVisit(LocalDateTime.now());
+        investor.setActive(true);
+        InvestorAccount account = investorAccountRepo.save(new InvestorAccount());
+        account.setInvestor(investor);
+        account = investorAccountRepo.save(account);
+        investor.setAccount(account);
+        investorRepo.save(investor);
+        return getRandom6DigitNumber();
     }
 
     @Transactional
-    public UserRegistrationDto createWithCredentials(AuthDto creds) {
+    public ResponseEntity createWithCredentials(AuthDto creds) {
         Borrower borrower = borrowerRepo.findByEmail(creds.getUsername());
         if (borrower != null) {
             UserService.addInvestorRole(borrower);
-            return new UserRegistrationDto(borrower);
+            return authService.signIn(creds);
         }
-
         Investor investor = new Investor();
         investor.setEmail(creds.getUsername());
         investor.setPassword(passwordEncoder.encode(creds.getPassword()));
         UserService.setRegisteredUserRole(investor);
         investor.setActive(true); // add email activation for this
+        investor.setLastVisit(LocalDateTime.now());
         investorRepo.save(investor);
-        return new UserRegistrationDto(investor);
+        return authService.signIn(creds);
     }
 
     @Transactional
@@ -103,6 +103,10 @@ public class InvestorService implements UserDetailsService {
     @Override
     public User loadUserByUsername(String email) throws UsernameNotFoundException {
         return investorRepo.findByEmail(email);
+    }
+
+    private static int getRandom6DigitNumber() {
+        return new Random().nextInt((999999 - 100000) + 1) + 100000;
     }
 }
 

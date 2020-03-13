@@ -41,7 +41,7 @@ public class RegistrationController {
     @PostMapping(value = "/new-investor",
             produces = MediaType.APPLICATION_JSON_VALUE,
             consumes = MediaType.APPLICATION_JSON_VALUE)
-    public UserRegistrationDto newInvestorFromCreds(@RequestBody AuthDto creds) {
+    public ResponseEntity newInvestorFromCreds(@RequestBody AuthDto creds) {
         return investorService.createWithCredentials(creds);
     }
 
@@ -51,15 +51,6 @@ public class RegistrationController {
             consumes = MediaType.APPLICATION_JSON_VALUE)
     public UserRegistrationDto newBorrowerFromCreds(@RequestBody AuthDto creds) {
         return borrowerService.createWithCredentials(creds);
-    }
-
-
-    @ResponseStatus(HttpStatus.OK)
-    @PostMapping(value = "/investor-fill",
-            produces = MediaType.APPLICATION_JSON_VALUE,
-            consumes = MediaType.APPLICATION_JSON_VALUE)
-    public UserRegistrationDto fillInvestor(@Validated(New.class) @RequestBody UserRegistrationDto dto) {
-        return investorService.create(dto);
     }
 
 

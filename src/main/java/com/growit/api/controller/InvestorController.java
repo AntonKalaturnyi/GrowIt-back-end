@@ -1,6 +1,7 @@
 package com.growit.api.controller;
 
 import com.growit.api.dto.InvestmentDto;
+import com.growit.api.dto.InvestorRegDto;
 import com.growit.api.dto.New;
 import com.growit.api.service.InvestorService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +22,13 @@ public class InvestorController {
     }
 
 
+    @ResponseStatus(HttpStatus.OK)
+    @PostMapping(value = "/fill-investor",
+            produces = MediaType.APPLICATION_JSON_VALUE,
+            consumes = MediaType.APPLICATION_JSON_VALUE)
+    public Integer fillInvestorAndSendSms(@Validated(New.class) @RequestBody InvestorRegDto dto) {
+        return investorService.fillPersonalInfoAndSendSmsCode(dto);
+    }
 
     //  @PreAuthorize("hasAnyRole" + "(@securityConfiguration.getTaskControllerUpdateTaskAllowedRoles())")
     @ResponseStatus(HttpStatus.CREATED)
