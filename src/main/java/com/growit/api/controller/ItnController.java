@@ -21,10 +21,10 @@ public class ItnController {
     }
 
     //    @PreAuthorize("hasAnyRole" + "(@securityConfiguration.getTaskControllerCreateTaskAllowedRoles())")
-    @ResponseStatus(HttpStatus.CREATED)
+/*    @ResponseStatus(HttpStatus.CREATED)
     @PostMapping(value = "/new", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
     public ITN addItn(@Validated(New.class) @RequestBody ITN itn) {
         return itnService.create(itn);
-    }
+    }*/
 
 }

@@ -1,6 +1,5 @@
 package com.growit.api.service;
 
-import com.growit.api.domain.ITN;
 import com.growit.api.repo.ItnRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,12 +16,11 @@ public class ItnService {
         this.borrowerService = borrowerService;
     }
 
-    public ITN create(ITN itn) {
-// mapper
-/*        ITN fromDb = itnRepo.save(itn);
-
-        borrowerService.add
-        return fromDb;*/
-        return null;
-    }
+/* =No need=
+    @Transactional
+    public ITN createInvestorItn(InvestorPassportAndItnDto dto) {
+        ITN itn = new ITN();
+        itn.setITN_digits(dto.getItnNumber());
+        return itnRepo.save(itn);
+    }*/
 }

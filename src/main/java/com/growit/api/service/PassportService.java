@@ -4,7 +4,7 @@ import com.growit.api.domain.Address;
 import com.growit.api.domain.Borrower;
 import com.growit.api.domain.Passport;
 import com.growit.api.dto.BorrowerPassportDto;
-import com.growit.api.dto.InvestorPassportDto;
+import com.growit.api.dto.InvestorPassportAndItnDto;
 import com.growit.api.repo.AddressRepo;
 import com.growit.api.repo.BorrowerRepo;
 import com.growit.api.repo.PassportRepo;
@@ -37,8 +37,18 @@ public class PassportService {
     }
 
     @Transactional
-    public InvestorPassportDto createInvestorPass(InvestorPassportDto card) {
-        return null;
+    public Passport createInvestorPass(InvestorPassportAndItnDto dto) {
+        Passport passport = new Passport();
+        passport.setIdPassport(dto.isIdPassport());
+        if (passport.isIdPassport()) {
+            passport.setIdPassNumber(dto.getIdPassNumber());
+        } else {
+            passport.setPaperPassSeries(dto.getPaperPassSeries());
+            passport.setPaperPassNumber(dto.getPaperPassNumber());
+        }
+        passport.setIssuer(dto.getIssuer());
+        passport.setIssueDate(dto.getIssueDate());
+        return passportRepo.save(passport);
     }
 
     @PreAuthorize("hasAuthority('BORROWER')")
@@ -72,7 +82,7 @@ public class PassportService {
         addressOfRegistration.setNumber(dto.getNumber());
         addressOfRegistration.setDoor(dto.getDoor());
         addressOfRegistration.setPostalCode(dto.getPostalCode());
-        passport.setAddressOfRegistration(addressRepo.save(addressOfRegistration));
+//        passport.setAddressOfRegistration(addressRepo.save(addressOfRegistration));
         borrower.setPassport(passportRepo.save(passport));
         borrowerRepo.save(borrower);
         return passport;
