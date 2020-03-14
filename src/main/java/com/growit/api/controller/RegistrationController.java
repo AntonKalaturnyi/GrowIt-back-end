@@ -49,7 +49,7 @@ public class RegistrationController {
     @PostMapping(value = "/new-borrower",
             produces = MediaType.APPLICATION_JSON_VALUE,
             consumes = MediaType.APPLICATION_JSON_VALUE)
-    public UserRegistrationDto newBorrowerFromCreds(@RequestBody AuthDto creds) {
+    public ResponseEntity newBorrowerFromCreds(@RequestBody AuthDto creds) {
         return borrowerService.createWithCredentials(creds);
     }
 
