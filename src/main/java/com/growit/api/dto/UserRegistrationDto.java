@@ -38,7 +38,7 @@ public class UserRegistrationDto extends AbstractDto {
     private LocalDateTime birthday;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
-    protected LocalDateTime lastVisit;
+    private LocalDateTime lastVisit;
 
     @NotBlank(message = "Please, provide an email")
     @Email(message = "Please, provide valid email")

@@ -1,6 +1,7 @@
 package com.growit.api.controller;
 
 import com.growit.api.dto.InvestmentDto;
+import com.growit.api.dto.InvestorPassportAndItnDto;
 import com.growit.api.dto.InvestorRegDto;
 import com.growit.api.dto.New;
 import com.growit.api.service.InvestorService;
@@ -28,6 +29,14 @@ public class InvestorController {
             consumes = MediaType.APPLICATION_JSON_VALUE)
     public Integer fillInvestorAndSendSms(@Validated(New.class) @RequestBody InvestorRegDto dto) {
         return investorService.fillPersonalInfoAndSendSmsCode(dto);
+    }
+
+    @ResponseStatus(HttpStatus.OK)
+    @PostMapping(value = "/investor-save-passport-itn",
+            produces = MediaType.APPLICATION_JSON_VALUE,
+            consumes = MediaType.APPLICATION_JSON_VALUE)
+    public Boolean saveInvestorPassportAndItn(@Validated(New.class) @RequestBody InvestorPassportAndItnDto dto) {
+        return investorService.savePassportAndItn(dto);
     }
 
     //  @PreAuthorize("hasAnyRole" + "(@securityConfiguration.getTaskControllerUpdateTaskAllowedRoles())")

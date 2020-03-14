@@ -3,8 +3,8 @@ package com.growit.api.service;
 import com.growit.api.domain.*;
 import com.growit.api.dto.AuthDto;
 import com.growit.api.dto.InvestmentDto;
+import com.growit.api.dto.InvestorPassportAndItnDto;
 import com.growit.api.dto.InvestorRegDto;
-import com.growit.api.dto.UserRegistrationDto;
 import com.growit.api.exceptions.AccountOverdraftException;
 import com.growit.api.repo.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +24,7 @@ public class InvestorService implements UserDetailsService {
 
     private final InvestorRepo investorRepo;
     private final PasswordEncoder passwordEncoder;
+    private final PassportService passportService;
     private final InvestorAccountRepo investorAccountRepo;
     private final BorrowerRepo borrowerRepo;
     private final InvestmentRepo investmentRepo;
@@ -31,10 +32,11 @@ public class InvestorService implements UserDetailsService {
     private final LoanRepo loanRepo;
 
     @Autowired
-    public InvestorService(InvestorRepo investorRepo, PasswordEncoder passwordEncoder, InvestorAccountRepo investorAccountRepo,
+    public InvestorService(InvestorRepo investorRepo, PasswordEncoder passwordEncoder, PassportService passportService, InvestorAccountRepo investorAccountRepo,
                            BorrowerRepo borrowerRepo, InvestmentRepo investmentRepo, @Lazy AuthService authService, LoanRepo loanRepo) {
         this.investorRepo = investorRepo;
         this.passwordEncoder = passwordEncoder;
+        this.passportService = passportService;
         this.investorAccountRepo = investorAccountRepo;
         this.borrowerRepo = borrowerRepo;
         this.investmentRepo = investmentRepo;
@@ -61,6 +63,17 @@ public class InvestorService implements UserDetailsService {
         investorRepo.save(investor);
         return getRandom6DigitNumber();
     }
+
+
+    @Transactional
+    public Boolean savePassportAndItn(InvestorPassportAndItnDto dto) {
+        Investor investor = investorRepo.findByEmail(dto.getEmail());
+        investor.setPassport(passportService.createInvestorPass(dto));
+        investor.setItn(dto.getItnNumber());
+        investorRepo.save(investor);
+        return true;
+    }
+
 
     @Transactional
     public ResponseEntity createWithCredentials(AuthDto creds) {

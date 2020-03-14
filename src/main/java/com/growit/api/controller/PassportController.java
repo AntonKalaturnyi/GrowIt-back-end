@@ -35,10 +35,10 @@ public class PassportController {
         return passportService.updateBorrowerPass(dto);
     }
 
-    @PreAuthorize("hasAuthority('REGISTERED_USER')")
+/*    @PreAuthorize("hasAuthority('REGISTERED_USER')")
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping(value = "/new-investor-passport", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
     public InvestorPassportDto setInvestorPassport(@Validated(New.class) @RequestBody InvestorPassportDto dto) {
         return passportService.createInvestorPass(dto);
-    }
+    }*/
 }
