@@ -10,11 +10,11 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
+
 import static org.springframework.http.ResponseEntity.ok;
 
 
@@ -24,18 +24,13 @@ public class AuthService {
     private final AuthenticationManager authenticationManager;
     private final TokenProvider tokenProvider;
     private final UserService userDetailsService;
-    private final InvestorService investorService;
-    private final BorrowerService borrowerService;
-    private final PasswordEncoder passwordEncoder;
+
 
     @Autowired
-    public AuthService(AuthenticationManager authenticationManager, TokenProvider tokenProvider, UserService userDetailsService, InvestorService investorService, BorrowerService borrowerService, PasswordEncoder passwordEncoder) {
+    public AuthService(AuthenticationManager authenticationManager, TokenProvider tokenProvider, UserService userDetailsService) {
         this.authenticationManager = authenticationManager;
         this.tokenProvider = tokenProvider;
         this.userDetailsService = userDetailsService;
-        this.investorService = investorService;
-        this.borrowerService = borrowerService;
-        this.passwordEncoder = passwordEncoder;
     }
 
     public ResponseEntity signIn(AuthDto creds) {
