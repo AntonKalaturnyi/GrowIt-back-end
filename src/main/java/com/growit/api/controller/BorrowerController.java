@@ -27,6 +27,13 @@ public class BorrowerController {
         return borrowerService.fillBasicInfo(dto);
     }
 
+    @ResponseStatus(HttpStatus.OK)
+    @PostMapping(value = "/fill-borrower",
+            produces = MediaType.APPLICATION_JSON_VALUE,
+            consumes = MediaType.APPLICATION_JSON_VALUE)
+    public Integer fillInvestorAndSendSms(@Validated(New.class) @RequestBody BorrowerRegDto dto) {
+        return borrowerService.fillPersonalInfoAndSendSmsCode(dto);
+    }
 
     @ResponseStatus(HttpStatus.OK)
     @PutMapping(value = "/update", consumes = MediaType.APPLICATION_JSON_VALUE)
@@ -44,13 +51,13 @@ public class BorrowerController {
     }
 
 
-    @ResponseStatus(HttpStatus.CREATED)
+/*    @ResponseStatus(HttpStatus.CREATED)
     @PostMapping(value = "/fill-borrower",
             produces = MediaType.APPLICATION_JSON_VALUE,
             consumes = MediaType.APPLICATION_JSON_VALUE)
     public BorrowerDto fillBorrower(@Validated(New.class) @RequestBody BorrowerDto dto) {
         return borrowerService.fill(dto);
-    }
+    }*/
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping(value = "/new-card",

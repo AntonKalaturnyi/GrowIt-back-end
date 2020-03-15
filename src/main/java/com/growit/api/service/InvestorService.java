@@ -7,6 +7,7 @@ import com.growit.api.dto.InvestorPassportAndItnDto;
 import com.growit.api.dto.InvestorRegDto;
 import com.growit.api.exceptions.AccountOverdraftException;
 import com.growit.api.repo.*;
+import com.growit.api.util.ConstantUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.http.ResponseEntity;
@@ -61,7 +62,7 @@ public class InvestorService implements UserDetailsService {
         account = investorAccountRepo.save(account);
         investor.setAccount(account);
         investorRepo.save(investor);
-        return getRandom6DigitNumber();
+        return ConstantUtil.getRandom6DigitNumber();
     }
 
 
@@ -118,8 +119,5 @@ public class InvestorService implements UserDetailsService {
         return investorRepo.findByEmail(email);
     }
 
-    private static int getRandom6DigitNumber() {
-        return new Random().nextInt((999999 - 100000) + 1) + 100000;
-    }
 }
 

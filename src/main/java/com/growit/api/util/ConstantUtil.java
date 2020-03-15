@@ -1,5 +1,7 @@
 package com.growit.api.util;
 
+import java.util.Random;
+
 public class ConstantUtil {
 
     public static final String VALID_POSTAL_CODE_REGEXP = "\\d{5}";
@@ -34,4 +36,9 @@ public class ConstantUtil {
 
     public ConstantUtil() {
     }
+
+    public static int getRandom6DigitNumber() {
+        return new Random().nextInt((999999 - 100000) + 1) + 100000;
+    }
+
 }
