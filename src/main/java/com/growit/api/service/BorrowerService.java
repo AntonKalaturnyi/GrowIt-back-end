@@ -4,6 +4,7 @@ import com.growit.api.domain.*;
 import com.growit.api.dto.*;
 import com.growit.api.mapper.BorrowerMapper;
 import com.growit.api.repo.*;
+import com.growit.api.util.ConstantUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -152,5 +153,29 @@ public class BorrowerService implements UserDetailsService {
         borrower.setEDRPOUcode(dto.getEDRPOUcode());
         borrower.setJobTitle(dto.getJobTitle());
         return borrower;
+    }
+
+    public Integer fillPersonalInfoAndSendSmsCode(BorrowerRegDto dto) {
+        Borrower borrower = borrowerRepo.findByEmail(dto.getEmail());
+        borrower.setName(dto.getName());
+        borrower.setMiddleName(dto.getMiddleName());
+        borrower.setLastName(dto.getLastName());
+        borrower.setGender(dto.getGender());
+        borrower.setBirthday(dto.getBirthday());
+        borrower.setPhone(dto.getPhone());
+        borrower.setAge(Period.between(borrower.getBirthday().toLocalDate(), LocalDateTime.now().toLocalDate()).getYears());
+        borrower.setLastVisit(LocalDateTime.now());
+        borrower.setActive(true);
+        borrower.setMaritalStatus(dto.getMaritalStatus());
+        borrower.setKidsBefore18yo(dto.getKidsBefore18yo());
+        borrower.setKidsAfter18yo(dto.getKidsAfter18yo());
+        borrower.setInstagram(dto.getInstagram());
+        borrower.setFacebook(dto.getFacebook());
+        BorrowerAccount account = borrowerAccountRepo.save(new BorrowerAccount());
+        account.setBorrower(borrower);
+        account = borrowerAccountRepo.save(account);
+        borrower.setBorrowerAccount(account);
+        borrowerRepo.save(borrower);
+        return ConstantUtil.getRandom6DigitNumber();
     }
 }

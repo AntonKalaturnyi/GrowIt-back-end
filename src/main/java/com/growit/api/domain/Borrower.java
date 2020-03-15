@@ -38,6 +38,8 @@ public class Borrower extends User {
             inverseJoinColumns = { @JoinColumn(name = "employer_id")} )
     private Set<Employer> employers = new HashSet<>();
 
+    private String maritalStatus;
+
     private Boolean divorced;
 
     @Column(nullable = true)
