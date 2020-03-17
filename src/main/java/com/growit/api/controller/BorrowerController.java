@@ -1,10 +1,12 @@
 package com.growit.api.controller;
 
+import com.growit.api.domain.Borrower;
 import com.growit.api.dto.*;
 import com.growit.api.service.BorrowerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -42,13 +44,21 @@ public class BorrowerController {
 
 
     @ResponseStatus(HttpStatus.OK)
-    @PostMapping(value = "/save-passport-itn",
-            consumes = {"multipart/form-data"})
+    @PostMapping(value = "/save-passport-itn", consumes = {"multipart/form-data"})
     public Boolean saveBorrowerPassportAndItn(@RequestPart("dto") @Validated(New.class) BorrowerPassportAndItnDto dto,
                                               @RequestPart("file") @NotNull @NotBlank MultipartFile file) {
         return borrowerService.savePassportAndItn(dto, file);
     }
 
+
+    @ResponseStatus(HttpStatus.OK)
+    @PostMapping(value = "/set-address",
+            produces = MediaType.APPLICATION_JSON_VALUE,
+            consumes = MediaType.APPLICATION_JSON_VALUE)
+    public Boolean saveLivingAddress(@AuthenticationPrincipal Borrower borrower, @Validated(New.class) @RequestBody AddressDto dto) {
+//        System.out.println(" ***" + borrower.getEmail() + "***");
+        return borrowerService.saveLivingAddress(borrower, dto);
+    }
 
     @ResponseStatus(HttpStatus.OK)
     @PutMapping(value = "/update", consumes = MediaType.APPLICATION_JSON_VALUE)

@@ -16,6 +16,8 @@ public class AddressDto extends AbstractDto {
 
     private String door;
 
+    private String corpsNo;
+
     private String number;
 
     private String street;
@@ -25,8 +27,6 @@ public class AddressDto extends AbstractDto {
     private String district;
 
     private String region;
-
-    private String country;
 
     private boolean sameAddressInPassport;
 }

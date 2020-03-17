@@ -10,7 +10,6 @@ import com.growit.api.repo.*;
 import com.growit.api.util.ConstantUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -27,32 +26,28 @@ public class BorrowerService implements UserDetailsService {
     private final BorrowerRepo borrowerRepo;
     private final BorrowerAccountRepo borrowerAccountRepo;
     private final WorkSphereRepo workSphereRepo;
-    private final CreditHistoryRepo creditHistoryRepo;
-    private final ContactPersonRepo contactPersonRepo;
+    private final AddressService addressService;
     private final InvestorRepo investorRepo;
     private final HomeOwnershipRepo homeOwnershipRepo;
     private final AuthService authService;
     private final PasswordEncoder passwordEncoder;
     private final PassportService passportService;
-    private final CreditCardRepo creditCardRepo;
     private final BorrowerMapper mapper;
 
     @Autowired
     public BorrowerService(BorrowerRepo borrowerRepo, BorrowerAccountRepo borrowerAccountRepo, WorkSphereRepo workSphereRepo,
                            CreditHistoryRepo creditHistoryRepo, ContactPersonRepo contactPersonRepo,
-                           InvestorRepo investorRepo, HomeOwnershipRepo homeOwnershipRepo, AuthService authService, PasswordEncoder passwordEncoder, PassportService passportService, CreditCardRepo creditCardRepo,
+                           AddressService addressService, InvestorRepo investorRepo, HomeOwnershipRepo homeOwnershipRepo, AuthService authService, PasswordEncoder passwordEncoder, PassportService passportService, CreditCardRepo creditCardRepo,
                            BorrowerMapper mapper) {
         this.borrowerRepo = borrowerRepo;
         this.borrowerAccountRepo = borrowerAccountRepo;
         this.workSphereRepo = workSphereRepo;
-        this.creditHistoryRepo = creditHistoryRepo;
-        this.contactPersonRepo = contactPersonRepo;
+        this.addressService = addressService;
         this.investorRepo = investorRepo;
         this.homeOwnershipRepo = homeOwnershipRepo;
         this.authService = authService;
         this.passwordEncoder = passwordEncoder;
         this.passportService = passportService;
-        this.creditCardRepo = creditCardRepo;
         this.mapper = mapper;
     }
 
@@ -183,6 +178,18 @@ public class BorrowerService implements UserDetailsService {
         Borrower borrower = borrowerRepo.findByEmail(dto.getEmail());
         borrower.setPassport(passportService.createBorrowerPass(dto, file));
         borrower.setItn(dto.getItnNumber());
+        borrowerRepo.save(borrower);
+        return true;
+    }
+
+    @Transactional
+    public Boolean saveLivingAddress(Borrower borrower, AddressDto dto) {
+        if (dto.isSameAddressInPassport()) {
+            borrower.setAddress(borrower.getPassport().getAddressOfRegistration());
+            borrowerRepo.save(borrower);
+            return true;
+        }
+        borrower.setAddress(addressService.addressFromAddressDto(dto));
         borrowerRepo.save(borrower);
         return true;
     }
