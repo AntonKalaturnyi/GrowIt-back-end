@@ -25,8 +25,10 @@ public class Borrower extends User {
     @JoinColumn(name = "address_id")
     protected Address address;
 
-    @OneToOne
-    protected ITN itn;
+/*    @OneToOne
+    protected ITN itn;*/
+
+    private String itn;
 
     @ManyToOne
     @JoinColumn(name = "work_sphere_id")

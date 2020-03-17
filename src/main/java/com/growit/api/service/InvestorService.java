@@ -17,8 +17,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
-import java.time.Period;
-import java.util.Random;
 
 @Service
 public class InvestorService implements UserDetailsService {
@@ -48,15 +46,7 @@ public class InvestorService implements UserDetailsService {
     @Transactional
     public Integer fillPersonalInfoAndSendSmsCode(InvestorRegDto dto) {
         Investor investor = investorRepo.findByEmail(dto.getEmail());
-        investor.setName(dto.getName());
-        investor.setMiddleName(dto.getMiddleName());
-        investor.setLastName(dto.getLastName());
-        investor.setGender(dto.getGender());
-        investor.setBirthday(dto.getBirthday());
-        investor.setPhone(dto.getPhone());
-        investor.setAge(Period.between(investor.getBirthday().toLocalDate(), LocalDateTime.now().toLocalDate()).getYears());
-        investor.setLastVisit(LocalDateTime.now());
-        investor.setActive(true);
+        UserService.setUserFields(investor, dto);
         InvestorAccount account = investorAccountRepo.save(new InvestorAccount());
         account.setInvestor(investor);
         account = investorAccountRepo.save(account);

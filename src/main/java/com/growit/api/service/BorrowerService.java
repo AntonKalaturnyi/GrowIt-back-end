@@ -1,17 +1,22 @@
 package com.growit.api.service;
 
-import com.growit.api.domain.*;
+import com.growit.api.domain.Borrower;
+import com.growit.api.domain.BorrowerAccount;
+import com.growit.api.domain.Investor;
+import com.growit.api.domain.User;
 import com.growit.api.dto.*;
 import com.growit.api.mapper.BorrowerMapper;
 import com.growit.api.repo.*;
 import com.growit.api.util.ConstantUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDateTime;
 import java.time.Period;
@@ -28,13 +33,14 @@ public class BorrowerService implements UserDetailsService {
     private final HomeOwnershipRepo homeOwnershipRepo;
     private final AuthService authService;
     private final PasswordEncoder passwordEncoder;
+    private final PassportService passportService;
     private final CreditCardRepo creditCardRepo;
     private final BorrowerMapper mapper;
 
     @Autowired
     public BorrowerService(BorrowerRepo borrowerRepo, BorrowerAccountRepo borrowerAccountRepo, WorkSphereRepo workSphereRepo,
                            CreditHistoryRepo creditHistoryRepo, ContactPersonRepo contactPersonRepo,
-                           InvestorRepo investorRepo, HomeOwnershipRepo homeOwnershipRepo, AuthService authService, PasswordEncoder passwordEncoder, CreditCardRepo creditCardRepo,
+                           InvestorRepo investorRepo, HomeOwnershipRepo homeOwnershipRepo, AuthService authService, PasswordEncoder passwordEncoder, PassportService passportService, CreditCardRepo creditCardRepo,
                            BorrowerMapper mapper) {
         this.borrowerRepo = borrowerRepo;
         this.borrowerAccountRepo = borrowerAccountRepo;
@@ -45,6 +51,7 @@ public class BorrowerService implements UserDetailsService {
         this.homeOwnershipRepo = homeOwnershipRepo;
         this.authService = authService;
         this.passwordEncoder = passwordEncoder;
+        this.passportService = passportService;
         this.creditCardRepo = creditCardRepo;
         this.mapper = mapper;
     }
@@ -157,15 +164,7 @@ public class BorrowerService implements UserDetailsService {
 
     public Integer fillPersonalInfoAndSendSmsCode(BorrowerRegDto dto) {
         Borrower borrower = borrowerRepo.findByEmail(dto.getEmail());
-        borrower.setName(dto.getName());
-        borrower.setMiddleName(dto.getMiddleName());
-        borrower.setLastName(dto.getLastName());
-        borrower.setGender(dto.getGender());
-        borrower.setBirthday(dto.getBirthday());
-        borrower.setPhone(dto.getPhone());
-        borrower.setAge(Period.between(borrower.getBirthday().toLocalDate(), LocalDateTime.now().toLocalDate()).getYears());
-        borrower.setLastVisit(LocalDateTime.now());
-        borrower.setActive(true);
+        UserService.setUserFields(borrower, dto);
         borrower.setMaritalStatus(dto.getMaritalStatus());
         borrower.setKidsBefore18yo(dto.getKidsBefore18yo());
         borrower.setKidsAfter18yo(dto.getKidsAfter18yo());
@@ -177,5 +176,14 @@ public class BorrowerService implements UserDetailsService {
         borrower.setBorrowerAccount(account);
         borrowerRepo.save(borrower);
         return ConstantUtil.getRandom6DigitNumber();
+    }
+
+    @Transactional
+    public Boolean savePassportAndItn(BorrowerPassportAndItnDto dto, MultipartFile file) {
+        Borrower borrower = borrowerRepo.findByEmail(dto.getEmail());
+        borrower.setPassport(passportService.createBorrowerPass(dto, file));
+        borrower.setItn(dto.getItnNumber());
+        borrowerRepo.save(borrower);
+        return true;
     }
 }

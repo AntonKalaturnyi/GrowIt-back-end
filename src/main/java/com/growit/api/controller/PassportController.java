@@ -23,17 +23,17 @@ public class PassportController {
         this.passportService = passportService;
     }
 
-    @ResponseStatus(HttpStatus.CREATED)
+/*    @ResponseStatus(HttpStatus.CREATED)
     @PostMapping(value = "/new-borrower-passport", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
     public Passport setBorrowerPassport(@Validated(New.class) @RequestBody BorrowerPassportDto dto) {
         return passportService.createBorrowerPass(dto);
-    }
+    }*/
 
-    @ResponseStatus(HttpStatus.OK)
+/*    @ResponseStatus(HttpStatus.OK)
     @PutMapping(value = "/update-borrower-passport", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
     public Passport updateBorrowerPassport(@Validated(Existing.class) @RequestBody BorrowerPassportDto dto) {
         return passportService.updateBorrowerPass(dto);
-    }
+    }*/
 
 /*    @PreAuthorize("hasAuthority('REGISTERED_USER')")
     @ResponseStatus(HttpStatus.CREATED)

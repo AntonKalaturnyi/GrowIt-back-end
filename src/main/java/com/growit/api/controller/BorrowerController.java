@@ -7,6 +7,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import javax.validation.Valid;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 @RestController
 @RequestMapping("/borrower")
@@ -34,6 +39,16 @@ public class BorrowerController {
     public Integer fillInvestorAndSendSms(@Validated(New.class) @RequestBody BorrowerRegDto dto) {
         return borrowerService.fillPersonalInfoAndSendSmsCode(dto);
     }
+
+
+    @ResponseStatus(HttpStatus.OK)
+    @PostMapping(value = "/save-passport-itn",
+            consumes = {"multipart/form-data"})
+    public Boolean saveBorrowerPassportAndItn(@RequestPart("dto") @Validated(New.class) BorrowerPassportAndItnDto dto,
+                                              @RequestPart("file") @NotNull @NotBlank MultipartFile file) {
+        return borrowerService.savePassportAndItn(dto, file);
+    }
+
 
     @ResponseStatus(HttpStatus.OK)
     @PutMapping(value = "/update", consumes = MediaType.APPLICATION_JSON_VALUE)

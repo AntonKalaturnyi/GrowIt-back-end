@@ -4,6 +4,7 @@ import com.growit.api.domain.Borrower;
 import com.growit.api.domain.Investor;
 import com.growit.api.domain.Role;
 import com.growit.api.domain.User;
+import com.growit.api.dto.InvestorRegDto;
 import com.growit.api.dto.UserRegistrationDto;
 import com.growit.api.repo.BorrowerRepo;
 import com.growit.api.repo.InvestorRepo;
@@ -87,18 +88,16 @@ public class UserService implements UserDetailsService {
         user.setRoles(roles);
     }
 
-    static void setUserFields(User user, UserRegistrationDto dto) {
+    static void setUserFields(User user, InvestorRegDto dto) {
         user.setName(dto.getName());
         user.setMiddleName(dto.getMiddleName());
         user.setLastName(dto.getLastName());
-        user.setUserpic(dto.getUserpic());
         user.setGender(dto.getGender());
         user.setBirthday(dto.getBirthday());
-        user.setEmail(dto.getEmail());
         user.setPhone(dto.getPhone());
-        user.setCreated(LocalDateTime.now());
-        user.setUpdated(user.getCreated());
-        user.setLastVisit(user.getUpdated());
+        user.setAge(Period.between(user.getBirthday().toLocalDate(), LocalDateTime.now().toLocalDate()).getYears());
+        user.setLastVisit(LocalDateTime.now());
+        user.setActive(true);
     }
 
     public boolean activate(Long id) {
