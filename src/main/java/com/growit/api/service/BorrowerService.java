@@ -16,7 +16,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
-
 import java.time.LocalDateTime;
 import java.time.Period;
 
@@ -27,6 +26,7 @@ public class BorrowerService implements UserDetailsService {
     private final BorrowerAccountRepo borrowerAccountRepo;
     private final WorkSphereRepo workSphereRepo;
     private final AddressService addressService;
+    private final EmploymentService employmentService;
     private final InvestorRepo investorRepo;
     private final HomeOwnershipRepo homeOwnershipRepo;
     private final AuthService authService;
@@ -37,12 +37,13 @@ public class BorrowerService implements UserDetailsService {
     @Autowired
     public BorrowerService(BorrowerRepo borrowerRepo, BorrowerAccountRepo borrowerAccountRepo, WorkSphereRepo workSphereRepo,
                            CreditHistoryRepo creditHistoryRepo, ContactPersonRepo contactPersonRepo,
-                           AddressService addressService, InvestorRepo investorRepo, HomeOwnershipRepo homeOwnershipRepo, AuthService authService, PasswordEncoder passwordEncoder, PassportService passportService, CreditCardRepo creditCardRepo,
+                           AddressService addressService, EmploymentService employmentService, InvestorRepo investorRepo, HomeOwnershipRepo homeOwnershipRepo, AuthService authService, PasswordEncoder passwordEncoder, PassportService passportService, CreditCardRepo creditCardRepo,
                            BorrowerMapper mapper) {
         this.borrowerRepo = borrowerRepo;
         this.borrowerAccountRepo = borrowerAccountRepo;
         this.workSphereRepo = workSphereRepo;
         this.addressService = addressService;
+        this.employmentService = employmentService;
         this.investorRepo = investorRepo;
         this.homeOwnershipRepo = homeOwnershipRepo;
         this.authService = authService;
@@ -190,6 +191,19 @@ public class BorrowerService implements UserDetailsService {
             return true;
         }
         borrower.setAddress(addressService.addressFromAddressDto(dto));
+        borrowerRepo.save(borrower);
+        return true;
+    }
+
+    public Boolean handleEmployment(Borrower borrower, EmploymentDto dto) {
+        borrower.setSocialStatus(dto.getSocialStatus());
+        borrower.setWorkSphere(workSphereRepo.findBySphereUaLike(dto.getWorkSphere()));
+        borrower.setEmployment(employmentService.create(dto));
+        borrower.setMonthlyIncomeOfficial(dto.getMonthlyIncomeOfficial());
+        borrower.setMonthlyIncomeAdditional(dto.getMonthlyIncomeAdditional());
+        borrower.setMonthlyExpenses(dto.getMonthlyExpenses());
+        borrower.setMonthlyObligations(dto.getMonthlyObligations());
+        borrower.setMonthlyIncomeTotal(borrower.getMonthlyIncomeOfficial() + borrower.getMonthlyIncomeAdditional());
         borrowerRepo.save(borrower);
         return true;
     }
