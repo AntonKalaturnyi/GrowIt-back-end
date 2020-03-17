@@ -1,17 +1,19 @@
 package com.growit.api.domain;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import javax.validation.constraints.Size;
+import java.time.LocalDateTime;
 
 @Data
 @Entity
 @NoArgsConstructor
-@Table(name = "employer")
+@Table(name = "employment")
 @EqualsAndHashCode(callSuper = false)
-public class Employer extends AbstractEntity {
+public class Employment extends AbstractEntity {
 
     private String nameOfCompany;
 
@@ -37,12 +39,21 @@ public class Employer extends AbstractEntity {
     @JoinColumn(name = "address_id")
     private Address jobAddress;
 
-    private int lengthOfCurrentEmployment;  // In months
+    private int lengthOfTotalEmploymentMo;  // In months
 
-    private int lengthOfTotalEmployment;  // In months
+    private int lengthOfCurrentEmploymentMo;  // In months
 
-    private int numberOfEmployees;
+    private int employerCount;
 
-    private String priority;
+    @Column
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss.SSS")
+    private LocalDateTime nextPaymentDate;
+
+    private String paymentFrequency;
+
+
+//    private int numberOfEmployees;
+
+//    private String priority;
 
 }

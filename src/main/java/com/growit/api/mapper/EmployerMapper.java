@@ -1,7 +1,8 @@
+/*
 package com.growit.api.mapper;
 
-import com.growit.api.domain.Employer;
-import com.growit.api.dto.EmployerDto;
+import com.growit.api.domain.Employment;
+import com.growit.api.dto.EmploymentDto;
 import com.growit.api.repo.AddressRepo;
 import com.growit.api.repo.WorkSphereRepo;
 import org.modelmapper.ModelMapper;
@@ -11,15 +12,15 @@ import javax.annotation.PostConstruct;
 import java.util.Objects;
 
 @Component
-public class EmployerMapper extends AbstractMapper<Employer, EmployerDto> {
+public class EmploymentMapper extends AbstractMapper<Employment, EmploymentDto> {
 
     private final ModelMapper mapper;
     private final WorkSphereRepo workSphereRepo;
     private final AddressRepo addressRepo;
 
     @Autowired
-    public EmployerMapper(ModelMapper mapper, WorkSphereRepo workSphereRepo, AddressRepo addressRepo) {
-        super(Employer.class, EmployerDto.class);
+    public EmploymentMapper(ModelMapper mapper, WorkSphereRepo workSphereRepo, AddressRepo addressRepo) {
+        super(Employment.class, EmploymentDto.class);
         this.mapper = mapper;
         this.workSphereRepo = workSphereRepo;
         this.addressRepo = addressRepo;
@@ -27,32 +28,33 @@ public class EmployerMapper extends AbstractMapper<Employer, EmployerDto> {
 
     @PostConstruct
     public void setupMapper() {
-        mapper.createTypeMap(Employer.class, EmployerDto.class)
-                .addMappings(m -> m.skip(EmployerDto::setWorkSphereId)).setPostConverter(toDtoConverter())
-                .addMappings(m -> m.skip(EmployerDto::setJobAddressId)).setPostConverter(toDtoConverter());
+        mapper.createTypeMap(Employment.class, EmploymentDto.class)
+                .addMappings(m -> m.skip(EmploymentDto::setWorkSphereId)).setPostConverter(toDtoConverter())
+                .addMappings(m -> m.skip(EmploymentDto::setJobAddressId)).setPostConverter(toDtoConverter());
 
-        mapper.createTypeMap(EmployerDto.class, Employer.class)
-                .addMappings(m -> m.skip(Employer::setWorkSphere)).setPostConverter(toEntityConverter())
-                .addMappings(m -> m.skip(Employer::setJobAddress)).setPostConverter(toEntityConverter());
+        mapper.createTypeMap(EmploymentDto.class, Employment.class)
+                .addMappings(m -> m.skip(Employment::setWorkSphere)).setPostConverter(toEntityConverter())
+                .addMappings(m -> m.skip(Employment::setJobAddress)).setPostConverter(toEntityConverter());
     }
 
     @Override
-    public void mapSpecificFields(Employer source, EmployerDto destination) {
+    public void mapSpecificFields(Employment source, EmploymentDto destination) {
         destination.setJobAddressId(getJobAddressId(source));
         destination.setWorkSphereId(getWorkSphereId(source));
     }
 
     @Override
-    void mapSpecificFields(EmployerDto source, Employer destination) {
+    void mapSpecificFields(EmploymentDto source, Employment destination) {
         destination.setWorkSphere(workSphereRepo.findById(source.getWorkSphereId()).orElse(null));
         destination.setJobAddress(addressRepo.findById(source.getJobAddressId()).orElse(null));
     }
 
-    private Long getWorkSphereId(Employer source) {
+    private Long getWorkSphereId(Employment source) {
         return Objects.isNull(source) || Objects.isNull(source.getId()) ? null : source.getWorkSphere().getId();
     }
 
-    private Long getJobAddressId(Employer source) {
+    private Long getJobAddressId(Employment source) {
         return Objects.isNull(source) || Objects.isNull(source.getId()) ? null : source.getJobAddress().getId();
     }
 }
+*/

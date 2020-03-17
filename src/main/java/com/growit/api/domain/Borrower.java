@@ -4,8 +4,8 @@ import com.growit.api.dto.UserRegistrationDto;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+
 import javax.persistence.*;
-import java.util.HashSet;
 import java.util.Set;
 
 @Data
@@ -34,11 +34,22 @@ public class Borrower extends User {
     @JoinColumn(name = "work_sphere_id")
     private WorkSphere workSphere;
 
-    @ManyToMany
-    @JoinTable(name = "joint_borrower_employer",
-            joinColumns = { @JoinColumn(name = "borrower_id") },
-            inverseJoinColumns = { @JoinColumn(name = "employer_id")} )
-    private Set<Employer> employers = new HashSet<>();
+    /*   @ManyToMany
+       @JoinTable(name = "joint_borrower_employer",
+               joinColumns = { @JoinColumn(name = "borrower_id") },
+               inverseJoinColumns = { @JoinColumn(name = "employer_id")} )
+       private Set<Employer> employers = new HashSet<>();*/
+
+    @OneToOne
+    private Employment employment;
+
+    @Column(nullable = true)
+    private Integer monthlyExpenses;
+
+    @Column(nullable = true)
+    private Integer monthlyObligations;
+
+    private String socialStatus;
 
     private String maritalStatus;
 

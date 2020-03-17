@@ -61,6 +61,15 @@ public class BorrowerController {
     }
 
     @ResponseStatus(HttpStatus.OK)
+    @PostMapping(value = "/set-employment",
+            produces = MediaType.APPLICATION_JSON_VALUE,
+            consumes = MediaType.APPLICATION_JSON_VALUE)
+    public Boolean saveEmploymentInfo(@AuthenticationPrincipal Borrower borrower, @Validated(New.class) @RequestBody EmploymentDto dto) {
+//        System.out.println(" ***" + borrower.getEmail() + "***");
+        return borrowerService.handleEmployment(borrower, dto);
+    }
+
+    @ResponseStatus(HttpStatus.OK)
     @PutMapping(value = "/update", consumes = MediaType.APPLICATION_JSON_VALUE)
     public UserRegistrationDto update(@Validated(Existing.class) @RequestBody BorrowerUpdateDto dto) {
         return borrowerService.updateBorrower(dto);
