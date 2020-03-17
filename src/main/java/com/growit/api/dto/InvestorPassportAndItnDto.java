@@ -13,18 +13,18 @@ import java.time.LocalDateTime;
 @EqualsAndHashCode(callSuper = false)
 public class InvestorPassportAndItnDto extends AbstractDto {
 
-    private boolean idPassport;
-    private String idPassNumber;
-    private String paperPassSeries;
-    private String paperPassNumber;
+    protected boolean idPassport;
+    protected String idPassNumber;
+    protected String paperPassSeries;
+    protected String paperPassNumber;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss.SSS")
-    private LocalDateTime issueDate;
+    protected LocalDateTime issueDate;
 
-    private String issuer;
-    private String itnNumber;
+    protected String issuer;
+    protected String itnNumber;
 
     @NotBlank(message = "Please, provide an email")
     @Email(message = "Please, provide valid email")
-    private String email;
+    protected String email;
 }

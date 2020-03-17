@@ -5,10 +5,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Data
@@ -31,13 +28,17 @@ public class Passport extends AbstractEntity {
     /** 1, 2, 11 pages of paper passport*/
     private String paperPassScanOrPhoto;  // or photo
 
-    private String photoWithPassport;
+    private String photoWithPassportFileName;
 
     private String paperPassSeries;
 
     private String paperPassNumber;
 
     private String issuer;
+
+    @ManyToOne
+    @JoinColumn(name = "reg_address_id")
+    private Address addressOfRegistration;
 
     @Column(name = "issue_date")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss.SSS")
