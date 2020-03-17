@@ -23,6 +23,11 @@ public class AddressService {
                 dto.getNumber(), dto.getCorpsNo(), dto.getDoor()));
     }
 
+    public Address addressFromAddressDto(AddressDto dto) {
+        return addressRepo.save(new Address(dto.getRegion(), dto.getDistrict(), dto.getPostalCode(), dto.getSettlement(), dto.getStreet(),
+                dto.getNumber(), dto.getCorpsNo(), dto.getDoor()));
+    }
+
     void testAddress() {
         Address address = new Address();
         LoanDto dto = new LoanDto();
