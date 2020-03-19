@@ -1,13 +1,15 @@
 package com.growit.api.service;
 
+import com.growit.api.domain.Borrower;
 import com.growit.api.domain.Loan;
 import com.growit.api.dto.LoanDto;
+import com.growit.api.dto.LoanFromCalculatorDto;
 import com.growit.api.mapper.LoanMapper;
-import com.growit.api.repo.BorrowerRepo;
+import com.growit.api.repo.LoanPurposeRepo;
 import com.growit.api.repo.LoanRepo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
-
 import java.time.LocalDateTime;
 
 @Service
@@ -15,13 +17,24 @@ public class LoanService {
 
     private final LoanRepo loanRepo;
     private final LoanMapper mapper;
-    private final BorrowerRepo borrowerRepo;
+    private final LoanPurposeRepo loanPurposeRepo;
 
     @Autowired
-    public LoanService(LoanRepo loanRepo, LoanMapper mapper, BorrowerRepo borrowerRepo) {
+    public LoanService(LoanRepo loanRepo, LoanMapper mapper, LoanPurposeRepo loanPurposeRepo) {
         this.loanRepo = loanRepo;
         this.mapper = mapper;
-        this.borrowerRepo = borrowerRepo;
+        this.loanPurposeRepo = loanPurposeRepo;
+    }
+
+    @PreAuthorize("hasAuthority('REGISTERED_USER')")
+    public Boolean createLoanFromCalculator(Borrower borrower, LoanFromCalculatorDto dto) {
+        Loan loan = new Loan();
+        loan.setAmountRequested(dto.getAmount());
+        loan.setPeriod(dto.getPeriod());
+        loan.setBorrower(borrower);
+        loan.setLoanPurpose(loanPurposeRepo.findByPurposeUa(dto.getLoanPurpose()));
+        loanRepo.save(loan);
+        return true;
     }
 
     /**
@@ -89,4 +102,5 @@ public class LoanService {
 
         return mapper.toDto(loanRepo.save(loan));
     }
+
 }
