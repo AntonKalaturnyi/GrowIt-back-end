@@ -13,16 +13,31 @@ insert into loan_status (id, created, updated, status_eng, status_ua) values (80
 insert into loan_status (id, created, updated, status_eng, status_ua) values (81, '2020-01-31 18:05:19.554', '2020-01-31 18:05:19.554', 'Created', 'Заявка створена');
 
 
-insert into loan_purpose (id, created, updated, purpose_eng, purpose_ua) values (82, '2020-01-31 18:05:19.554', '2020-01-31 18:05:19.554', 'Car service', 'Сервіс автомобіля');
-insert into loan_purpose (id, created, updated, purpose_eng, purpose_ua) values (83, '2020-01-31 18:05:19.554', '2020-01-31 18:05:19.554', 'Home improvements', 'Ремонт оселі');
-insert into loan_purpose (id, created, updated, purpose_eng, purpose_ua) values (84, '2020-01-31 18:05:19.554', '2020-01-31 18:05:19.554', 'Medical bills', 'Оплата лікування');
-insert into loan_purpose (id, created, updated, purpose_eng, purpose_ua) values (85, '2020-01-31 18:05:19.554', '2020-01-31 18:05:19.554', 'Debt consolidation', 'Погашення іншого боргу');
-insert into loan_purpose (id, created, updated, purpose_eng, purpose_ua) values (86, '2020-01-31 18:05:19.554', '2020-01-31 18:05:19.554', 'Vacation', 'Відпустка/відпочинок/поїздка');
-insert into loan_purpose (id, created, updated, purpose_eng, purpose_ua) values (87, '2020-01-31 18:05:19.554', '2020-01-31 18:05:19.554', 'Business expenses', 'Витрати на бізнес');
-insert into loan_purpose (id, created, updated, purpose_eng, purpose_ua) values (88, '2020-01-31 18:05:19.554', '2020-01-31 18:05:19.554', 'Electronics purchases', 'Покупка електроніки');
-insert into loan_purpose (id, created, updated, purpose_eng, purpose_ua) values (89, '2020-01-31 18:05:19.554', '2020-01-31 18:05:19.554', 'Special Event', 'Особлива подія');
-insert into loan_purpose (id, created, updated, purpose_eng, purpose_ua) values (90, '2020-01-31 18:05:19.554', '2020-01-31 18:05:19.554', 'Shopping', 'Шопінг');
+insert into loan_purpose (id, created, updated, purpose_eng, purpose_ua) values (325, '2020-01-31 18:05:19.554', '2020-01-31 18:05:19.554', 'Car service', 'Сервіс авто');
+insert into loan_purpose (id, created, updated, purpose_eng, purpose_ua) values (326, '2020-01-31 18:05:19.554', '2020-01-31 18:05:19.554', 'Home improvements', 'Ремонт помешкання');
+insert into loan_purpose (id, created, updated, purpose_eng, purpose_ua) values (327, '2020-01-31 18:05:19.554', '2020-01-31 18:05:19.554', 'Medical bills', 'Оплата лікування');
+insert into loan_purpose (id, created, updated, purpose_eng, purpose_ua) values (328, '2020-01-31 18:05:19.554', '2020-01-31 18:05:19.554', 'Repaying debt', 'Погашення іншого кредиту');
+insert into loan_purpose (id, created, updated, purpose_eng, purpose_ua) values (329, '2020-01-31 18:05:19.554', '2020-01-31 18:05:19.554', 'Vacation/trip', 'Відпустка/поїздка');
+insert into loan_purpose (id, created, updated, purpose_eng, purpose_ua) values (330, '2020-01-31 18:05:19.554', '2020-01-31 18:05:19.554', 'Business expenses', 'Потреби бізнесу');
+insert into loan_purpose (id, created, updated, purpose_eng, purpose_ua) values (331, '2020-01-31 18:05:19.554', '2020-01-31 18:05:19.554', 'Electronics purchases', 'Купівля електроніки');
+insert into loan_purpose (id, created, updated, purpose_eng, purpose_ua) values (332, '2020-01-31 18:05:19.554', '2020-01-31 18:05:19.554', 'Special Event', 'Святкування події');
+insert into loan_purpose (id, created, updated, purpose_eng, purpose_ua) values (333, '2020-01-31 18:05:19.554', '2020-01-31 18:05:19.554', 'Shopping', 'Шопінг');
+insert into loan_purpose (id, created, updated, purpose_eng, purpose_ua) values (334, '2020-01-31 18:05:19.554', '2020-01-31 18:05:19.554', 'Education expenses', 'Оплата навчання');
+insert into loan_purpose (id, created, updated, purpose_eng, purpose_ua) values (335, '2020-01-31 18:05:19.554', '2020-01-31 18:05:19.554', 'Buying a gift', 'Купівля подарунка');
+insert into loan_purpose (id, created, updated, purpose_eng, purpose_ua) values (336, '2020-01-31 18:05:19.554', '2020-01-31 18:05:19.554', 'Fees/fines', 'Оплата рахунків/штрафів');
 
+'Сервіс авто',
+'Ремонт помешкання',
+'Погашення іншого кредиту',
+'Оплата лікування',
+'Відпустка/поїздка',
+'Потреби бізнесу',
+'Купівля електроніки',
+'Святкування події',
+'Шопінг',
+'Оплата навчання',
+'Купівля подарунка',
+'Оплата рахунків/штрафів'
 
 
 insert into work_sphere(id, sphere_eng, sphere_ua, created, updated) values

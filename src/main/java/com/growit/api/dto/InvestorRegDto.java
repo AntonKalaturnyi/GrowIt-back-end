@@ -34,6 +34,6 @@ public class InvestorRegDto extends AbstractDto {
     private String email;
 
     @NotBlank(message = "Please provide a phone number")
-    @Pattern(regexp = "^(0[5-9][0-9]\\d{7})$", message = "Please provide valid phone number")
+    @Pattern(regexp = "^([5-9][0-9]\\d{7})$", message = "Please provide valid phone number")
     private String phone;
 }
