@@ -37,12 +37,14 @@ public class Loan extends AbstractEntity {
     private double percentFunded;
 
     /* (monthlyPayment/salary) * 100%  */
+    @Column(nullable = true)
     private double dtiRatio;  // +
 
     @ManyToOne
     private LoanPurpose loanPurpose;
 
     //verification
+    @Column(length = 600)
     private String description;
 
     @ManyToOne
