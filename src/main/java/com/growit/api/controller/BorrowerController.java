@@ -65,9 +65,19 @@ public class BorrowerController {
             produces = MediaType.APPLICATION_JSON_VALUE,
             consumes = MediaType.APPLICATION_JSON_VALUE)
     public Boolean saveEmploymentInfo(@AuthenticationPrincipal Borrower borrower, @Validated(New.class) @RequestBody EmploymentDto dto) {
-//        System.out.println(" ***" + borrower.getEmail() + "***");
         return borrowerService.handleEmployment(borrower, dto);
     }
+
+
+    @ResponseStatus(HttpStatus.OK)
+    @PostMapping(value = "/set-education",
+            produces = MediaType.APPLICATION_JSON_VALUE,
+            consumes = MediaType.APPLICATION_JSON_VALUE)
+    public Boolean saveEducationInfo(@AuthenticationPrincipal Borrower borrower, @Validated(New.class) @RequestBody EducationDto dto) {
+        return borrowerService.handleEducation(borrower, dto);
+    }
+
+
 
     @ResponseStatus(HttpStatus.OK)
     @PutMapping(value = "/update", consumes = MediaType.APPLICATION_JSON_VALUE)

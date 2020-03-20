@@ -10,6 +10,7 @@ import com.growit.api.repo.*;
 import com.growit.api.util.ConstantUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -32,13 +33,14 @@ public class BorrowerService implements UserDetailsService {
     private final AuthService authService;
     private final PasswordEncoder passwordEncoder;
     private final PassportService passportService;
+    private final EducationService educationService;
     private final BorrowerMapper mapper;
 
     @Autowired
     public BorrowerService(BorrowerRepo borrowerRepo, BorrowerAccountRepo borrowerAccountRepo, WorkSphereRepo workSphereRepo,
                            CreditHistoryRepo creditHistoryRepo, ContactPersonRepo contactPersonRepo,
                            AddressService addressService, EmploymentService employmentService, InvestorRepo investorRepo, HomeOwnershipRepo homeOwnershipRepo, AuthService authService, PasswordEncoder passwordEncoder, PassportService passportService, CreditCardRepo creditCardRepo,
-                           BorrowerMapper mapper) {
+                           EducationService educationService, BorrowerMapper mapper) {
         this.borrowerRepo = borrowerRepo;
         this.borrowerAccountRepo = borrowerAccountRepo;
         this.workSphereRepo = workSphereRepo;
@@ -49,6 +51,7 @@ public class BorrowerService implements UserDetailsService {
         this.authService = authService;
         this.passwordEncoder = passwordEncoder;
         this.passportService = passportService;
+        this.educationService = educationService;
         this.mapper = mapper;
     }
 
@@ -195,6 +198,8 @@ public class BorrowerService implements UserDetailsService {
         return true;
     }
 
+    @Transactional
+    @PreAuthorize("hasAuthority('REGISTERED_USER')")
     public Boolean handleEmployment(Borrower borrower, EmploymentDto dto) {
         borrower.setSocialStatus(dto.getSocialStatus());
         borrower.setWorkSphere(workSphereRepo.findBySphereUaLike(dto.getWorkSphere()));
@@ -204,6 +209,14 @@ public class BorrowerService implements UserDetailsService {
         borrower.setMonthlyExpenses(dto.getMonthlyExpenses());
         borrower.setMonthlyObligations(dto.getMonthlyObligations());
         borrower.setMonthlyIncomeTotal(borrower.getMonthlyIncomeOfficial() + borrower.getMonthlyIncomeAdditional());
+        borrowerRepo.save(borrower);
+        return true;
+    }
+
+    @Transactional
+    @PreAuthorize("hasAuthority('REGISTERED_USER')")
+    public Boolean handleEducation(Borrower borrower, EducationDto dto) {
+        borrower.setEducation(educationService.create(dto));
         borrowerRepo.save(borrower);
         return true;
     }
