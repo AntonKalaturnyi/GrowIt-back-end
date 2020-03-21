@@ -32,7 +32,6 @@ public class LoanService {
         loan.setAmountRequested(dto.getAmount());
         loan.setPeriod(dto.getPeriod());
         loan.setDescription(dto.getDescription());
-        System.out.println("&&&" + borrower.getEmail() + "&&&");
         loan.setBorrower(borrower);
         loan.setLoanPurpose(loanPurposeRepo.findByPurposeUa(dto.getLoanPurpose()));
         loanRepo.save(loan);

@@ -178,8 +178,7 @@ public class BorrowerService implements UserDetailsService {
     }
 
     @Transactional
-    public Boolean savePassportAndItn(BorrowerPassportAndItnDto dto, MultipartFile file) {
-        Borrower borrower = borrowerRepo.findByEmail(dto.getEmail());
+    public Boolean savePassportAndItn(BorrowerPassportAndItnDto dto, Borrower borrower, MultipartFile file) {
         borrower.setPassport(passportService.createBorrowerPass(dto, file));
         borrower.setItn(dto.getItnNumber());
         borrowerRepo.save(borrower);
