@@ -46,8 +46,8 @@ public class BorrowerController {
     @ResponseStatus(HttpStatus.OK)
     @PostMapping(value = "/save-passport-itn", consumes = {"multipart/form-data"})
     public Boolean saveBorrowerPassportAndItn(@RequestPart("dto") @Validated(New.class) BorrowerPassportAndItnDto dto,
-                                              @RequestPart("file") @NotNull @NotBlank MultipartFile file) {
-        return borrowerService.savePassportAndItn(dto, file);
+                                              @RequestPart("file") @NotNull @NotBlank MultipartFile file, @AuthenticationPrincipal Borrower borrower) {
+        return borrowerService.savePassportAndItn(dto, borrower, file);
     }
 
 
