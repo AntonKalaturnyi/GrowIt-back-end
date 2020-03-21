@@ -44,6 +44,21 @@ public class Borrower extends User {
     private Employment employment;
 
     @Column(nullable = true)
+    private String flat;
+
+    @Column(nullable = true)
+    private Boolean hasHouse;
+
+    @Column(nullable = true)
+    private Boolean hasCar;
+
+    @Column(nullable = true)
+    private String carAge;
+
+    @Column(nullable = true)
+    private Boolean wasAbroad;
+
+    @Column(nullable = true)
     private Integer monthlyExpenses;
 
     @Column(nullable = true)
@@ -52,8 +67,6 @@ public class Borrower extends User {
     private String socialStatus;
 
     private String maritalStatus;
-
-    private Boolean divorced;
 
     @Column(nullable = true)
     private Integer kidsBefore18yo;
@@ -64,11 +77,7 @@ public class Borrower extends User {
     @OneToOne
     private CreditHistory creditHistory;
 
-    private String homePhone;
-
-    private String workPhone;
-
-    private String fax;
+//    private String workPhone;
 
     private String instagram;
 

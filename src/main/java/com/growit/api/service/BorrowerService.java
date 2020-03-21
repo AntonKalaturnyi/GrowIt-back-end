@@ -146,12 +146,8 @@ public class BorrowerService implements UserDetailsService {
         borrower.setMonthlyIncomeOfficial(dto.getMonthlyIncomeOfficial());
         borrower.setMonthlyIncomeAdditional(dto.getMonthlyIncomeAdditional());
         borrower.setMarried(dto.isMarried());
-        borrower.setDivorced(dto.isDivorced());
         borrower.setKidsBefore18yo(dto.getKidsBefore18yo());
         borrower.setKidsAfter18yo(dto.getKidsAfter18yo());
-        borrower.setHomePhone(dto.getHomePhone());
-        borrower.setWorkPhone(dto.getWorkPhone());
-        borrower.setFax(dto.getFax());
         borrower.setSpouseITN(dto.getSpouseITN());
         borrower.setInstagram(dto.getInstagram());
         borrower.setFacebook(dto.getFacebook());
@@ -216,6 +212,20 @@ public class BorrowerService implements UserDetailsService {
     @PreAuthorize("hasAuthority('REGISTERED_USER')")
     public Boolean handleEducation(Borrower borrower, EducationDto dto) {
         borrower.setEducation(educationService.create(dto));
+        borrowerRepo.save(borrower);
+        return true;
+    }
+
+    @Transactional
+    @PreAuthorize("hasAuthority('REGISTERED_USER')")
+    public Boolean handleAssets(Borrower borrower, AssetsDto dto) {
+        borrower.setFlat(dto.getFlat());
+        borrower.setHasHouse(dto.isHasHouse());
+        borrower.setHasCar(dto.isHasCar());
+        if (borrower.getHasCar()) {
+            borrower.setCarAge(dto.getCarAge());
+        }
+        borrower.setWasAbroad(dto.isWasAbroad());
         borrowerRepo.save(borrower);
         return true;
     }
