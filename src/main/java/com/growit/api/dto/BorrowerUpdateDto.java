@@ -19,7 +19,6 @@ public class BorrowerUpdateDto extends UserRegistrationDto implements BorrowerTr
 
     private boolean married;
 
-    private boolean divorced;
 
     @NotNull(groups = {New.class, Existing.class},
             message = "Please specify how many kids before 18 years old do you have")
@@ -28,12 +27,6 @@ public class BorrowerUpdateDto extends UserRegistrationDto implements BorrowerTr
     @NotNull(groups = {New.class, Existing.class},
             message = "Please specify how many kids after 18 years old do you have")
     private int kidsAfter18yo;
-
-    private String homePhone;
-
-    private String workPhone;
-
-    private String fax;
 
     private String instagram;
 
@@ -60,12 +53,8 @@ public class BorrowerUpdateDto extends UserRegistrationDto implements BorrowerTr
         this.monthlyIncomeOfficial = bwr.getMonthlyIncomeOfficial();
         this.monthlyIncomeAdditional = bwr.getMonthlyIncomeAdditional();
         this.married = bwr.isMarried();
-        this.divorced = bwr.getDivorced();
         this.kidsBefore18yo = bwr.getKidsBefore18yo();
         this.kidsAfter18yo = bwr.getKidsAfter18yo();
-        this.homePhone = bwr.getHomePhone();
-        this.workPhone = bwr.getWorkPhone();
-        this.fax = bwr.getFax();
         this.instagram = bwr.getInstagram();
         this.facebook = bwr.getFacebook();
         this.workType = bwr.getWorkType();

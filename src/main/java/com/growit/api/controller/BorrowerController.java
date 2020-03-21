@@ -78,6 +78,15 @@ public class BorrowerController {
     }
 
 
+    @ResponseStatus(HttpStatus.OK)
+    @PostMapping(value = "/set-assets",
+            produces = MediaType.APPLICATION_JSON_VALUE,
+            consumes = MediaType.APPLICATION_JSON_VALUE)
+    public Boolean saveAssetsInfo(@AuthenticationPrincipal Borrower borrower, @Validated(New.class) @RequestBody AssetsDto dto) {
+        return borrowerService.handleAssets(borrower, dto);
+    }
+
+
 
     @ResponseStatus(HttpStatus.OK)
     @PutMapping(value = "/update", consumes = MediaType.APPLICATION_JSON_VALUE)
