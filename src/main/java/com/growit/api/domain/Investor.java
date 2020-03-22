@@ -65,7 +65,6 @@ public class Investor extends User {
                 ", email='" + email + '\'' +
                 ", password='" + password + '\'' +
                 ", phone='" + phone + '\'' +
-                ", monthlyIncomeTotal=" + monthlyIncomeTotal +
                 ", roles=" + roles +
                 ", active=" + active +
                 ", birthday=" + birthday +

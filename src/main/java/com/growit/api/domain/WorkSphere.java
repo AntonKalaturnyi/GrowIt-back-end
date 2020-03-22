@@ -27,8 +27,7 @@ public class WorkSphere extends AbstractEntity {
  Heavy industry
  Hotels / Restaurants / Gambling
  Wholesale / Storages
- Local Governance
- State Governance
+ Local / state Governance
  Energetics / Oil / Gas
  Armed forces
  IT / Telecommunication
@@ -40,7 +39,7 @@ public class WorkSphere extends AbstractEntity {
  Science
  Real estate
  Education / Culture
- Advertisement / Marketing / Promotion
+ Advertisement / Marketing / Sales
  Entertainment / Show business
  Retail
  Agriculture
@@ -56,6 +55,7 @@ public class WorkSphere extends AbstractEntity {
 'Важка промисловість'
  'Готелі / Ресторани / Казино'
 'Оптова торгівля / Склади'
+
  'Державне / Місцеве управління'
 'Енергетика / Нафта / Газ'
  'Збройні сили'

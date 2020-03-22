@@ -49,7 +49,6 @@ public class BorrowerUpdateDto extends UserRegistrationDto implements BorrowerTr
 
     public BorrowerUpdateDto(Borrower bwr) {
         super(bwr);
-        this.workSphereString = bwr.getWorkSphere().getSphereEng();
         this.monthlyIncomeOfficial = bwr.getMonthlyIncomeOfficial();
         this.monthlyIncomeAdditional = bwr.getMonthlyIncomeAdditional();
         this.married = bwr.isMarried();

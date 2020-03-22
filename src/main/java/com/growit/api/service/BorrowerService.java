@@ -25,7 +25,7 @@ public class BorrowerService implements UserDetailsService {
 
     private final BorrowerRepo borrowerRepo;
     private final BorrowerAccountRepo borrowerAccountRepo;
-    private final WorkSphereRepo workSphereRepo;
+    private final SocialStatusRepo socialStatusRepo;
     private final AddressService addressService;
     private final EmploymentService employmentService;
     private final InvestorRepo investorRepo;
@@ -37,13 +37,14 @@ public class BorrowerService implements UserDetailsService {
     private final BorrowerMapper mapper;
 
     @Autowired
-    public BorrowerService(BorrowerRepo borrowerRepo, BorrowerAccountRepo borrowerAccountRepo, WorkSphereRepo workSphereRepo,
-                           CreditHistoryRepo creditHistoryRepo, ContactPersonRepo contactPersonRepo,
-                           AddressService addressService, EmploymentService employmentService, InvestorRepo investorRepo, HomeOwnershipRepo homeOwnershipRepo, AuthService authService, PasswordEncoder passwordEncoder, PassportService passportService, CreditCardRepo creditCardRepo,
-                           EducationService educationService, BorrowerMapper mapper) {
+    public BorrowerService(BorrowerRepo borrowerRepo, BorrowerAccountRepo borrowerAccountRepo, CreditHistoryRepo creditHistoryRepo,
+                           ContactPersonRepo contactPersonRepo, SocialStatusRepo socialStatusRepo, AddressService addressService,
+                           EmploymentService employmentService, InvestorRepo investorRepo, HomeOwnershipRepo homeOwnershipRepo,
+                           AuthService authService, PasswordEncoder passwordEncoder, PassportService passportService,
+                           CreditCardRepo creditCardRepo, EducationService educationService, BorrowerMapper mapper) {
         this.borrowerRepo = borrowerRepo;
         this.borrowerAccountRepo = borrowerAccountRepo;
-        this.workSphereRepo = workSphereRepo;
+        this.socialStatusRepo = socialStatusRepo;
         this.addressService = addressService;
         this.employmentService = employmentService;
         this.investorRepo = investorRepo;
@@ -77,7 +78,6 @@ public class BorrowerService implements UserDetailsService {
     private Borrower fillBorrower(BorrowerDto dto) {
         Borrower borrower = borrowerRepo.findById(dto.getBorrowerId()).get();
         setBorrowerDtoFields(borrower, dto);
-        borrower.setWorkSphere(workSphereRepo.findBySphereEngLike(dto.getWorkSphereString()));
         borrower.setHomeOwnership(homeOwnershipRepo.findByHomeOwnershipEngLike(dto.getHomeOwnershipString()));
         borrower.setMonthlyIncomeTotal(borrower.getMonthlyIncomeOfficial() + borrower.getMonthlyIncomeAdditional());
         return borrower;
@@ -118,9 +118,7 @@ public class BorrowerService implements UserDetailsService {
     public BorrowerUpdateDto updateBorrower(BorrowerUpdateDto dto) {
         Borrower borrower = setFromDto(dto);
         setBorrowerDtoFields(borrower, dto);
-        if (!dto.getWorkSphereString().equals(borrower.getWorkSphere().getSphereEng())) {
-            borrower.setWorkSphere(workSphereRepo.findBySphereEngLike(dto.getWorkSphereString()));
-        }
+
         if (!dto.getHomeOwnershipString().equals(borrower.getHomeOwnership().getHomeOwnershipEng())) {
             borrower.setHomeOwnership(homeOwnershipRepo.findByHomeOwnershipEngLike(dto.getHomeOwnershipString()));
         }
@@ -148,7 +146,6 @@ public class BorrowerService implements UserDetailsService {
         borrower.setMarried(dto.isMarried());
         borrower.setKidsBefore18yo(dto.getKidsBefore18yo());
         borrower.setKidsAfter18yo(dto.getKidsAfter18yo());
-        borrower.setSpouseITN(dto.getSpouseITN());
         borrower.setInstagram(dto.getInstagram());
         borrower.setFacebook(dto.getFacebook());
         borrower.setWorkType(dto.getWorkType());
@@ -196,14 +193,18 @@ public class BorrowerService implements UserDetailsService {
     @Transactional
     @PreAuthorize("hasAuthority('REGISTERED_USER')")
     public Boolean handleEmployment(Borrower borrower, EmploymentDto dto) {
-        borrower.setSocialStatus(dto.getSocialStatus());
-        borrower.setWorkSphere(workSphereRepo.findBySphereUaLike(dto.getWorkSphere()));
+        borrower.setSocialStatus(socialStatusRepo.findByStatusUaLike(dto.getSocialStatus()));
         borrower.setEmployment(employmentService.create(dto));
         borrower.setMonthlyIncomeOfficial(dto.getMonthlyIncomeOfficial());
         borrower.setMonthlyIncomeAdditional(dto.getMonthlyIncomeAdditional());
+        borrower.setAdditionalIncomeSource(dto.getAdditionalIncomeSource());
         borrower.setMonthlyExpenses(dto.getMonthlyExpenses());
+        borrower.setScholarship(dto.getScholarship());
+        borrower.setPension(dto.getPension());
+        borrower.setEmployeesCount(dto.getEmployeesCount());
         borrower.setMonthlyObligations(dto.getMonthlyObligations());
         borrower.setMonthlyIncomeTotal(borrower.getMonthlyIncomeOfficial() + borrower.getMonthlyIncomeAdditional());
+        System.out.println("===Saving: " + borrower.getEmail() + "===");
         borrowerRepo.save(borrower);
         return true;
     }

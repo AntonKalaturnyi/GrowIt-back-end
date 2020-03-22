@@ -25,6 +25,14 @@ public class EmploymentDto extends AbstractDto {
 
     private int monthlyIncomeAdditional;
 
+    private String additionalIncomeSource;
+
+    private int scholarship;
+
+    private int pension;
+
+    private int employeesCount;
+
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss.SSS")
     private LocalDateTime nextPaymentDate;
 

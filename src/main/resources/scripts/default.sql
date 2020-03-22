@@ -52,43 +52,56 @@ insert into work_sphere(id, sphere_eng, sphere_ua, created, updated) values
 (156, 'Hotels / Restaurants / Gambling', 'Готелі / Ресторани / Казино', '2020-01-31 18:05:19.554', '2020-01-31 18:05:19.554');
 insert into work_sphere(id, sphere_eng, sphere_ua, created, updated) values
 (157, 'Wholesale / Storages', 'Оптова торгівля / Склади', '2020-01-31 18:05:19.554', '2020-01-31 18:05:19.554');
+
+
+insert into work_sphere(id, sphere_eng, sphere_ua, created, updated) values
+(359, 'Local / state Governance', 'Державне / Місцеве управління', '2020-01-31 18:05:19.554', '2020-01-31 18:05:19.554');
+insert into work_sphere(id, sphere_eng, sphere_ua, created, updated) values
+(361, 'Energetics / Oil / Gas', 'Енергетика / Нафта / Газ', '2020-01-31 18:05:19.554', '2020-01-31 18:05:19.554');
+insert into work_sphere(id, sphere_eng, sphere_ua, created, updated) values
+(362, 'Armed forces', 'Збройні сили', '2020-01-31 18:05:19.554', '2020-01-31 18:05:19.554');
 insert into work_sphere(id, sphere_eng, sphere_ua, created, created, updated) values
-(7, 'Local Governance', '2020-01-31 18:05:19.554', '2020-01-31 18:05:19.554');
-insert into work_sphere(id, sphere_eng, sphere_ua, created, created, updated) values
-(8, 'State Governance', '2020-01-31 18:05:19.554', '2020-01-31 18:05:19.554');
-insert into work_sphere(id, sphere_eng, sphere_ua, created, created, updated) values
-(9, 'Energetics / Oil / Gas', '2020-01-31 18:05:19.554', '2020-01-31 18:05:19.554');
-insert into work_sphere(id, sphere_eng, sphere_ua, created, created, updated) values
-(10, 'Armed forces', '2020-01-31 18:05:19.554', '2020-01-31 18:05:19.554');
-insert into work_sphere(id, sphere_eng, sphere_ua, created, created, updated) values
-(11, 'IT / Telecommunication', '2020-01-31 18:05:19.554', '2020-01-31 18:05:19.554');
-insert into work_sphere(id, sphere_eng, sphere_ua, created, created, updated) values
-(12, 'Light industry', '2020-01-31 18:05:19.554', '2020-01-31 18:05:19.554');
-insert into work_sphere(id, sphere_eng, sphere_ua, created, created, updated) values
-(13, 'State medicine / pharmacology', '2020-01-31 18:05:19.554', '2020-01-31 18:05:19.554');
-insert into work_sphere(id, sphere_eng, sphere_ua, created, created, updated) values
-(14, 'Commercial medicine / pharmacology', '2020-01-31 18:05:19.554', '2020-01-31 18:05:19.554');
-insert into work_sphere(id, sphere_eng, sphere_ua, created, created, updated) values
-(15, 'Media / Publishing / Printing', '2020-01-31 18:05:19.554', '2020-01-31 18:05:19.554');
-insert into work_sphere(id, sphere_eng, sphere_ua, created, created, updated) values
-(16, 'Police / Security services', '2020-01-31 18:05:19.554', '2020-01-31 18:05:19.554');
-insert into work_sphere(id, sphere_eng, sphere_ua, created, created, updated) values
-(17, 'Science', '2020-01-31 18:05:19.554', '2020-01-31 18:05:19.554');
-insert into work_sphere(id, sphere_eng, sphere_ua, created, created, updated) values
-(18, 'Real estate', '2020-01-31 18:05:19.554', '2020-01-31 18:05:19.554');
-insert into work_sphere(id, sphere_eng, sphere_ua, created, created, updated) values
-(19, 'Education / Culture', '2020-01-31 18:05:19.554', '2020-01-31 18:05:19.554');
-insert into work_sphere(id, sphere_eng, sphere_ua, created, created, updated) values
-(20, 'Advertisement / Marketing / Promotion', '2020-01-31 18:05:19.554', '2020-01-31 18:05:19.554');
-insert into work_sphere(id, sphere_eng, sphere_ua, created, created, updated) values
-(21, 'Entertainment / Show business', '2020-01-31 18:05:19.554', '2020-01-31 18:05:19.554');
-insert into work_sphere(id, sphere_eng, sphere_ua, created, created, updated) values
-(22, 'Retail', '2020-01-31 18:05:19.554', '2020-01-31 18:05:19.554');
-insert into work_sphere(id, sphere_eng, sphere_ua, created, created, updated) values
-(23, 'Agriculture', '2020-01-31 18:05:19.554', '2020-01-31 18:05:19.554');
-insert into work_sphere(id, sphere_eng, sphere_ua, created, created, updated) values
-(24, 'Tourism / Sport / Health care', '2020-01-31 18:05:19.554', '2020-01-31 18:05:19.554');
-insert into work_sphere(id, sphere_eng, sphere_ua, created, created, updated) values
-(25, 'Finance / Bank / Insurance', '2020-01-31 18:05:19.554', '2020-01-31 18:05:19.554');
-insert into work_sphere(id, sphere_eng, sphere_ua, created, created, updated) values
-(26, 'Chemical Industry', '2020-01-31 18:05:19.554', '2020-01-31 18:05:19.554');
+(363, 'IT / Telecommunication', 'IT / Телекомунікації', '2020-01-31 18:05:19.554', '2020-01-31 18:05:19.554');
+insert into work_sphere(id, sphere_eng, sphere_ua, created, updated) values
+(364, 'Light industry', 'Легка промисловість', '2020-01-31 18:05:19.554', '2020-01-31 18:05:19.554');
+insert into work_sphere(id, sphere_eng, sphere_ua, created, updated) values
+(365, 'State medicine / pharmacology', 'Медицина / Фармакологія (державна)', '2020-01-31 18:05:19.554', '2020-01-31 18:05:19.554');
+insert into work_sphere(id, sphere_eng, sphere_ua, created, updated) values
+(366, 'Commercial medicine / pharmacology', 'Медицина / Фармакологія (комерційна)', '2020-01-31 18:05:19.554', '2020-01-31 18:05:19.554');
+insert into work_sphere(id, sphere_eng, sphere_ua, created, updated) values
+(377, 'Media / Publishing / Printing', 'Медіа / Видавництво / Поліграфія', '2020-01-31 18:05:19.554', '2020-01-31 18:05:19.554');
+insert into work_sphere(id, sphere_eng, sphere_ua, created, updated) values
+(378, 'Police / Security services', 'Поліція / Безпека / Правоохоронні органи', '2020-01-31 18:05:19.554', '2020-01-31 18:05:19.554');
+insert into work_sphere(id, sphere_eng, sphere_ua, created, updated) values
+(379, 'Science', 'Наука', '2020-01-31 18:05:19.554', '2020-01-31 18:05:19.554');
+insert into work_sphere(id, sphere_eng, sphere_ua, created, updated) values
+(380, 'Real estate', 'Нерухомість', '2020-01-31 18:05:19.554', '2020-01-31 18:05:19.554');
+insert into work_sphere(id, sphere_eng, sphere_ua, created, updated) values
+(381, 'Education / Culture', 'Освіта / Культура', '2020-01-31 18:05:19.554', '2020-01-31 18:05:19.554');
+insert into work_sphere(id, sphere_eng, sphere_ua, created, updated) values
+(382, 'Advertisement / Marketing / Sales', 'Реклама / Маркетинг / Продажі', '2020-01-31 18:05:19.554', '2020-01-31 18:05:19.554');
+insert into work_sphere(id, sphere_eng, sphere_ua, created, updated) values
+(383, 'Entertainment / Show business', 'Розваги / Шоу-бізнес', '2020-01-31 18:05:19.554', '2020-01-31 18:05:19.554');
+insert into work_sphere(id, sphere_eng, sphere_ua, created, updated) values
+(384, 'Retail', 'Роздрібна торгівля', '2020-01-31 18:05:19.554', '2020-01-31 18:05:19.554');
+insert into work_sphere(id, sphere_eng, sphere_ua, created, updated) values
+(385, 'Agriculture', 'Сільське господарство', '2020-01-31 18:05:19.554', '2020-01-31 18:05:19.554');
+insert into work_sphere(id, sphere_eng, sphere_ua, created, updated) values
+(386, 'Tourism / Sport / Health care', 'Туризм / Спорт / Догляд за здоров''ям', '2020-01-31 18:05:19.554', '2020-01-31 18:05:19.554');
+insert into work_sphere(id, sphere_eng, sphere_ua, created, updated) values
+(387, 'Finance / Bank / Insurance', 'Фінанси / Банківська справа / Страхування', '2020-01-31 18:05:19.554', '2020-01-31 18:05:19.554');
+insert into work_sphere(id, sphere_eng, sphere_ua, created, updated) values
+(388, 'Chemical Industry', 'Хімічна промисловість', '2020-01-31 18:05:19.554', '2020-01-31 18:05:19.554');
+
+
+insert into social_status (id, status_ua, status_eng, created, updated) values (389, 'Повна зайнятість', 'Full-time employment', '2020-01-31 18:05:19.554', '2020-01-31 18:05:19.554');
+insert into social_status (id, status_ua, status_eng, created, updated) values (390, 'Часткова зайнятість', 'Part-time employment', '2020-01-31 18:05:19.554', '2020-01-31 18:05:19.554');
+insert into social_status (id, status_ua, status_eng, created, updated) values (391, 'Підприємець', 'Entrepreneur', '2020-01-31 18:05:19.554', '2020-01-31 18:05:19.554');
+insert into social_status (id, status_ua, status_eng, created, updated) values (392, 'Студент', 'Student', '2020-01-31 18:05:19.554', '2020-01-31 18:05:19.554');
+insert into social_status (id, status_ua, status_eng, created, updated) values (393, 'Пенсіонер', 'Retired', '2020-01-31 18:05:19.554', '2020-01-31 18:05:19.554');
+insert into social_status (id, status_ua, status_eng, created, updated) values (394, 'Зайнятий пенсіонер', 'Working retired', '2020-01-31 18:05:19.554', '2020-01-31 18:05:19.554');
+insert into social_status (id, status_ua, status_eng, created, updated) values (395, 'Тимчасово не працюю', 'Temporarily unemployed', '2020-01-31 18:05:19.554', '2020-01-31 18:05:19.554');
+insert into social_status (id, status_ua, status_eng, created, updated) values (396, 'Робота за кордоном/сезонна', 'Working abroad / seasonal', '2020-01-31 18:05:19.554', '2020-01-31 18:05:19.554');
+insert into social_status (id, status_ua, status_eng, created, updated) values (397, 'Самозайнята особа', 'Self-employed', '2020-01-31 18:05:19.554', '2020-01-31 18:05:19.554');
+insert into social_status (id, status_ua, status_eng, created, updated) values (398, 'Декрента відпустка', 'Maternity leave', '2020-01-31 18:05:19.554', '2020-01-31 18:05:19.554');
+
