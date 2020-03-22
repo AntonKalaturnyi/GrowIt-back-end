@@ -50,7 +50,6 @@ public class User extends AbstractEntity implements UserDetails {
     @Column(name = "age", length = 3)
     protected Integer age;
 
-
     @OneToOne
     protected Passport passport;
 
@@ -65,8 +64,6 @@ public class User extends AbstractEntity implements UserDetails {
     protected String password;
 
     protected String phone;
-
-    protected int monthlyIncomeTotal;
 
     @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)
     @CollectionTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"))

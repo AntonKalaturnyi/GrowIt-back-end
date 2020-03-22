@@ -21,6 +21,19 @@ public class Borrower extends User {
 
     private int monthlyIncomeAdditional;
 
+    private int monthlyIncomeTotal;
+
+    private String additionalIncomeSource;
+
+    @Column(nullable = true)
+    private Integer scholarship;
+
+    @Column(nullable = true)
+    private Integer pension;
+
+    @Column(nullable = true)
+    private Integer employeesCount;
+
     @ManyToOne
     @JoinColumn(name = "address_id")
     protected Address address;
@@ -29,10 +42,6 @@ public class Borrower extends User {
     protected ITN itn;*/
 
     private String itn;
-
-    @ManyToOne
-    @JoinColumn(name = "work_sphere_id")
-    private WorkSphere workSphere;
 
     /*   @ManyToMany
        @JoinTable(name = "joint_borrower_employer",
@@ -64,7 +73,8 @@ public class Borrower extends User {
     @Column(nullable = true)
     private Integer monthlyObligations;
 
-    private String socialStatus;
+    @ManyToOne
+    private SocialStatus socialStatus;
 
     private String maritalStatus;
 
@@ -90,8 +100,8 @@ public class Borrower extends User {
      Allowed types: employed; self-employed; entrepreneur*/
     private String workType;
 
-    @Column(name = "spouse_itn")
-    private String spouseITN;
+/*    @Column(name = "spouse_itn")
+    private String spouseITN;*/
 
 
     /** AFS (Anti Fraud System) UBKI */
