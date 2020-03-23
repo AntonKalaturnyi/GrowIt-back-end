@@ -56,8 +56,7 @@ public class InvestorService implements UserDetailsService {
 
 
     @Transactional
-    public Boolean savePassportAndItn(InvestorPassportAndItnDto dto) {
-        Investor investor = investorRepo.findByEmail(dto.getEmail());
+    public Boolean savePassportAndItn(Investor investor, InvestorPassportAndItnDto dto) {
         investor.setPassport(passportService.createInvestorPass(dto));
         investor.setItn(dto.getItnNumber());
         investorRepo.save(investor);

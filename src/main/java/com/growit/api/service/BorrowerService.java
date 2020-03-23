@@ -1,9 +1,6 @@
 package com.growit.api.service;
 
-import com.growit.api.domain.Borrower;
-import com.growit.api.domain.BorrowerAccount;
-import com.growit.api.domain.Investor;
-import com.growit.api.domain.User;
+import com.growit.api.domain.*;
 import com.growit.api.dto.*;
 import com.growit.api.mapper.BorrowerMapper;
 import com.growit.api.repo.*;
@@ -29,7 +26,6 @@ public class BorrowerService implements UserDetailsService {
     private final AddressService addressService;
     private final EmploymentService employmentService;
     private final InvestorRepo investorRepo;
-    private final HomeOwnershipRepo homeOwnershipRepo;
     private final AuthService authService;
     private final PasswordEncoder passwordEncoder;
     private final PassportService passportService;
@@ -39,7 +35,7 @@ public class BorrowerService implements UserDetailsService {
     @Autowired
     public BorrowerService(BorrowerRepo borrowerRepo, BorrowerAccountRepo borrowerAccountRepo, CreditHistoryRepo creditHistoryRepo,
                            ContactPersonRepo contactPersonRepo, SocialStatusRepo socialStatusRepo, AddressService addressService,
-                           EmploymentService employmentService, InvestorRepo investorRepo, HomeOwnershipRepo homeOwnershipRepo,
+                           EmploymentService employmentService, InvestorRepo investorRepo,
                            AuthService authService, PasswordEncoder passwordEncoder, PassportService passportService,
                            CreditCardRepo creditCardRepo, EducationService educationService, BorrowerMapper mapper) {
         this.borrowerRepo = borrowerRepo;
@@ -48,7 +44,6 @@ public class BorrowerService implements UserDetailsService {
         this.addressService = addressService;
         this.employmentService = employmentService;
         this.investorRepo = investorRepo;
-        this.homeOwnershipRepo = homeOwnershipRepo;
         this.authService = authService;
         this.passwordEncoder = passwordEncoder;
         this.passportService = passportService;
@@ -174,7 +169,7 @@ public class BorrowerService implements UserDetailsService {
 
     @Transactional
     public Boolean savePassportAndItn(BorrowerPassportAndItnDto dto, Borrower borrower, MultipartFile file) {
-        borrower.setPassport(passportService.createBorrowerPass(dto, file));
+        borrower.setPassport(passportService.createBorrowerPass(borrower, dto, file));
         borrower.setItn(dto.getItnNumber());
         borrowerRepo.save(borrower);
         return true;
@@ -248,6 +243,31 @@ public class BorrowerService implements UserDetailsService {
                 borrower.getKidsAfter18yo(),
                 borrower.getInstagram(),
                 borrower.getFacebook()
+        );
+    }
+
+    @Transactional
+    @PreAuthorize("hasAuthority('REGISTERED_USER')")
+    public BorrowerPassportAndItnDto getDocsData(Borrower borrower) {
+        Passport pass = borrower.getPassport();
+        Address addr = pass.getAddressOfRegistration();
+        return new BorrowerPassportAndItnDto(
+                pass.isIdPassport(),
+                pass.getIdPassNumber(),
+                pass.getPaperPassSeries(),
+                pass.getPaperPassNumber(),
+                pass.getIssueDate(),
+                pass.getIssuer(),
+                borrower.getItn(),
+                addr.getRegion(),
+                addr.getDistrict(),
+                addr.getPostalCode(),
+                addr.getSettlement(),
+                addr.getStreet(),
+                addr.getNumber(),
+                addr.getCorpsNo(),
+                addr.getDoor(),
+                pass.getPhotoWithPassportFileName().substring(pass.getPhotoWithPassportFileName().indexOf(".") + 1)
         );
     }
 }

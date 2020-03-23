@@ -47,7 +47,7 @@ public class BorrowerController {
     @ResponseStatus(HttpStatus.OK)
     @GetMapping(value = "/reg-data", produces = MediaType.APPLICATION_JSON_VALUE)
     public BorrowerRegDto getRegistrationData(@AuthenticationPrincipal Borrower borrower) {
-        if (!borrower.isRegistered()) {
+        if (!borrower.getRegistered()) {
             return new BorrowerRegDto();
         }
         return borrowerService.getRegData(borrower);
@@ -59,6 +59,12 @@ public class BorrowerController {
     public Boolean saveBorrowerPassportAndItn(@RequestPart("dto") @Validated(New.class) BorrowerPassportAndItnDto dto,
                                               @RequestPart("file") @NotNull @NotBlank MultipartFile file, @AuthenticationPrincipal Borrower borrower) {
         return borrowerService.savePassportAndItn(dto, borrower, file);
+    }
+
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping(value = "/docs-data", produces = MediaType.APPLICATION_JSON_VALUE)
+    public BorrowerPassportAndItnDto getDocumentsData(@AuthenticationPrincipal Borrower borrower) {
+        return borrower.getPassport() != null ? borrowerService.getDocsData(borrower) : new BorrowerPassportAndItnDto();
     }
 
 

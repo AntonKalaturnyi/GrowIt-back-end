@@ -23,6 +23,18 @@ public class AddressService {
                 dto.getNumber(), dto.getCorpsNo(), dto.getDoor()));
     }
 
+    public Address updateAddressFromDto(Address addr, BorrowerPassportAndItnDto dto) {
+        addr.setRegion(dto.getRegion());
+        addr.setDistrict(dto.getDistrict());
+        addr.setPostalCode(dto.getPostalCode());
+        addr.setSettlement(dto.getSettlement());
+        addr.setStreet(dto.getStreet());
+        addr.setNumber(dto.getNumber());
+        addr.setCorpsNo(dto.getCorpsNo());
+        addr.setDoor(dto.getDoor());
+        return addressRepo.save(addr);
+    }
+
     public Address addressFromAddressDto(AddressDto dto) {
         return addressRepo.save(new Address(dto.getRegion(), dto.getDistrict(), dto.getPostalCode(), dto.getSettlement(), dto.getStreet(),
                 dto.getNumber(), dto.getCorpsNo(), dto.getDoor()));
