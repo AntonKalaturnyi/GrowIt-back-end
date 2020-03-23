@@ -9,8 +9,9 @@ import javax.validation.constraints.NotNull;
 @Data
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = false)
-public class BorrowerUpdateDto extends UserRegistrationDto implements BorrowerTransferObject {
+public class BorrowerUpdateDto extends UserRegistrationDto {
 
+/*
     private String workSphereString;
 
     private int monthlyIncomeOfficial;
@@ -22,25 +23,31 @@ public class BorrowerUpdateDto extends UserRegistrationDto implements BorrowerTr
 
     @NotNull(groups = {New.class, Existing.class},
             message = "Please specify how many kids before 18 years old do you have")
-    private int kidsBefore18yo;
+    private String kidsBefore18yo;
 
     @NotNull(groups = {New.class, Existing.class},
             message = "Please specify how many kids after 18 years old do you have")
-    private int kidsAfter18yo;
+    private String kidsAfter18yo;
 
     private String instagram;
 
     private String facebook;
 
-    /** On front-end: Lang: UA, ENG
-     Allowed types: employed; self-employed; entrepreneur*/
+    */
+/** On front-end: Lang: UA, ENG
+     Allowed types: employed; self-employed; entrepreneur*//*
+
     private String workType;
 
     private String spouseITN;
 
-    /** AFS (Anti Fraud System) UBKI */
+    */
+/** AFS (Anti Fraud System) UBKI *//*
 
-    /* In case 'workType'is 'entrepreneur' */
+
+    */
+/* In case 'workType'is 'entrepreneur' *//*
+
     private String EDRPOUcode;
 
     private String homeOwnershipString;
@@ -61,4 +68,5 @@ public class BorrowerUpdateDto extends UserRegistrationDto implements BorrowerTr
         this.homeOwnershipString = bwr.getHomeOwnership().getHomeOwnershipEng();
         this.jobTitle = bwr.getJobTitle();
     }
+*/
 }

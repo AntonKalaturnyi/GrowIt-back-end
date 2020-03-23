@@ -1,5 +1,6 @@
 package com.growit.api.controller;
 
+import com.growit.api.domain.Investor;
 import com.growit.api.dto.InvestmentDto;
 import com.growit.api.dto.InvestorPassportAndItnDto;
 import com.growit.api.dto.InvestorRegDto;
@@ -8,6 +9,7 @@ import com.growit.api.service.InvestorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -27,8 +29,8 @@ public class InvestorController {
     @PostMapping(value = "/fill-investor",
             produces = MediaType.APPLICATION_JSON_VALUE,
             consumes = MediaType.APPLICATION_JSON_VALUE)
-    public Integer fillInvestorAndSendSms(@Validated(New.class) @RequestBody InvestorRegDto dto) {
-        return investorService.fillPersonalInfoAndSendSmsCode(dto);
+    public Integer fillInvestorAndSendSms(@AuthenticationPrincipal Investor investor, @Validated(New.class) @RequestBody InvestorRegDto dto) {
+        return investorService.fillPersonalInfoAndSendSmsCode(investor, dto);
     }
 
     @ResponseStatus(HttpStatus.OK)

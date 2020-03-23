@@ -51,7 +51,7 @@ public class TokenFilter extends GenericFilterBean {
                             MessageResponse.builder()
                                     .url(((HttpServletRequest) servletRequest)
                                             .getRequestURI())
-                    .message("Token is invalid or expired!").build());
+                                    .message("Token is invalid or expired!").build());
             servletResponse.getWriter().write(message);
         }
     }

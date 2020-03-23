@@ -8,7 +8,7 @@ import javax.validation.constraints.NotNull;
 @Data
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = false)
-public class BorrowerDto extends AbstractDto implements BorrowerTransferObject {
+public class BorrowerDto extends AbstractDto{
 
     @NotNull(groups = {New.class, Existing.class},
             message = "Please specify borrower's id")
