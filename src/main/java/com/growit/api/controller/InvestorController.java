@@ -37,8 +37,8 @@ public class InvestorController {
     @PostMapping(value = "/investor-save-passport-itn",
             produces = MediaType.APPLICATION_JSON_VALUE,
             consumes = MediaType.APPLICATION_JSON_VALUE)
-    public Boolean saveInvestorPassportAndItn(@Validated(New.class) @RequestBody InvestorPassportAndItnDto dto) {
-        return investorService.savePassportAndItn(dto);
+    public Boolean saveInvestorPassportAndItn(@AuthenticationPrincipal Investor investor, @Validated(New.class) @RequestBody InvestorPassportAndItnDto dto) {
+        return investorService.savePassportAndItn(investor, dto);
     }
 
     //  @PreAuthorize("hasAnyRole" + "(@securityConfiguration.getTaskControllerUpdateTaskAllowedRoles())")

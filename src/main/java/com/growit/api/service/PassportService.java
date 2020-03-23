@@ -1,5 +1,6 @@
 package com.growit.api.service;
 
+import com.growit.api.domain.Borrower;
 import com.growit.api.domain.Passport;
 import com.growit.api.dto.BorrowerPassportAndItnDto;
 import com.growit.api.dto.InvestorPassportAndItnDto;
@@ -48,16 +49,24 @@ public class PassportService {
 
     @Transactional
     public Passport createInvestorPass(InvestorPassportAndItnDto dto) {
-        Passport passport = fillGeneralData(dto);
+        Passport passport = createFromData(dto);
         return passportRepo.save(passport);
     }
 
     @Transactional
-    public Passport createBorrowerPass(BorrowerPassportAndItnDto dto, MultipartFile file) {
-        Passport passport = fillGeneralData(dto);
-//        passport.setPhotoWithPassport(dto.getP);
-        passport.setAddressOfRegistration(addressService.addressFromDto(dto));
-        if (file != null && !file.getOriginalFilename().isEmpty()) {
+    public Passport createBorrowerPass(Borrower borrower, BorrowerPassportAndItnDto dto, MultipartFile file) {
+        Passport passport;
+
+        if (borrower.getPassport() == null) {
+            passport = createFromData(dto);
+            passport.setAddressOfRegistration(addressService.addressFromDto(dto));
+        } else {
+            passport = borrower.getPassport();
+            updatePass(passport, dto);
+            passport.setAddressOfRegistration(addressService.updateAddressFromDto(passport.getAddressOfRegistration(), dto));
+        }
+
+        if (!file.isEmpty() && !file.getOriginalFilename().isEmpty()) {
             File uploadDir = new File(uploadPath);
             if (!uploadDir.exists()) {
                 uploadDir.mkdir();
@@ -115,8 +124,12 @@ public class PassportService {
 
 
 
-    private Passport fillGeneralData(InvestorPassportAndItnDto dto) {
+    private Passport createFromData(InvestorPassportAndItnDto dto) {
         Passport passport = new Passport();
+        return updatePass(passport, dto);
+    }
+
+    private Passport updatePass(Passport passport, InvestorPassportAndItnDto dto) {
         passport.setIdPassport(dto.isIdPassport());
         if (passport.isIdPassport()) {
             passport.setIdPassNumber(dto.getIdPassNumber());

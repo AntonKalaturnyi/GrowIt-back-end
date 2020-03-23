@@ -4,8 +4,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
+
 import java.time.LocalDateTime;
 
 @Data
@@ -24,7 +23,17 @@ public class InvestorPassportAndItnDto extends AbstractDto {
     protected String issuer;
     protected String itnNumber;
 
-    @NotBlank(message = "Please, provide an email")
-    @Email(message = "Please, provide valid email")
-    protected String email;
+
+    public InvestorPassportAndItnDto(boolean idPassport, String idPassNumber,
+                                     String paperPassSeries, String paperPassNumber,
+                                     LocalDateTime issueDate, String issuer,
+                                     String itnNumber) {
+        this.idPassport = idPassport;
+        this.idPassNumber = idPassNumber;
+        this.paperPassSeries = paperPassSeries;
+        this.paperPassNumber = paperPassNumber;
+        this.issueDate = issueDate;
+        this.issuer = issuer;
+        this.itnNumber = itnNumber;
+    }
 }

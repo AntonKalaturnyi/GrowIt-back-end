@@ -42,7 +42,7 @@ public class Borrower extends User {
     protected ITN itn;*/
 
     @Column(name = "registered", nullable = true)
-    protected boolean registered;
+    protected Boolean registered;
 
     private String itn;
 
