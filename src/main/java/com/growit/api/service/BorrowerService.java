@@ -68,10 +68,10 @@ public class BorrowerService implements UserDetailsService {
         return new UserRegistrationDto(borrowerRepo.save(borrower));
     }
 
-    @Transactional
+/*    @Transactional
     public BorrowerDto fill(BorrowerDto dto) {
-/**  + creditCard(service) /Passport(controller + service)  /ITN/Address
- =Verification apart post*/
+*//**  + creditCard(service) /Passport(controller + service)  /ITN/Address
+ =Verification apart post*//*
         return mapper.toDto(borrowerRepo.save(fillBorrower(dto))); // +mapper
     }
 
@@ -81,7 +81,7 @@ public class BorrowerService implements UserDetailsService {
         borrower.setHomeOwnership(homeOwnershipRepo.findByHomeOwnershipEngLike(dto.getHomeOwnershipString()));
         borrower.setMonthlyIncomeTotal(borrower.getMonthlyIncomeOfficial() + borrower.getMonthlyIncomeAdditional());
         return borrower;
-    }
+    }*/
 
     void addItn(ItnDto dto) {
         Borrower borrower = borrowerRepo.findById(dto.getUserId()).get();
@@ -105,8 +105,8 @@ public class BorrowerService implements UserDetailsService {
             borrower = new Borrower(investor);
         }
 
-        borrower.setActive(true); // add email activation for this
         borrower.setEmail(creds.getUsername());
+        borrower.setActive(true); // add email activation for this
         borrower.setPassword(passwordEncoder.encode(creds.getPassword()));
         borrower.setLastVisit(LocalDateTime.now());
         UserService.setRegisteredUserRole(borrower);
@@ -117,12 +117,14 @@ public class BorrowerService implements UserDetailsService {
     @Transactional
     public BorrowerUpdateDto updateBorrower(BorrowerUpdateDto dto) {
         Borrower borrower = setFromDto(dto);
-        setBorrowerDtoFields(borrower, dto);
+/*        setBorrowerDtoFields(borrower, dto);
 
         if (!dto.getHomeOwnershipString().equals(borrower.getHomeOwnership().getHomeOwnershipEng())) {
             borrower.setHomeOwnership(homeOwnershipRepo.findByHomeOwnershipEngLike(dto.getHomeOwnershipString()));
         }
-        return new BorrowerUpdateDto(borrowerRepo.save(borrower));
+        return new BorrowerUpdateDto(borrowerRepo.save(borrower));*/
+
+        return null;
     }
 
     private Borrower setFromDto(UserRegistrationDto dto) {
@@ -154,14 +156,14 @@ public class BorrowerService implements UserDetailsService {
         return borrower;
     }
 
-    public Integer fillPersonalInfoAndSendSmsCode(BorrowerRegDto dto) {
-        Borrower borrower = borrowerRepo.findByEmail(dto.getEmail());
+    public Integer fillPersonalInfoAndSendSmsCode(Borrower borrower, BorrowerRegDto dto) {
         UserService.setUserFields(borrower, dto);
         borrower.setMaritalStatus(dto.getMaritalStatus());
         borrower.setKidsBefore18yo(dto.getKidsBefore18yo());
         borrower.setKidsAfter18yo(dto.getKidsAfter18yo());
         borrower.setInstagram(dto.getInstagram());
         borrower.setFacebook(dto.getFacebook());
+        borrower.setRegistered(true);
         BorrowerAccount account = borrowerAccountRepo.save(new BorrowerAccount());
         account.setBorrower(borrower);
         account = borrowerAccountRepo.save(account);
@@ -229,5 +231,23 @@ public class BorrowerService implements UserDetailsService {
         borrower.setWasAbroad(dto.isWasAbroad());
         borrowerRepo.save(borrower);
         return true;
+    }
+
+    @Transactional
+    @PreAuthorize("hasAuthority('REGISTERED_USER')")
+    public BorrowerRegDto getRegData(Borrower borrower) {
+        return new BorrowerRegDto(
+                borrower.getName(),
+                borrower.getLastName(),
+                borrower.getMiddleName(),
+                borrower.getGender(),
+                borrower.getBirthday(),
+                borrower.getPhone().substring(4),
+                borrower.getMaritalStatus(),
+                borrower.getKidsBefore18yo(),
+                borrower.getKidsAfter18yo(),
+                borrower.getInstagram(),
+                borrower.getFacebook()
+        );
     }
 }

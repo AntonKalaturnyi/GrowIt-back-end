@@ -5,8 +5,8 @@ public interface BorrowerTransferObject {
     int getMonthlyIncomeOfficial();
     int getMonthlyIncomeAdditional();
     boolean isMarried();
-    int getKidsBefore18yo();
-    int getKidsAfter18yo();
+    String getKidsBefore18yo();
+    String getKidsAfter18yo();
     String getSpouseITN();
     String getInstagram();
     String getFacebook();

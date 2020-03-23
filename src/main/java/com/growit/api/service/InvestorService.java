@@ -44,8 +44,7 @@ public class InvestorService implements UserDetailsService {
     }
 
     @Transactional
-    public Integer fillPersonalInfoAndSendSmsCode(InvestorRegDto dto) {
-        Investor investor = investorRepo.findByEmail(dto.getEmail());
+    public Integer fillPersonalInfoAndSendSmsCode(Investor investor, InvestorRegDto dto) {
         UserService.setUserFields(investor, dto);
         InvestorAccount account = investorAccountRepo.save(new InvestorAccount());
         account.setInvestor(investor);

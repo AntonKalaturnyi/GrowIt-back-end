@@ -41,6 +41,9 @@ public class Borrower extends User {
 /*    @OneToOne
     protected ITN itn;*/
 
+    @Column(name = "registered", nullable = true)
+    protected boolean registered;
+
     private String itn;
 
     /*   @ManyToMany
@@ -79,10 +82,10 @@ public class Borrower extends User {
     private String maritalStatus;
 
     @Column(nullable = true)
-    private Integer kidsBefore18yo;
+    private String kidsBefore18yo;
 
     @Column(nullable = true)
-    private Integer kidsAfter18yo;
+    private String kidsAfter18yo;
 
     @OneToOne
     private CreditHistory creditHistory;

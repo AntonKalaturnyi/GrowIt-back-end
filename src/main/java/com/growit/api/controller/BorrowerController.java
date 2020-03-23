@@ -6,6 +6,7 @@ import com.growit.api.service.BorrowerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -38,8 +39,18 @@ public class BorrowerController {
     @PostMapping(value = "/fill-borrower",
             produces = MediaType.APPLICATION_JSON_VALUE,
             consumes = MediaType.APPLICATION_JSON_VALUE)
-    public Integer fillInvestorAndSendSms(@Validated(New.class) @RequestBody BorrowerRegDto dto) {
-        return borrowerService.fillPersonalInfoAndSendSmsCode(dto);
+    public Integer fillInvestorAndSendSms(@AuthenticationPrincipal Borrower borrower, @Validated(New.class) @RequestBody BorrowerRegDto dto) {
+        return borrowerService.fillPersonalInfoAndSendSmsCode(borrower, dto);
+    }
+
+
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping(value = "/reg-data", produces = MediaType.APPLICATION_JSON_VALUE)
+    public BorrowerRegDto getRegistrationData(@AuthenticationPrincipal Borrower borrower) {
+        if (!borrower.isRegistered()) {
+            return new BorrowerRegDto();
+        }
+        return borrowerService.getRegData(borrower);
     }
 
 
