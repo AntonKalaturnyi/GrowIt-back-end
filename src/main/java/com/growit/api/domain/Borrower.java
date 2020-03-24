@@ -124,7 +124,7 @@ public class Borrower extends User {
     @OneToOne
     private BorrowerAccount borrowerAccount;
 
-    private String jobTitle;
+//    private String jobTitle;
 
     @OneToOne
     private CreditCard creditCard;

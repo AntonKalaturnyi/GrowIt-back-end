@@ -105,6 +105,12 @@ public class BorrowerController {
         return borrowerService.handleEducation(borrower, dto);
     }
 
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping(value = "/education-data", produces = MediaType.APPLICATION_JSON_VALUE)
+    public EducationDto getEducationData(@AuthenticationPrincipal Borrower borrower) {
+        return borrower.getEducation() != null ? borrowerService.getEducationData(borrower) : new EducationDto();
+    }
+
 
     @ResponseStatus(HttpStatus.OK)
     @PostMapping(value = "/set-assets",
@@ -131,14 +137,6 @@ public class BorrowerController {
         return null;
     }
 
-
-/*    @ResponseStatus(HttpStatus.CREATED)
-    @PostMapping(value = "/fill-borrower",
-            produces = MediaType.APPLICATION_JSON_VALUE,
-            consumes = MediaType.APPLICATION_JSON_VALUE)
-    public BorrowerDto fillBorrower(@Validated(New.class) @RequestBody BorrowerDto dto) {
-        return borrowerService.fill(dto);
-    }*/
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping(value = "/new-card",
