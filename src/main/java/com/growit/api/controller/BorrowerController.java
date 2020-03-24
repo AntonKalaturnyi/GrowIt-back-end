@@ -47,7 +47,7 @@ public class BorrowerController {
     @ResponseStatus(HttpStatus.OK)
     @GetMapping(value = "/reg-data", produces = MediaType.APPLICATION_JSON_VALUE)
     public BorrowerRegDto getRegistrationData(@AuthenticationPrincipal Borrower borrower) {
-        if (!borrower.getRegistered()) {
+        if (borrower.getPhone() == null) {
             return new BorrowerRegDto();
         }
         return borrowerService.getRegData(borrower);
@@ -73,8 +73,13 @@ public class BorrowerController {
             produces = MediaType.APPLICATION_JSON_VALUE,
             consumes = MediaType.APPLICATION_JSON_VALUE)
     public Boolean saveLivingAddress(@AuthenticationPrincipal Borrower borrower, @Validated(New.class) @RequestBody AddressDto dto) {
-//        System.out.println(" ***" + borrower.getEmail() + "***");
         return borrowerService.saveLivingAddress(borrower, dto);
+    }
+
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping(value = "/address-data", produces = MediaType.APPLICATION_JSON_VALUE)
+    public AddressDto getAddressData(@AuthenticationPrincipal Borrower borrower) {
+        return borrower.getAddress() != null ? borrowerService.getAddrData(borrower) : new AddressDto();
     }
 
     @ResponseStatus(HttpStatus.OK)

@@ -158,7 +158,6 @@ public class BorrowerService implements UserDetailsService {
         borrower.setKidsAfter18yo(dto.getKidsAfter18yo());
         borrower.setInstagram(dto.getInstagram());
         borrower.setFacebook(dto.getFacebook());
-        borrower.setRegistered(true);
         BorrowerAccount account = borrowerAccountRepo.save(new BorrowerAccount());
         account.setBorrower(borrower);
         account = borrowerAccountRepo.save(account);
@@ -268,6 +267,23 @@ public class BorrowerService implements UserDetailsService {
                 addr.getCorpsNo(),
                 addr.getDoor(),
                 pass.getPhotoWithPassportFileName().substring(pass.getPhotoWithPassportFileName().indexOf(".") + 1)
+        );
+    }
+
+    @Transactional
+    @PreAuthorize("hasAuthority('REGISTERED_USER')")
+    public AddressDto getAddrData(Borrower borrower) {
+        Address addr = borrower.getAddress();
+        return new AddressDto(
+                addr.getPostalCode(),
+                addr.getDoor(),
+                addr.getCorpsNo(),
+                addr.getNumber(),
+                addr.getStreet(),
+                addr.getSettlement(),
+                addr.getDistrict(),
+                addr.getRegion(),
+                borrower.getPassport().getAddressOfRegistration().equals(addr)
         );
     }
 }
