@@ -21,6 +21,10 @@ public class EmploymentService {
 
     public Employment create(EmploymentDto dto) {
         Employment employment = new Employment();
+        return update(employment, dto);
+    }
+
+    public Employment update(Employment employment, EmploymentDto dto) {
         employment.setLengthOfTotalEmploymentMo(dto.getLengthOfTotalEmploymentMo());
         employment.setLengthOfCurrentEmploymentMo(dto.getLengthOfCurrentEmploymentMo());
         employment.setEmployerCount(dto.getEmployerCount());
@@ -28,6 +32,7 @@ public class EmploymentService {
         employment.setNextPaymentDate(dto.getNextPaymentDate());
         employment.setPaymentFrequency(dto.getPaymentFrequency());
         return employmentRepo.save(employment);
+
     }
 
 }

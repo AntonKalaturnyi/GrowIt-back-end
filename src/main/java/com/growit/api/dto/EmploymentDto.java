@@ -56,4 +56,37 @@ public class EmploymentDto extends AbstractDto {
     private String bossLastName;
 
     private String bossMiddleName;*/
+
+    public EmploymentDto(String socialStatus,
+                         String workSphere,
+                         int lengthOfTotalEmploymentMo,
+                         int lengthOfCurrentEmploymentMo,
+                         int employerCount,
+                         int monthlyIncomeOfficial,
+                         int monthlyIncomeAdditional,
+                         String additionalIncomeSource,
+                         int scholarship,
+                         int pension,
+                         int employeesCount,
+                         LocalDateTime nextPaymentDate,
+                         String paymentFrequency,
+                         int monthlyExpenses,
+                         int monthlyObligations) {
+
+        this.socialStatus = socialStatus;
+        this.workSphere = workSphere;
+        this.lengthOfTotalEmploymentMo = lengthOfTotalEmploymentMo;
+        this.lengthOfCurrentEmploymentMo = lengthOfCurrentEmploymentMo;
+        this.employerCount = employerCount;
+        this.monthlyIncomeOfficial = monthlyIncomeOfficial;
+        this.monthlyIncomeAdditional = monthlyIncomeAdditional;
+        this.additionalIncomeSource = additionalIncomeSource;
+        this.scholarship = scholarship;
+        this.pension = pension;
+        this.employeesCount = employeesCount;
+        this.nextPaymentDate = nextPaymentDate;
+        this.paymentFrequency = paymentFrequency;
+        this.monthlyExpenses = monthlyExpenses;
+        this.monthlyObligations = monthlyObligations;
+    }
 }

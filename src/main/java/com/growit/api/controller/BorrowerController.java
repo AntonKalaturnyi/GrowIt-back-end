@@ -90,6 +90,12 @@ public class BorrowerController {
         return borrowerService.handleEmployment(borrower, dto);
     }
 
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping(value = "/employment-data", produces = MediaType.APPLICATION_JSON_VALUE)
+    public EmploymentDto getEmploymentData(@AuthenticationPrincipal Borrower borrower) {
+        return borrower.getEmployment() != null ? borrowerService.getEmploymentData(borrower) : new EmploymentDto();
+    }
+
 
     @ResponseStatus(HttpStatus.OK)
     @PostMapping(value = "/set-education",

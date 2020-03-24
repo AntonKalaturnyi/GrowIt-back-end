@@ -66,7 +66,7 @@ public class BorrowerService implements UserDetailsService {
 /*    @Transactional
     public BorrowerDto fill(BorrowerDto dto) {
 *//**  + creditCard(service) /Passport(controller + service)  /ITN/Address
- =Verification apart post*//*
+     =Verification apart post*//*
         return mapper.toDto(borrowerRepo.save(fillBorrower(dto))); // +mapper
     }
 
@@ -189,8 +189,12 @@ public class BorrowerService implements UserDetailsService {
     @Transactional
     @PreAuthorize("hasAuthority('REGISTERED_USER')")
     public Boolean handleEmployment(Borrower borrower, EmploymentDto dto) {
+        if (borrower.getEmployment() != null) {
+            borrower.setEmployment(employmentService.update(borrower.getEmployment(), dto));
+        } else {
+            borrower.setEmployment(employmentService.create(dto));
+        }
         borrower.setSocialStatus(socialStatusRepo.findByStatusUaLike(dto.getSocialStatus()));
-        borrower.setEmployment(employmentService.create(dto));
         borrower.setMonthlyIncomeOfficial(dto.getMonthlyIncomeOfficial());
         borrower.setMonthlyIncomeAdditional(dto.getMonthlyIncomeAdditional());
         borrower.setAdditionalIncomeSource(dto.getAdditionalIncomeSource());
@@ -270,7 +274,6 @@ public class BorrowerService implements UserDetailsService {
         );
     }
 
-    @Transactional
     @PreAuthorize("hasAuthority('REGISTERED_USER')")
     public AddressDto getAddrData(Borrower borrower) {
         Address addr = borrower.getAddress();
@@ -284,6 +287,29 @@ public class BorrowerService implements UserDetailsService {
                 addr.getDistrict(),
                 addr.getRegion(),
                 borrower.getPassport().getAddressOfRegistration().equals(addr)
+        );
+    }
+
+    @PreAuthorize("hasAuthority('REGISTERED_USER')")
+    public EmploymentDto getEmploymentData(Borrower borrower) {
+        Employment empl = borrower.getEmployment();
+
+        return new EmploymentDto(
+                borrower.getSocialStatus().getStatusUa(),
+                empl.getWorkSphere().getSphereUa(),
+                empl.getLengthOfTotalEmploymentMo(),
+                empl.getLengthOfCurrentEmploymentMo(),
+                empl.getEmployerCount(),
+                borrower.getMonthlyIncomeOfficial(),
+                borrower.getMonthlyIncomeAdditional(),
+                borrower.getAdditionalIncomeSource(),
+                borrower.getScholarship(),
+                borrower.getPension(),
+                borrower.getEmployeesCount(),
+                empl.getNextPaymentDate(),
+                empl.getPaymentFrequency(),
+                borrower.getMonthlyExpenses(),
+                borrower.getMonthlyObligations()
         );
     }
 }
