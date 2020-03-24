@@ -41,9 +41,6 @@ public class Borrower extends User {
 /*    @OneToOne
     protected ITN itn;*/
 
-    @Column(name = "registered", nullable = true)
-    protected Boolean registered;
-
     private String itn;
 
     /*   @ManyToMany
