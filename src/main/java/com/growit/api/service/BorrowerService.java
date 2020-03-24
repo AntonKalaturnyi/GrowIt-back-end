@@ -147,7 +147,6 @@ public class BorrowerService implements UserDetailsService {
         borrower.setFacebook(dto.getFacebook());
         borrower.setWorkType(dto.getWorkType());
         borrower.setEDRPOUcode(dto.getEDRPOUcode());
-        borrower.setJobTitle(dto.getJobTitle());
         return borrower;
     }
 
@@ -176,12 +175,8 @@ public class BorrowerService implements UserDetailsService {
 
     @Transactional
     public Boolean saveLivingAddress(Borrower borrower, AddressDto dto) {
-        if (dto.isSameAddressInPassport()) {
-            borrower.setAddress(borrower.getPassport().getAddressOfRegistration());
-            borrowerRepo.save(borrower);
-            return true;
-        }
-        borrower.setAddress(addressService.addressFromAddressDto(dto));
+        borrower.setAddress(dto.isSameAddressInPassport() ? borrower.getPassport().getAddressOfRegistration() :
+        addressService.addressFromAddressDto(dto) );
         borrowerRepo.save(borrower);
         return true;
     }
@@ -189,11 +184,10 @@ public class BorrowerService implements UserDetailsService {
     @Transactional
     @PreAuthorize("hasAuthority('REGISTERED_USER')")
     public Boolean handleEmployment(Borrower borrower, EmploymentDto dto) {
-        if (borrower.getEmployment() != null) {
-            borrower.setEmployment(employmentService.update(borrower.getEmployment(), dto));
-        } else {
-            borrower.setEmployment(employmentService.create(dto));
-        }
+        borrower.setEmployment( (borrower.getEmployment() != null) ?
+            employmentService.update(borrower.getEmployment(), dto) :
+                employmentService.create(dto) );
+
         borrower.setSocialStatus(socialStatusRepo.findByStatusUaLike(dto.getSocialStatus()));
         borrower.setMonthlyIncomeOfficial(dto.getMonthlyIncomeOfficial());
         borrower.setMonthlyIncomeAdditional(dto.getMonthlyIncomeAdditional());
@@ -212,7 +206,10 @@ public class BorrowerService implements UserDetailsService {
     @Transactional
     @PreAuthorize("hasAuthority('REGISTERED_USER')")
     public Boolean handleEducation(Borrower borrower, EducationDto dto) {
-        borrower.setEducation(educationService.create(dto));
+        borrower.setEducation(
+                borrower.getEducation() != null ?
+                        educationService.update(borrower.getEducation(), dto) :
+                        educationService.create(dto));
         borrowerRepo.save(borrower);
         return true;
     }
@@ -310,6 +307,15 @@ public class BorrowerService implements UserDetailsService {
                 empl.getPaymentFrequency(),
                 borrower.getMonthlyExpenses(),
                 borrower.getMonthlyObligations()
+        );
+    }
+
+    @PreAuthorize("hasAuthority('REGISTERED_USER')")
+    public EducationDto getEducationData(Borrower borrower) {
+        Education education = borrower.getEducation();
+        return new EducationDto(
+                education.getEducationLevel(),
+                education.getEducationField()
         );
     }
 }

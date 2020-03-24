@@ -13,4 +13,8 @@ public class EducationDto extends AbstractDto {
 
     private String educationField;
 
+    public EducationDto(String educationLevel, String educationField) {
+        this.educationLevel = educationLevel;
+        this.educationField = educationField;
+    }
 }
