@@ -64,10 +64,10 @@ public class BorrowerVerification extends AbstractEntity {
     /* Optional */
     private String deviceLocation;
 
-    private double riskScore; // (consolidated, analysed)
+//    private double riskScore; // (consolidated, analysed)
 
-    @Enumerated(EnumType.STRING)
-    private SafetyClass safetyClass;
+/*    @Enumerated(EnumType.STRING)
+    private SafetyClass safetyClass;*/
 
     private int GrowitReturnedCredits;
 

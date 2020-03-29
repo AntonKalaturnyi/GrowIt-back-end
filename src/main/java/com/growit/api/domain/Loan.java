@@ -17,13 +17,16 @@ import java.time.LocalDateTime;
 @EqualsAndHashCode(callSuper = false)
 public class Loan extends AbstractEntity {
 
-    private int amountRequested;
+    private Integer amountRequested;
 
-    private int amountApproved;  // +
+    private Integer amountApproved;  // +
 
-    private int amountToReturn;  // +
+    private Integer amountToReturn;  // +
 
-    private int period; // days
+    private String term; // "12d" - 30 days "12m" - 12 month
+
+    @Column(nullable = true)
+    private Integer period; // days
 
     private double monthlyPayment;  // +
 
@@ -34,11 +37,16 @@ public class Loan extends AbstractEntity {
     private LocalDateTime dateReturnDue;
 
     /* ((amountFunded/Amount)*100) */
-    private double percentFunded;
+    private Double percentFunded;
 
     /* (monthlyPayment/salary) * 100%  */
     @Column(nullable = true)
-    private double dtiRatio;  // +
+    private Double dtiRatio;  // +
+
+    private String safetyRank;
+
+    @Column(nullable = true)
+    private Integer verificationScore;
 
     @ManyToOne
     private LoanPurpose loanPurpose;
@@ -54,6 +62,6 @@ public class Loan extends AbstractEntity {
     private Borrower borrower;
 
     /* APR, convert to monthly in service if needed  */
-    private double profitability;
+    private Double profitability;
 
 }
