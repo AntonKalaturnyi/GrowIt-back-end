@@ -1,9 +1,7 @@
 package com.growit.api.controller;
 
 import com.growit.api.domain.Borrower;
-import com.growit.api.dto.LoanDto;
-import com.growit.api.dto.LoanFromCalculatorDto;
-import com.growit.api.dto.New;
+import com.growit.api.dto.*;
 import com.growit.api.service.LoanService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -11,6 +9,8 @@ import org.springframework.http.MediaType;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/loan")
@@ -34,6 +34,11 @@ public class LoanController {
     // returnLoan() {if amount == limit, borrowerverification.setFirstLimitReturned or second}
 
 
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping(value = "/dashboard-loans", produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<DashboardLoanDto> getDashboardLoans() {
+        return loanService.getDashboardLoanList();
+    }
 
 
 }
