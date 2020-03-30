@@ -1,8 +1,11 @@
 package com.growit.api.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Data
@@ -12,7 +15,7 @@ public class DashboardLoanDto extends AbstractDto {
 
     private String rank;
 
-    private Integer score;
+    private int score;
 
     private int amount;
 
@@ -22,11 +25,14 @@ public class DashboardLoanDto extends AbstractDto {
 
     private String loanPurpose;
 
-    private LocalDateTime applyDate;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd.MM.yy")
+    private LocalDate applyDate;
 
     private double amountFunded;
 
     private String description;
+
+    private String timeLeft;
 
     public DashboardLoanDto(String rank,
                             Integer score,
@@ -34,9 +40,9 @@ public class DashboardLoanDto extends AbstractDto {
                             String term,
                             String profitability,
                             String loanPurpose,
-                            LocalDateTime applyDate,
+                            LocalDate applyDate,
                             double amountFunded,
-                            String description) {
+                            String description, String timeLeft) {
         this.rank = rank;
         this.score = score;
         this.amount = amount;
@@ -46,5 +52,6 @@ public class DashboardLoanDto extends AbstractDto {
         this.applyDate = applyDate;
         this.amountFunded = amountFunded;
         this.description = description;
+        this.timeLeft = timeLeft;
     }
 }

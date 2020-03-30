@@ -11,6 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -44,20 +46,31 @@ public class LoanService {
     @PreAuthorize("hasAuthority('INVESTOR')")
     public List<DashboardLoanDto> getDashboardLoanList() {
         ArrayList<DashboardLoanDto> list = new ArrayList<>();
-        DashboardLoanDto dto;
         ArrayList<Loan> dbList = (ArrayList) loanRepo.findAll();
+        LocalDateTime now = LocalDateTime.now();
+        int dayNow = now.getDayOfYear();
 
         for (Loan loan : dbList) {
+            if ((loan.getDateReleasedOnDashboard().plusDays(7).isBefore(LocalDateTime.now()))) continue;
             list.add(new DashboardLoanDto(
                     loan.getSafetyRank(),
                     loan.getVerificationScore(),
                     loan.getAmountApproved(),
                     loan.getTerm(),
-                    String.valueOf(loan.getProfitability()),
+                    String.valueOf(loan.getProfitability()).replace('.', ','),
                     loan.getLoanPurpose().getPurposeUa(),
-                    loan.getCreated(),
+                    loan.getDateReleasedOnDashboard().toLocalDate(),
                     loan.getAmountFunded(),
-                    loan.getDescription()));
+                    loan.getDescription(),
+                    ( (loan.getDateReleasedOnDashboard().plusDays(7).getDayOfYear()) > dayNow ?
+                            ((loan.getDateReleasedOnDashboard().plusDays(7).getDayOfYear()) - dayNow) + " днів" :
+                            (LocalDateTime.now().until( loan.getDateReleasedOnDashboard().plusDays(7), ChronoUnit.HOURS) >= 1) ?
+                                    now.until( loan.getDateReleasedOnDashboard().plusDays(7), ChronoUnit.HOURS) + " год " + (now.until(loan.getDateReleasedOnDashboard().plusDays(7), ChronoUnit.MINUTES) - (60 * now.until( loan.getDateReleasedOnDashboard().plusDays(7), ChronoUnit.HOURS))) + " хв" :
+                                    now.until( loan.getDateReleasedOnDashboard().plusDays(7), ChronoUnit.MINUTES) + " хв."
+
+                    )
+
+            ));
         }
         return list;
     }

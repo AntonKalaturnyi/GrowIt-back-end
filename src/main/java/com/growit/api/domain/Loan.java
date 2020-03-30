@@ -36,6 +36,10 @@ public class Loan extends AbstractEntity {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss.SSS")
     private LocalDateTime dateReturnDue;
 
+    @Column(name = "date_released", updatable = false)
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss.SSS")
+    private LocalDateTime dateReleasedOnDashboard;
+
     /* ((amountFunded/Amount)*100) */
     private Double percentFunded;
 
