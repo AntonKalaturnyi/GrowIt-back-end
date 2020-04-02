@@ -25,19 +25,19 @@ public class CreditHistory extends AbstractEntity {
 
     private int defaultedCredits;
 
-    private int revolvingCreditBalance;
+//    private int revolvingCreditBalance;
 
-    private int revolvingLineUtilization; //(%)
+//    private int revolvingLineUtilization; //(%)
 
-    private int inquiriesInLast6Mo;
+//    private int inquiriesInLast6Mo;
 
-    private int accountsNoDelinqued;
+//    private int accountsNoDelinqued;
 
-    private int delinquedAmount;
+//    private int delinquedAmount;
 
-    private int DelinquenciesInLast2Ys;
+//    private int DelinquenciesInLast2Ys;
 
-    private int MoSinceLastDelinq;
+//    private int MoSinceLastDelinq;
 
     @ManyToMany
     @JoinTable(name = "joint_record_chistory",
@@ -45,9 +45,9 @@ public class CreditHistory extends AbstractEntity {
             inverseJoinColumns = { @JoinColumn(name = "public_record_id")} )
     private Set<PublicRecord> publicRecords = new HashSet<>();
 
-    private int moSinceLastPublicRecord;
+//    private int moSinceLastPublicRecord;
 
-    private int moSinceLastDerogatory;
+//    private int moSinceLastDerogatory;
 
     //private int collectExclosuresMedical; // ?
 }
