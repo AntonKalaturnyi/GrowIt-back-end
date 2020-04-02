@@ -61,6 +61,7 @@ public class LoanService {
                     loan.getLoanPurpose().getPurposeUa(),
                     loan.getDateReleasedOnDashboard().toLocalDate(),
                     loan.getAmountFunded(),
+                    (int) Math.round( (loan.getAmountFunded() / loan.getAmountApproved()) * 100),
                     loan.getDescription(),
                     ( (loan.getDateReleasedOnDashboard().plusDays(7).getDayOfYear()) > dayNow ?
                             ((loan.getDateReleasedOnDashboard().plusDays(7).getDayOfYear()) - dayNow) + " днів" :
