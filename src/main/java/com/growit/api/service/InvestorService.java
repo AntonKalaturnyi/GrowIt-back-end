@@ -17,6 +17,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 @Service
 public class InvestorService implements UserDetailsService {
@@ -50,6 +53,7 @@ public class InvestorService implements UserDetailsService {
         account.setInvestor(investor);
         account = investorAccountRepo.save(account);
         investor.setAccount(account);
+        investor.setInvestments(new HashSet<>());
         investorRepo.save(investor);
         return ConstantUtil.getRandom6DigitNumber();
     }
@@ -81,7 +85,7 @@ public class InvestorService implements UserDetailsService {
         return authService.signIn(creds);
     }
 
-    @Transactional
+/*    @Transactional
     public InvestmentDto makeInvestment(InvestmentDto dto) {
 
         Investor investor = investorRepo.findById(dto.getInvestorId()).get();
@@ -100,12 +104,34 @@ public class InvestorService implements UserDetailsService {
             return new InvestmentDto(investmentRepo.save(investment));
         }
         throw new AccountOverdraftException("Not enough funds on account to meke this investment!");
-    }
+    }*/
 
     @Override
     public User loadUserByUsername(String email) throws UsernameNotFoundException {
         return investorRepo.findByEmail(email);
     }
 
+    @Transactional
+    public boolean makeInvestments(Investor investor, List<InvestmentDto> dtos) {
+        investor.setInvestments(new HashSet<>());
+        investor = investorRepo.save(investor);
+        Investment investment;
+        Set<Investment> investments = investor.getInvestments();
+        InvestorAccount account = investor.getAccount();
+        for (InvestmentDto dto: dtos) {
+            if (account.getAvailableBalance() >= dto.getAmount()) {
+                account.setAvailableBalance(account.getAvailableBalance() - dto.getAmount());
+                account.setInvestedFunds(account.getInvestedFunds() + dto.getAmount());
+                investment = new Investment();
+                investment.setAmountInvested(dto.getAmount());
+                investment.setLoan(loanRepo.findById(dto.getLoanId()).get());
+                investment.setInvestor(investor);
+                investments.add(investment);
+            } else {
+                throw new AccountOverdraftException("Not enough funds on account to meke this investment!");
+            }
+        }
+        return true;
+    }
 }
 

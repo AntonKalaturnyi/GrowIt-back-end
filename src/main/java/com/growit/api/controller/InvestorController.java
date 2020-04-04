@@ -13,6 +13,8 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/invest")
 public class InvestorController {
@@ -43,9 +45,10 @@ public class InvestorController {
 
     //  @PreAuthorize("hasAnyRole" + "(@securityConfiguration.getTaskControllerUpdateTaskAllowedRoles())")
     @ResponseStatus(HttpStatus.CREATED)
-    @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE,
+    @PostMapping(value = "/submit-investments", produces = MediaType.APPLICATION_JSON_VALUE,
             consumes = MediaType.APPLICATION_JSON_VALUE)
-    public InvestmentDto acceptInvestment(@Validated(New.class) @RequestBody InvestmentDto dto) {
-        return investorService.makeInvestment(dto);
+    public Boolean acceptInvestments(@AuthenticationPrincipal Investor investor, @Validated(New.class) @RequestBody List<InvestmentDto> dtos) {
+        return investorService.makeInvestments(investor, dtos);
     }
+
 }

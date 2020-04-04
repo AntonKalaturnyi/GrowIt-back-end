@@ -16,7 +16,7 @@ import java.util.Set;
 @EqualsAndHashCode(callSuper = false)
 public class Investor extends User {
 
-    @OneToMany(mappedBy = "investor", cascade = CascadeType.ALL, fetch = FetchType.LAZY )
+    @OneToMany(mappedBy = "investor", cascade = CascadeType.ALL)
     private Set<Investment> investments;
 
 /*    @Column(name = "invested_before")

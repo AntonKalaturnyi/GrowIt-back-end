@@ -11,6 +11,8 @@ import java.time.LocalDate;
 @EqualsAndHashCode(callSuper = false)
 public class DashboardLoanDto extends AbstractDto {
 
+    private long loanId;
+
     /** General loan data*/
 
     private String rank;
@@ -66,7 +68,7 @@ public class DashboardLoanDto extends AbstractDto {
     private int payedInGrowit;  // DTO
 
 
-    public DashboardLoanDto(String rank, int score, int amount,
+    public DashboardLoanDto(long loanId, String rank, int score, int amount,
                             String term, String profitability, String loanPurpose,
                             LocalDate applyDate, double amountFunded, int fulfillment,
                             String description, String timeLeft, LocalDate registrationDate,
@@ -75,6 +77,7 @@ public class DashboardLoanDto extends AbstractDto {
                             int monthlyExpenses, int pti, int currentOpenCredits, int currentDebtAmount,
                             boolean hasDelayInCurrentPeriod, int currentOverdueDebtAmount,
                             int currentDelayInDays, int payedOffInOtherOrgs, int payedInGrowit) {
+        this.loanId = loanId;
         this.rank = rank;
         this.score = score;
         this.amount = amount;

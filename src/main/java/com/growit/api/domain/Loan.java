@@ -1,8 +1,8 @@
 package com.growit.api.domain;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.google.common.base.Objects;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -14,7 +14,6 @@ import java.time.LocalDateTime;
 @Entity
 @Table(name = "loans")
 @NoArgsConstructor
-@EqualsAndHashCode(callSuper = false)
 public class Loan extends AbstractEntity {
 
     private Integer amountRequested;
@@ -68,4 +67,37 @@ public class Loan extends AbstractEntity {
     /* APR, convert to monthly in service if needed  */
     private Double profitability;
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Loan)) return false;
+        if (!super.equals(o)) return false;
+        Loan loan = (Loan) o;
+        return Double.compare(loan.getMonthlyPayment(), getMonthlyPayment()) == 0 &&
+                Double.compare(loan.getAmountFunded(), getAmountFunded()) == 0 &&
+                Objects.equal(getAmountRequested(), loan.getAmountRequested()) &&
+                Objects.equal(getAmountApproved(), loan.getAmountApproved()) &&
+                Objects.equal(getAmountToReturn(), loan.getAmountToReturn()) &&
+                Objects.equal(getTerm(), loan.getTerm()) &&
+                Objects.equal(getPeriod(), loan.getPeriod()) &&
+                Objects.equal(getDateReturnDue(), loan.getDateReturnDue()) &&
+                Objects.equal(getDateReleasedOnDashboard(), loan.getDateReleasedOnDashboard()) &&
+                Objects.equal(getPercentFunded(), loan.getPercentFunded()) &&
+                Objects.equal(getDtiRatio(), loan.getDtiRatio()) &&
+                Objects.equal(getSafetyRank(), loan.getSafetyRank()) &&
+                Objects.equal(getVerificationScore(), loan.getVerificationScore()) &&
+                Objects.equal(getLoanPurpose(), loan.getLoanPurpose()) &&
+                Objects.equal(getDescription(), loan.getDescription()) &&
+                Objects.equal(getStatus(), loan.getStatus()) &&
+                Objects.equal(getProfitability(), loan.getProfitability());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(super.hashCode(), getAmountRequested(),
+                getAmountApproved(), getAmountToReturn(), getTerm(),
+                getPeriod(), getMonthlyPayment(), getAmountFunded(), getDateReturnDue(),
+                getDateReleasedOnDashboard(), getPercentFunded(), getDtiRatio(), getSafetyRank(),
+                getVerificationScore(), getLoanPurpose(), getDescription(), getStatus(), getProfitability());
+    }
 }
