@@ -1,6 +1,7 @@
 package com.growit.api.service;
 
 import com.growit.api.domain.Borrower;
+import com.growit.api.domain.CreditHistory;
 import com.growit.api.domain.Loan;
 import com.growit.api.dto.DashboardLoanDto;
 import com.growit.api.dto.LoanFromCalculatorDto;
@@ -10,7 +11,6 @@ import com.growit.api.repo.LoanRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
-
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
@@ -52,6 +52,9 @@ public class LoanService {
 
         for (Loan loan : dbList) {
             if ((loan.getDateReleasedOnDashboard().plusDays(7).isBefore(LocalDateTime.now()))) continue;
+            Borrower borrower = loan.getBorrower();
+            CreditHistory history = borrower.getCreditHistory();
+            boolean noOpenCr = history.getCurrentOpenCredits() == null || history.getCurrentOpenCredits() == 0;
             list.add(new DashboardLoanDto(
                     loan.getSafetyRank(),
                     loan.getVerificationScore(),
@@ -63,14 +66,29 @@ public class LoanService {
                     loan.getAmountFunded(),
                     (int) Math.round( (loan.getAmountFunded() / loan.getAmountApproved()) * 100),
                     loan.getDescription(),
-                    ( (loan.getDateReleasedOnDashboard().plusDays(7).getDayOfYear()) > dayNow ?
+                    (loan.getDateReleasedOnDashboard().plusDays(7).getDayOfYear()) > dayNow ?
                             ((loan.getDateReleasedOnDashboard().plusDays(7).getDayOfYear()) - dayNow) + " днів" :
                             (LocalDateTime.now().until( loan.getDateReleasedOnDashboard().plusDays(7), ChronoUnit.HOURS) >= 1) ?
-                                    now.until( loan.getDateReleasedOnDashboard().plusDays(7), ChronoUnit.HOURS) + " год " + (now.until(loan.getDateReleasedOnDashboard().plusDays(7), ChronoUnit.MINUTES) - (60 * now.until( loan.getDateReleasedOnDashboard().plusDays(7), ChronoUnit.HOURS))) + " хв" :
-                                    now.until( loan.getDateReleasedOnDashboard().plusDays(7), ChronoUnit.MINUTES) + " хв."
-
-                    )
-
+                                    now.until( loan.getDateReleasedOnDashboard().plusDays(7), ChronoUnit.HOURS) + " год "
+                                            + (now.until(loan.getDateReleasedOnDashboard().plusDays(7), ChronoUnit.MINUTES) - (60 * now.until( loan.getDateReleasedOnDashboard().plusDays(7), ChronoUnit.HOURS))) + " хв" :
+                                    now.until( loan.getDateReleasedOnDashboard().plusDays(7), ChronoUnit.MINUTES) + " хв.",
+                    borrower.getRegistrationDate().toLocalDate(),
+                    borrower.getMaritalStatus(),
+                    borrower.getKidsBefore18yo(),
+                    borrower.getKidsAfter18yo(),
+                    borrower.getAddress().getSettlement() + ", " + borrower.getAddress().getRegion(),
+                    borrower.getAge(),
+                    borrower.getSocialStatus().getStatusUa(),
+                    borrower.getMonthlyIncomeTotal(),
+                    borrower.getMonthlyExpenses(),
+                    (int) Math.round((borrower.getMonthlyObligations() + loan.getMonthlyPayment()) / borrower.getMonthlyIncomeTotal() * 100), // pti
+                    history.getCurrentOpenCredits(),
+                    noOpenCr ? 0 : history.getCurrentDebtAmount(),
+                    !noOpenCr && history.isHasDelayInCurrentPeriod(),
+                    noOpenCr ? 0 : history.getCurrentOverdueDebtAmount(),
+                    noOpenCr ? 0 : history.getCurrentDelayInDays(),
+                    history.getPayedOffInOtherOrgs(),
+                    history.getPayedInGrowit()
             ));
         }
         return list;

@@ -28,7 +28,7 @@ public class Loan extends AbstractEntity {
     @Column(nullable = true)
     private Integer period; // days
 
-    private double monthlyPayment;  // +
+    private double monthlyPayment;  // + = amountToReturn if term <= 1 month
 
     private double amountFunded;
 
@@ -43,7 +43,7 @@ public class Loan extends AbstractEntity {
     /* ((amountFunded/Amount)*100) */
     private Double percentFunded;
 
-    /* (monthlyPayment/salary) * 100%  */
+    /* (monthlyObligations + monthlyPayment/salary) * 100%  */
     @Column(nullable = true)
     private Double dtiRatio;  // +
 

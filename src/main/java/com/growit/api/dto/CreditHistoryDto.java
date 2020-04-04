@@ -4,47 +4,23 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDateTime;
-
 @Data
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = false)
 public class CreditHistoryDto extends AbstractDto {
 
-    private LocalDateTime earliestCreditLineDate;
+    private Integer currentOpenCredits;
 
-    private int totalCredits;
+    private Integer currentDebtAmount;
 
-    private int payedOffCredits;
+    private boolean hasDelayInCurrentPeriod;
 
-    private int delayedCredits;
+    private Integer currentOverdueDebtAmount;
 
-    private int defaultedCredits;
+    private Integer currentDelayInDays;
 
-    private int GrowitPayedOffCredits;
+    private Integer payedOffInOtherOrgs;
 
-    private int GrowitDelayedCredits;
-
-    private int GrowitDefaultedCredits;
-
-    private int revolvingCreditBalance;
-
-    private int revolvingLineUtilization; //(%)
-
-    private int inquiriesInLast6Mo;
-
-    private int accountsNoDelinqued;
-
-    private int delinquedAmount;
-
-    private int DelinquenciesInLast2Ys;
-
-    private int MoSinceLastDelinq;
-
-//    private Set<PublicRecord> publicRecords = new HashSet<>();
-
-    private int moSinceLastPublicRecord;
-
-    private int moSinceLastDerogatory;
+    private Integer plannedObligatoryPaymentInCurrentPeriod;
 
 }

@@ -1,11 +1,12 @@
 package com.growit.api.domain;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.growit.api.dto.UserRegistrationDto;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.Set;
 
 @Data
@@ -37,6 +38,10 @@ public class Borrower extends User {
     @ManyToOne
     @JoinColumn(name = "address_id")
     protected Address address;
+
+    @Column(name = "registration_date", updatable = false)
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss.SSS")
+    private LocalDateTime registrationDate; // setted after verification is Done
 
 /*    @OneToOne
     protected ITN itn;*/
@@ -87,8 +92,6 @@ public class Borrower extends User {
     @OneToOne
     private CreditHistory creditHistory;
 
-//    private String workPhone;
-
     private String instagram;
 
     private String facebook;
@@ -99,10 +102,6 @@ public class Borrower extends User {
     /** On front-end: Lang: UA, ENG
      Allowed types: employed; self-employed; entrepreneur*/
     private String workType;
-
-/*    @Column(name = "spouse_itn")
-    private String spouseITN;*/
-
 
     /** AFS (Anti Fraud System) UBKI */
 
@@ -123,8 +122,6 @@ public class Borrower extends User {
 
     @OneToOne
     private BorrowerAccount borrowerAccount;
-
-//    private String jobTitle;
 
     @OneToOne
     private CreditCard creditCard;
