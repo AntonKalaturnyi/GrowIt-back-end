@@ -15,15 +15,39 @@ import java.util.Set;
 @EqualsAndHashCode(callSuper = false)
 public class CreditHistory extends AbstractEntity {
 
-    private LocalDateTime earliestCreditLineDate;
 
-    private int totalCredits;
+    private Integer currentOpenCredits; // DTO
 
-    private int payedOffCredits;
+    private Integer currentDebtAmount;  // Сумма тек. задолженности
 
-    private int delayedCredits;
+    private boolean hasDelayInCurrentPeriod; // Признак наличия просрочки в тек.периоде
 
-    private int defaultedCredits;
+    private Integer currentOverdueDebtAmount;  // Сумма тек. просроченной задолженности
+
+    private Integer currentDelayInDays; // Текущее кол-во дней просрочки
+
+    private Integer payedOffInOtherOrgs; // DTO
+
+    private Integer payedInGrowit;  // DTO
+
+    private Integer plannedObligatoryPaymentInCurrentPeriod; // Сумма планового обяз. платежа в тек.периоде, врах в PTI
+
+    @ManyToMany
+    @JoinTable(name = "joint_record_chistory",
+            joinColumns = { @JoinColumn(name = "credit_history_id") },
+            inverseJoinColumns = { @JoinColumn(name = "public_record_id")} )
+    private Set<PublicRecord> publicRecords = new HashSet<>();
+
+
+    //    private String dealStatus;
+
+//    private int totalCredits;
+//
+//    private int delayedCredits;
+//
+//    private int defaultedCredits;
+
+    //    private LocalDateTime earliestCreditLineDate;
 
 //    private int revolvingCreditBalance;
 
@@ -39,11 +63,6 @@ public class CreditHistory extends AbstractEntity {
 
 //    private int MoSinceLastDelinq;
 
-    @ManyToMany
-    @JoinTable(name = "joint_record_chistory",
-            joinColumns = { @JoinColumn(name = "credit_history_id") },
-            inverseJoinColumns = { @JoinColumn(name = "public_record_id")} )
-    private Set<PublicRecord> publicRecords = new HashSet<>();
 
 //    private int moSinceLastPublicRecord;
 
