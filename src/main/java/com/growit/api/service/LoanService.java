@@ -56,6 +56,7 @@ public class LoanService {
             CreditHistory history = borrower.getCreditHistory();
             boolean noOpenCr = history.getCurrentOpenCredits() == null || history.getCurrentOpenCredits() == 0;
             list.add(new DashboardLoanDto(
+                    loan.getId(),
                     loan.getSafetyRank(),
                     loan.getVerificationScore(),
                     loan.getAmountApproved(),

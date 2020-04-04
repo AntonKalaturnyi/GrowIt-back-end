@@ -1,5 +1,6 @@
 package com.growit.api.domain;
 
+import com.google.common.base.Objects;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -11,7 +12,6 @@ import java.util.Set;
 @Entity
 @NoArgsConstructor
 @Table(name = "inv_account")
-@EqualsAndHashCode(callSuper = false)
 public class InvestorAccount extends Account {
 
     @OneToOne
@@ -63,5 +63,33 @@ public class InvestorAccount extends Account {
                 ", investedFunds=" + investedFunds +
                 ", monthlyStatements=" + monthlyStatements +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof InvestorAccount)) return false;
+        if (!super.equals(o)) return false;
+        InvestorAccount account = (InvestorAccount) o;
+        return Double.compare(account.getExpectedProfitability(), getExpectedProfitability()) == 0 &&
+                getCurrentActiveLoans() == account.getCurrentActiveLoans() &&
+                getGracePeriodLoans() == account.getGracePeriodLoans() &&
+                getLate6To14Days() == account.getLate6To14Days() &&
+                getLate15To30Days() == account.getLate15To30Days() &&
+                getLate31To60DaysLoans() == account.getLate31To60DaysLoans() &&
+                getLate61To120DaysLoans() == account.getLate61To120DaysLoans() &&
+                getChargedOffLoans() == account.getChargedOffLoans() &&
+                Double.compare(account.getInvestedFunds(), getInvestedFunds()) == 0 &&
+                Objects.equal(getTransactions(), account.getTransactions()) &&
+                Objects.equal(getMonthlyStatements(), account.getMonthlyStatements());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(super.hashCode(), getTransactions(),
+                getExpectedProfitability(), getCurrentActiveLoans(),
+                getGracePeriodLoans(), getLate6To14Days(), getLate15To30Days(),
+                getLate31To60DaysLoans(), getLate61To120DaysLoans(), getChargedOffLoans(),
+                getInvestedFunds(), getMonthlyStatements());
     }
 }
