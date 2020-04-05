@@ -11,12 +11,11 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
-
 import static org.springframework.http.ResponseEntity.ok;
-
 
 @Service
 public class AuthService {
@@ -33,8 +32,8 @@ public class AuthService {
         this.userDetailsService = userDetailsService;
     }
 
+    @Transactional
     public ResponseEntity signIn(AuthDto creds) {
-
         try {
             String username = creds.getUsername();
             User user = userDetailsService.loadUserByUsername(username);

@@ -18,7 +18,6 @@ public class AuthenticationController {
     @Autowired
     public AuthenticationController(AuthService authService) {
         this.authService = authService;
-
     }
 
     @PostMapping("/signin")
