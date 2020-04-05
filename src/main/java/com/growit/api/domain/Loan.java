@@ -16,10 +16,13 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class Loan extends AbstractEntity {
 
+    @Column(nullable = true)
     private Integer amountRequested;
 
+    @Column(nullable = true)
     private Integer amountApproved;  // +
 
+    @Column(nullable = true)
     private Integer amountToReturn;  // +
 
     private String term; // "12d" - 30 days "12m" - 12 month

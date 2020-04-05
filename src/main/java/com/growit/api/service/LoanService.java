@@ -51,7 +51,7 @@ public class LoanService {
         int dayNow = now.getDayOfYear();
 
         for (Loan loan : dbList) {
-            if ((loan.getDateReleasedOnDashboard().plusDays(7).isBefore(LocalDateTime.now()))) continue;
+            if (loan.getDateReleasedOnDashboard() == null || (loan.getDateReleasedOnDashboard().plusDays(7).isBefore(LocalDateTime.now()))) continue;
             Borrower borrower = loan.getBorrower();
             CreditHistory history = borrower.getCreditHistory();
             boolean noOpenCr = history.getCurrentOpenCredits() == null || history.getCurrentOpenCredits() == 0;

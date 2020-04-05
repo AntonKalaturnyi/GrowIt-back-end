@@ -69,7 +69,6 @@ public class UserService implements UserDetailsService {
 
     @Override
     public User loadUserByUsername(String email) throws UsernameNotFoundException {
-  //      User user = userRepo.findByEmail(email);
         Investor investor = investorRepo.findByEmail(email);
         Borrower borrower = borrowerRepo.findByEmail(email);
         return (borrower != null && borrower.getEmail() != null) ? borrower :
