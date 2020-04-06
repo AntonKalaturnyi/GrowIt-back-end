@@ -113,7 +113,6 @@ public class InvestorService implements UserDetailsService {
 
     @Transactional
     public boolean makeInvestments(Investor investor, List<InvestmentDto> dtos) {
-        investor.setInvestments(new HashSet<>());
         investor = investorRepo.save(investor);
         Investment investment;
         Set<Investment> investments = investor.getInvestments();
