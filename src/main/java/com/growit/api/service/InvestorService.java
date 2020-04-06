@@ -103,7 +103,7 @@ public class InvestorService implements UserDetailsService {
             investment.setLoan(loanRepo.findById(dto.getLoanId()).get());
             return new InvestmentDto(investmentRepo.save(investment));
         }
-        throw new AccountOverdraftException("Not enough funds on account to meke this investment!");
+        throw new AccountOverdraftException("Not enough funds on account to make this investment!");
     }*/
 
     @Override
@@ -115,19 +115,22 @@ public class InvestorService implements UserDetailsService {
     public boolean makeInvestments(Investor investor, List<InvestmentDto> dtos) {
         investor = investorRepo.save(investor);
         Investment investment;
+        Loan loan;
         Set<Investment> investments = investor.getInvestments();
         InvestorAccount account = investor.getAccount();
         for (InvestmentDto dto: dtos) {
             if (account.getAvailableBalance() >= dto.getAmount()) {
+                loan = loanRepo.findById(dto.getLoanId()).get();
+                loan.setAmountFunded(loan.getAmountFunded() + dto.getAmount());
                 account.setAvailableBalance(account.getAvailableBalance() - dto.getAmount());
                 account.setInvestedFunds(account.getInvestedFunds() + dto.getAmount());
                 investment = new Investment();
                 investment.setAmountInvested(dto.getAmount());
-                investment.setLoan(loanRepo.findById(dto.getLoanId()).get());
+                investment.setLoan(loan);
                 investment.setInvestor(investor);
                 investments.add(investment);
             } else {
-                throw new AccountOverdraftException("Not enough funds on account to meke this investment!");
+                throw new AccountOverdraftException("Not enough funds on account to make this investment!");
             }
         }
         return true;
