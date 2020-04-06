@@ -42,6 +42,12 @@ public class EmploymentDto extends AbstractDto {
 
     private int monthlyObligations;
 
+    private String contactPerson1phone;
+    private String contactPerson2phone;
+    private String contactPerson1Name;
+    private String contactPerson2Name;
+    private String relation1;
+    private String relation2;
 
     //    private String nameOfCompany;
 
@@ -71,7 +77,13 @@ public class EmploymentDto extends AbstractDto {
                          LocalDateTime nextPaymentDate,
                          String paymentFrequency,
                          int monthlyExpenses,
-                         int monthlyObligations) {
+                         int monthlyObligations,
+                         String contactPerson1phone,
+                         String contactPerson2phone,
+                         String contactPerson1Name,
+                         String contactPerson2Name,
+                         String relation1,
+                         String relation2) {
 
         this.socialStatus = socialStatus;
         this.workSphere = workSphere;
@@ -88,5 +100,14 @@ public class EmploymentDto extends AbstractDto {
         this.paymentFrequency = paymentFrequency;
         this.monthlyExpenses = monthlyExpenses;
         this.monthlyObligations = monthlyObligations;
+
+        this.contactPerson1phone = contactPerson1phone;
+        this.contactPerson2phone = contactPerson2phone;
+        this.contactPerson1Name = contactPerson1Name;
+        this.contactPerson2Name = contactPerson2Name;
+        this.relation1 = relation1;
+        this.relation2 = relation2;
+
+
     }
 }

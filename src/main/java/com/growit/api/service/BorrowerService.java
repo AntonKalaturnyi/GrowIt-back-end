@@ -2,7 +2,6 @@ package com.growit.api.service;
 
 import com.growit.api.domain.*;
 import com.growit.api.dto.*;
-import com.growit.api.mapper.BorrowerMapper;
 import com.growit.api.repo.*;
 import com.growit.api.util.ConstantUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +15,8 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import java.time.LocalDateTime;
 import java.time.Period;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class BorrowerService implements UserDetailsService {
@@ -30,14 +31,14 @@ public class BorrowerService implements UserDetailsService {
     private final PasswordEncoder passwordEncoder;
     private final PassportService passportService;
     private final EducationService educationService;
-    private final BorrowerMapper mapper;
+    private final ContactPersonRepo contactPersonRepo;
 
     @Autowired
     public BorrowerService(BorrowerRepo borrowerRepo, BorrowerAccountRepo borrowerAccountRepo, CreditHistoryRepo creditHistoryRepo,
                            ContactPersonRepo contactPersonRepo, SocialStatusRepo socialStatusRepo, AddressService addressService,
                            EmploymentService employmentService, InvestorRepo investorRepo,
                            AuthService authService, PasswordEncoder passwordEncoder, PassportService passportService,
-                           CreditCardRepo creditCardRepo, EducationService educationService, BorrowerMapper mapper) {
+                           CreditCardRepo creditCardRepo, EducationService educationService) {
         this.borrowerRepo = borrowerRepo;
         this.borrowerAccountRepo = borrowerAccountRepo;
         this.socialStatusRepo = socialStatusRepo;
@@ -48,7 +49,7 @@ public class BorrowerService implements UserDetailsService {
         this.passwordEncoder = passwordEncoder;
         this.passportService = passportService;
         this.educationService = educationService;
-        this.mapper = mapper;
+        this.contactPersonRepo = contactPersonRepo;
     }
 
     @Transactional
@@ -69,14 +70,7 @@ public class BorrowerService implements UserDetailsService {
      =Verification apart post*//*
         return mapper.toDto(borrowerRepo.save(fillBorrower(dto))); // +mapper
     }
-
-    private Borrower fillBorrower(BorrowerDto dto) {
-        Borrower borrower = borrowerRepo.findById(dto.getBorrowerId()).get();
-        setBorrowerDtoFields(borrower, dto);
-        borrower.setHomeOwnership(homeOwnershipRepo.findByHomeOwnershipEngLike(dto.getHomeOwnershipString()));
-        borrower.setMonthlyIncomeTotal(borrower.getMonthlyIncomeOfficial() + borrower.getMonthlyIncomeAdditional());
-        return borrower;
-    }*/
+*/
 
     void addItn(ItnDto dto) {
         Borrower borrower = borrowerRepo.findById(dto.getUserId()).get();
@@ -102,6 +96,7 @@ public class BorrowerService implements UserDetailsService {
 
         borrower.setEmail(creds.getUsername());
         borrower.setActive(true); // add email activation for this
+        borrower.setContactPersons(new ArrayList<>());
         borrower.setPassword(passwordEncoder.encode(creds.getPassword()));
         borrower.setLastVisit(LocalDateTime.now());
         UserService.setRegisteredUserRole(borrower);
@@ -187,7 +182,31 @@ public class BorrowerService implements UserDetailsService {
         borrower.setEmployment( (borrower.getEmployment() != null) ?
             employmentService.update(borrower.getEmployment(), dto) :
                 employmentService.create(dto) );
+        List<ContactPerson> persons = borrower.getContactPersons();
+        String[] names1 = dto.getContactPerson1Name().split(" ");
+        String[] names2 = dto.getContactPerson2Name().split(" ");
 
+        if (persons.isEmpty()) {
+            persons.add(contactPersonRepo.save(new ContactPerson(names1[1], names1[0], names1[2], dto.getContactPerson1phone(), dto.getRelation1(), borrower)));
+            persons.add(contactPersonRepo.save(new ContactPerson(names2[1], names2[0], names2[2], dto.getContactPerson2phone(), dto.getRelation2(), borrower)));
+        } else {
+            ContactPerson person1 = persons.get(0);
+            person1.setFirstName(names1[1]);
+            person1.setLastName(names1[0]);
+            person1.setMiddleName(names1[2]);
+            person1.setPhone(dto.getContactPerson1phone());
+            person1.setRelationship(dto.getRelation1());
+            contactPersonRepo.save(person1);
+            ContactPerson person2 = persons.get(1);
+            person2.setFirstName(names2[1]);
+            person2.setLastName(names2[0]);
+            person2.setMiddleName(names2[2]);
+            person2.setPhone(dto.getContactPerson2phone());
+            person2.setRelationship(dto.getRelation2());
+            contactPersonRepo.save(person2);
+        }
+
+        borrower.setContactPersons(persons);
         borrower.setSocialStatus(socialStatusRepo.findByStatusUaLike(dto.getSocialStatus()));
         borrower.setMonthlyIncomeOfficial(dto.getMonthlyIncomeOfficial());
         borrower.setMonthlyIncomeAdditional(dto.getMonthlyIncomeAdditional());
@@ -198,7 +217,6 @@ public class BorrowerService implements UserDetailsService {
         borrower.setEmployeesCount(dto.getEmployeesCount());
         borrower.setMonthlyObligations(dto.getMonthlyObligations());
         borrower.setMonthlyIncomeTotal(borrower.getMonthlyIncomeOfficial() + borrower.getMonthlyIncomeAdditional());
-        System.out.println("===Saving: " + borrower.getEmail() + "===");
         borrowerRepo.save(borrower);
         return true;
     }
@@ -290,6 +308,9 @@ public class BorrowerService implements UserDetailsService {
     @PreAuthorize("hasAuthority('REGISTERED_USER')")
     public EmploymentDto getEmploymentData(Borrower borrower) {
         Employment empl = borrower.getEmployment();
+        List<ContactPerson> contactPersons = borrower.getContactPersons();
+        ContactPerson person1 = contactPersons.get(0);
+        ContactPerson person2 = contactPersons.get(1);
 
         return new EmploymentDto(
                 borrower.getSocialStatus().getStatusUa(),
@@ -306,8 +327,13 @@ public class BorrowerService implements UserDetailsService {
                 empl.getNextPaymentDate(),
                 empl.getPaymentFrequency(),
                 borrower.getMonthlyExpenses(),
-                borrower.getMonthlyObligations()
-        );
+                borrower.getMonthlyObligations(),
+                person1.getPhone().substring(4),
+                person2.getPhone().substring(4),
+                person1.getLastName() + " " + person1.getFirstName() + " " + person1.getMiddleName(),
+                person2.getLastName() + " " + person2.getFirstName() + " " + person2.getMiddleName(),
+                person1.getRelationship(),
+                person2.getRelationship());
     }
 
     @PreAuthorize("hasAuthority('REGISTERED_USER')")

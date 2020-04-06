@@ -24,7 +24,6 @@ public class ContactPersonService {
 
     public ContactPersonDto create(ContactPersonDto dto) {
         ContactPerson person = mapper.toEntity(dto);
-        person.setItn(itnRepo.findById(dto.getItnId()).get());
         return mapper.toDto(contactPersonRepo.save(person));
     }
 

@@ -24,7 +24,7 @@ public class ContactPersonMapper extends AbstractMapper<ContactPerson, ContactPe
         this.itnRepo = itnRepo;
     }
 
-    @PostConstruct
+ /*   @PostConstruct
     public void setupMapper() {
         mapper.createTypeMap(ContactPerson.class, ContactPersonDto.class)
                 .addMappings(m -> m.skip(ContactPersonDto::setItnId)).setPostConverter(toDtoConverter());
@@ -44,5 +44,5 @@ public class ContactPersonMapper extends AbstractMapper<ContactPerson, ContactPe
     @Override
     void mapSpecificFields(ContactPersonDto source, ContactPerson destination) {
         destination.setItn(itnRepo.findById(source.getItnId()).orElse(null));
-    }
+    }*/
 }

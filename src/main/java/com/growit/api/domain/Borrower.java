@@ -3,17 +3,16 @@ package com.growit.api.domain;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.growit.api.dto.UserRegistrationDto;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Set;
 
 @Data
 @Entity
 @NoArgsConstructor
 @Table(name = "borrowers")
-@EqualsAndHashCode(callSuper = false)
 public class Borrower extends User {
 
     private boolean verified;
@@ -111,10 +110,10 @@ public class Borrower extends User {
     @OneToOne
     private BorrowerVerification verification;
 
-    @OneToMany(mappedBy = "borrower", cascade = CascadeType.ALL, fetch = FetchType.LAZY )
-    Set<ContactPerson> contactPersons;
+    @OneToMany(mappedBy = "borrower", cascade = CascadeType.ALL, fetch = FetchType.EAGER )
+    List<ContactPerson> contactPersons;
 
-    @OneToMany(mappedBy = "borrower", cascade = CascadeType.ALL, fetch = FetchType.LAZY )
+    @OneToMany(mappedBy = "borrower", cascade = CascadeType.ALL, fetch = FetchType.EAGER )
     Set<Loan> loans;
 
     @ManyToOne
@@ -133,5 +132,7 @@ public class Borrower extends User {
     public Borrower(UserRegistrationDto dto) {
         super(dto);
     }
+
+
 
 }
