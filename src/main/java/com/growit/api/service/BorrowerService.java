@@ -344,4 +344,16 @@ public class BorrowerService implements UserDetailsService {
                 education.getEducationField()
         );
     }
+
+
+    @PreAuthorize("hasAuthority('REGISTERED_USER')")
+    public AssetsDto getAssetsData(Borrower borrower) {
+        return new AssetsDto(
+                borrower.getFlat(),
+                borrower.getHasHouse(),
+                borrower.getHasCar(),
+                borrower.getHasCar() ? borrower.getCarAge() : null,
+                borrower.getWasAbroad()
+        );
+    }
 }

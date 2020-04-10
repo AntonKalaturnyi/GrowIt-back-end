@@ -6,13 +6,10 @@ import com.growit.api.service.BorrowerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-
-import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
@@ -96,7 +93,6 @@ public class BorrowerController {
         return borrower.getEmployment() != null ? borrowerService.getEmploymentData(borrower) : new EmploymentDto();
     }
 
-
     @ResponseStatus(HttpStatus.OK)
     @PostMapping(value = "/set-education",
             produces = MediaType.APPLICATION_JSON_VALUE,
@@ -120,7 +116,11 @@ public class BorrowerController {
         return borrowerService.handleAssets(borrower, dto);
     }
 
-
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping(value = "/assets-data", produces = MediaType.APPLICATION_JSON_VALUE)
+    public AssetsDto getAssetsData(@AuthenticationPrincipal Borrower borrower) {
+        return borrower.getFlat() != null ? borrowerService.getAssetsData(borrower) : new AssetsDto();
+    }
 
     @ResponseStatus(HttpStatus.OK)
     @PutMapping(value = "/update", consumes = MediaType.APPLICATION_JSON_VALUE)
@@ -136,7 +136,6 @@ public class BorrowerController {
       //  return borrowerService.updateEmail(dto);
         return null;
     }
-
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping(value = "/new-card",
@@ -155,9 +154,4 @@ public class BorrowerController {
 
         return new CreditCardDto();
     }
-
-    /*
-+Itn
- +Address
- +Passport*/
 }
