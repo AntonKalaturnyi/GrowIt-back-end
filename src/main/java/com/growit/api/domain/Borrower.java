@@ -125,6 +125,25 @@ public class Borrower extends User {
     @OneToOne
     private CreditCard creditCard;
 
+    @Column(nullable = true)
+    private Boolean personalFilled;
+
+    @Column(nullable = true)
+    private Boolean docsFilled;
+
+    @Column(nullable = true)
+    private Boolean addressFilled;
+
+    @Column(nullable = true)
+    private Boolean employmentFilled;
+
+    @Column(nullable = true)
+    private Boolean educationFilled;
+
+    @Column(nullable = true)
+    private Boolean assetsFilled;
+
+
     public Borrower(User user) {
         super(user);
     }
@@ -132,6 +151,9 @@ public class Borrower extends User {
     public Borrower(UserRegistrationDto dto) {
         super(dto);
     }
+
+
+
 
 
 
