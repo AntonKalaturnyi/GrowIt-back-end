@@ -123,6 +123,12 @@ public class BorrowerController {
     }
 
     @ResponseStatus(HttpStatus.OK)
+    @GetMapping(value = "/filled-sections-data", produces = MediaType.APPLICATION_JSON_VALUE)
+    public RegSectionsFilledFlagsDto getSectionsFilledInfo(@AuthenticationPrincipal Borrower borrower) {
+        return borrowerService.getSectionsFilledFlags(borrower);
+    }
+
+    @ResponseStatus(HttpStatus.OK)
     @PutMapping(value = "/update", consumes = MediaType.APPLICATION_JSON_VALUE)
     public UserRegistrationDto update(@Validated(Existing.class) @RequestBody BorrowerUpdateDto dto) {
         return borrowerService.updateBorrower(dto);
@@ -142,7 +148,6 @@ public class BorrowerController {
             produces = MediaType.APPLICATION_JSON_VALUE,
             consumes = MediaType.APPLICATION_JSON_VALUE)
     CreditCardDto setCreditCard(CreditCardDto dto) {
-
         return new CreditCardDto();
     }
 
