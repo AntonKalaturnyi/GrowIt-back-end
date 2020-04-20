@@ -3,9 +3,9 @@ package com.growit.api.service;
 import com.growit.api.domain.Borrower;
 import com.growit.api.domain.CreditHistory;
 import com.growit.api.domain.Loan;
+import com.growit.api.domain.LoanStatus;
 import com.growit.api.dto.DashboardLoanDto;
 import com.growit.api.dto.LoanFromCalculatorDto;
-import com.growit.api.mapper.LoanMapper;
 import com.growit.api.repo.LoanPurposeRepo;
 import com.growit.api.repo.LoanRepo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,13 +20,11 @@ import java.util.List;
 public class LoanService {
 
     private final LoanRepo loanRepo;
-    private final LoanMapper mapper;
     private final LoanPurposeRepo loanPurposeRepo;
 
     @Autowired
-    public LoanService(LoanRepo loanRepo, LoanMapper mapper, LoanPurposeRepo loanPurposeRepo) {
+    public LoanService(LoanRepo loanRepo, LoanPurposeRepo loanPurposeRepo) {
         this.loanRepo = loanRepo;
-        this.mapper = mapper;
         this.loanPurposeRepo = loanPurposeRepo;
     }
 
@@ -39,6 +37,7 @@ public class LoanService {
         loan.setDescription(dto.getDescription());
         loan.setBorrower(borrower);
         loan.setLoanPurpose(loanPurposeRepo.findByPurposeUa(dto.getLoanPurpose()));
+        loan.setStatus(LoanStatus.DRAFTED_ON_CALCULATOR);
         loanRepo.save(loan);
         return true;
     }
