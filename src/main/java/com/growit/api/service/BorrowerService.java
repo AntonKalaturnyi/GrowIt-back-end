@@ -141,7 +141,6 @@ public class BorrowerService implements UserDetailsService {
         borrower.setInstagram(dto.getInstagram());
         borrower.setFacebook(dto.getFacebook());
         borrower.setWorkType(dto.getWorkType());
-        borrower.setEDRPOUcode(dto.getEDRPOUcode());
         return borrower;
     }
 
@@ -154,7 +153,7 @@ public class BorrowerService implements UserDetailsService {
         borrower.setKidsAfter18yo(dto.getKidsAfter18yo());
         borrower.setInstagram(dto.getInstagram());
         borrower.setFacebook(dto.getFacebook());
-        BorrowerAccount account = borrowerAccountRepo.save(new BorrowerAccount());
+        BorrowerAccount account = borrower.getBorrowerAccount() == null ? borrowerAccountRepo.save(new BorrowerAccount()) : borrower.getBorrowerAccount();
         account.setBorrower(borrower);
         account = borrowerAccountRepo.save(account);
         borrower.setBorrowerAccount(account);

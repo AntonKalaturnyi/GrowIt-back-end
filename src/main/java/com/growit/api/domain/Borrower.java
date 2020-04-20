@@ -17,6 +17,14 @@ public class Borrower extends User {
 
     private boolean verified;
 
+    @Column(nullable = true)
+    private Double dailyLoanRate;
+
+    private String safetyRank;
+
+    @Column(nullable = true)
+    private Integer verificationScore;
+
     private int monthlyIncomeOfficial;
 
     private int monthlyIncomeAdditional;
@@ -104,8 +112,9 @@ public class Borrower extends User {
 
     /** AFS (Anti Fraud System) UBKI */
 
-    /* In case 'workType'is 'entrepreneur' */
+    /* In case 'workType'is 'entrepreneur'
     private String EDRPOUcode;
+     */
 
     @OneToOne
     private BorrowerVerification verification;

@@ -1,3 +1,4 @@
+/*
 package com.growit.api.domain;
 
 import lombok.Data;
@@ -37,3 +38,4 @@ public class Rates extends AbstractEntity {
     private int minCollateralCoveragePercent;
 
 }
+*/
