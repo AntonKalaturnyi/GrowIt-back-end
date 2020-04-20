@@ -21,7 +21,7 @@ public class BorrowerAccountMapper extends AbstractMapper<BorrowerAccount, Borro
         this.borrowerRepo = borrowerRepo;
     }
 
-    @PostConstruct
+/*    @PostConstruct
     public void setupMapper() {
         mapper.createTypeMap(BorrowerAccount.class, BorrowerAccountDto.class)
                 .addMappings(m -> m.skip(BorrowerAccountDto::setBorrowerId)).setPostConverter(toDtoConverter());
@@ -39,5 +39,5 @@ public class BorrowerAccountMapper extends AbstractMapper<BorrowerAccount, Borro
     @Override
     void mapSpecificFields(BorrowerAccountDto source, BorrowerAccount destination) {
         destination.setBorrower(borrowerRepo.findById(source.getBorrowerId()).get());
-    }
+    }*/
 }

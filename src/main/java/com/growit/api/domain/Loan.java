@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.google.common.base.Objects;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
@@ -67,6 +66,9 @@ public class Loan extends AbstractEntity {
 
     /* APR, convert to monthly in service if needed  */
     private Double profitability;
+
+    @Column(nullable = true)
+    private Boolean latest;
 
     @Override
     public boolean equals(Object o) {
