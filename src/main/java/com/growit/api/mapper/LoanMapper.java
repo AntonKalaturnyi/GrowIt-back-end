@@ -1,3 +1,4 @@
+/*
 package com.growit.api.mapper;
 
 import com.growit.api.domain.Loan;
@@ -70,3 +71,4 @@ public class LoanMapper extends AbstractMapper<Loan, LoanDto> {
     }
 }
 
+*/

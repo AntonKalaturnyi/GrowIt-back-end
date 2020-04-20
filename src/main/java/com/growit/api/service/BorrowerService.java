@@ -159,6 +159,7 @@ public class BorrowerService implements UserDetailsService {
         account = borrowerAccountRepo.save(account);
         borrower.setBorrowerAccount(account);
         borrower.setPersonalFilled(true);
+        checkIfRegistrationInfoFilled(borrower);
         borrowerRepo.save(borrower);
         return ConstantUtil.getRandom6DigitNumber();
     }
@@ -169,6 +170,7 @@ public class BorrowerService implements UserDetailsService {
         borrower.setPassport(passportService.createBorrowerPass(borrower, dto, file));
         borrower.setItn(dto.getItnNumber());
         borrower.setDocsFilled(true);
+        checkIfRegistrationInfoFilled(borrower);
         borrowerRepo.save(borrower);
         return true;
     }
@@ -179,6 +181,7 @@ public class BorrowerService implements UserDetailsService {
         borrower.setAddress(dto.isSameAddressInPassport() ? borrower.getPassport().getAddressOfRegistration() :
         addressService.addressFromAddressDto(dto) );
         borrower.setAddressFilled(true);
+        checkIfRegistrationInfoFilled(borrower);
         borrowerRepo.save(borrower);
         return true;
     }
@@ -225,6 +228,7 @@ public class BorrowerService implements UserDetailsService {
         borrower.setMonthlyObligations(dto.getMonthlyObligations());
         borrower.setMonthlyIncomeTotal(borrower.getMonthlyIncomeOfficial() + borrower.getMonthlyIncomeAdditional());
         borrower.setEmploymentFilled(true);
+        checkIfRegistrationInfoFilled(borrower);
         borrowerRepo.save(borrower);
         return true;
     }
@@ -237,6 +241,7 @@ public class BorrowerService implements UserDetailsService {
                         educationService.update(borrower.getEducation(), dto) :
                         educationService.create(dto));
         borrower.setEducationFilled(true);
+        checkIfRegistrationInfoFilled(borrower);
         borrowerRepo.save(borrower);
         return true;
     }
@@ -252,6 +257,7 @@ public class BorrowerService implements UserDetailsService {
         }
         borrower.setWasAbroad(dto.isWasAbroad());
         borrower.setAssetsFilled(true);
+        checkIfRegistrationInfoFilled(borrower);
         borrowerRepo.save(borrower);
         return true;
     }
@@ -376,5 +382,12 @@ public class BorrowerService implements UserDetailsService {
                 borrower.getEmploymentFilled() != null ? borrower.getEmploymentFilled() : false,
                 borrower.getEducationFilled() != null ? borrower.getEducationFilled() : false,
                 borrower.getAssetsFilled() != null ? borrower.getAssetsFilled() : false );
+    }
+
+    private void checkIfRegistrationInfoFilled(Borrower borrower) {
+        if ( borrower.getAssetsFilled() &&  borrower.getEducationFilled() && borrower.getEmploymentFilled()
+                && borrower.getAddressFilled() && borrower.getDocsFilled() && borrower.getPersonalFilled()) {
+            borrower.getRoles().add(Role.BORROWER_ON_CHECK);
+        }
     }
 }

@@ -3,7 +3,7 @@ package com.growit.api.domain;
 import org.springframework.security.core.GrantedAuthority;
 
 public enum Role implements GrantedAuthority {
-    REGISTERED_USER, INVESTOR, BORROWER, VERIFIED_BORROWER, ADMIN;
+    REGISTERED_USER, INVESTOR, BORROWER_ON_CHECK, VERIFIED_BORROWER, ADMIN;
 
     @Override
     public String getAuthority() {
@@ -16,4 +16,4 @@ public enum Role implements GrantedAuthority {
     }
 }
 
-// SET RILES ON REGISTRATION
+// SET ROLES ON REGISTRATION
