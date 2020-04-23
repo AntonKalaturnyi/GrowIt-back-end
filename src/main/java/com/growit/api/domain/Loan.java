@@ -39,6 +39,10 @@ public class Loan extends AbstractEntity {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss.SSS")
     private LocalDateTime dateReleasedOnDashboard;
 
+    @Column(name = "close_date", updatable = false)
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss.SSS")
+    private LocalDateTime closeDate;
+
     /* ((amountFunded/Amount)*100) */
     private Double percentFunded;
 
@@ -50,6 +54,12 @@ public class Loan extends AbstractEntity {
 
     @Column(nullable = true)
     private Integer verificationScore;
+
+    @Column(nullable = true)
+    private Integer ratingChange;
+
+    @Column(nullable = true)
+    private Double dailyLoanRate;
 
     @ManyToOne
     private LoanPurpose loanPurpose;
