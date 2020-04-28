@@ -48,12 +48,6 @@ public class BorrowerDto extends AbstractDto{
 
     private String facebook;
 
-    /** On front-end: Lang: UA, ENG
-     Allowed types: employed; self-employed; entrepreneur*/
-    private String workType;
-
-    private String spouseITN;
-
     /** AFS (Anti Fraud System) UBKI */
 
     /* In case 'workType'is 'entrepreneur' */

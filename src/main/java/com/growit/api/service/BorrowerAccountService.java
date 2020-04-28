@@ -35,13 +35,13 @@ public class BorrowerAccountService {
     @PreAuthorize("hasAuthority('BORROWER_ON_CHECK')") // to be changed: to VERIFIED_BORROWER when verification implemented
     public BorrowerAccountDto getAccountData(Borrower borrower) {
         Loan latestLoan = loanRepo.findByBorrowerAndLatestTrue(borrower);
-        return new BorrowerAccountDto(
+        return borrower.isVerified() ? new BorrowerAccountDto(
                 borrower.getBorrowerAccount().getAvailableBalance(),
                 borrower.getDailyLoanRate(),
                 borrower.getSafetyRank(),
                 borrower.getVerificationScore(),
                 latestLoan.getStatus().name()
-        );
+        ) : new BorrowerAccountDto();
     }
 
 

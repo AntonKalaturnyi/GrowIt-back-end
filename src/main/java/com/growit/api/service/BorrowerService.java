@@ -100,6 +100,12 @@ public class BorrowerService implements UserDetailsService {
         borrower.setPassword(passwordEncoder.encode(creds.getPassword()));
         borrower.setLastVisit(LocalDateTime.now());
         UserService.setRegisteredUserRole(borrower);
+        borrower.setPersonalFilled(false);
+        borrower.setDocsFilled(false);
+        borrower.setAddressFilled(false);
+        borrower.setEmploymentFilled(false);
+        borrower.setEducationFilled(false);
+        borrower.setAssetsFilled(false);
         borrowerRepo.save(borrower);
         return authService.signIn(creds);
     }
@@ -140,7 +146,6 @@ public class BorrowerService implements UserDetailsService {
         borrower.setKidsAfter18yo(dto.getKidsAfter18yo());
         borrower.setInstagram(dto.getInstagram());
         borrower.setFacebook(dto.getFacebook());
-        borrower.setWorkType(dto.getWorkType());
         return borrower;
     }
 
@@ -178,7 +183,7 @@ public class BorrowerService implements UserDetailsService {
     @PreAuthorize("hasAuthority('REGISTERED_USER')")
     public Boolean saveLivingAddress(Borrower borrower, AddressDto dto) {
         borrower.setAddress(dto.isSameAddressInPassport() ? borrower.getPassport().getAddressOfRegistration() :
-        addressService.addressFromAddressDto(dto) );
+                addressService.addressFromAddressDto(dto) );
         borrower.setAddressFilled(true);
         checkIfRegistrationInfoFilled(borrower);
         borrowerRepo.save(borrower);
@@ -189,7 +194,7 @@ public class BorrowerService implements UserDetailsService {
     @PreAuthorize("hasAuthority('REGISTERED_USER')")
     public Boolean handleEmployment(Borrower borrower, EmploymentDto dto) {
         borrower.setEmployment( (borrower.getEmployment() != null) ?
-            employmentService.update(borrower.getEmployment(), dto) :
+                employmentService.update(borrower.getEmployment(), dto) :
                 employmentService.create(dto) );
         List<ContactPerson> persons = borrower.getContactPersons();
         String[] names1 = dto.getContactPerson1Name().split(" ");
@@ -375,12 +380,12 @@ public class BorrowerService implements UserDetailsService {
     @PreAuthorize("hasAuthority('REGISTERED_USER')")
     public RegSectionsFilledFlagsDto getSectionsFilledFlags(Borrower borrower) {
         return new RegSectionsFilledFlagsDto(
-                borrower.getPersonalFilled() != null ? borrower.getPersonalFilled() : false,
-                borrower.getDocsFilled() != null ? borrower.getDocsFilled() : false,
-                borrower.getAddressFilled() != null ? borrower.getAddressFilled() : false,
-                borrower.getEmploymentFilled() != null ? borrower.getEmploymentFilled() : false,
-                borrower.getEducationFilled() != null ? borrower.getEducationFilled() : false,
-                borrower.getAssetsFilled() != null ? borrower.getAssetsFilled() : false );
+                borrower.getPersonalFilled(),
+                borrower.getDocsFilled(),
+                borrower.getAddressFilled(),
+                borrower.getEmploymentFilled(),
+                borrower.getEducationFilled(),
+                borrower.getAssetsFilled());
     }
 
     private void checkIfRegistrationInfoFilled(Borrower borrower) {
