@@ -10,7 +10,6 @@ public interface BorrowerTransferObject {
     String getSpouseITN();
     String getInstagram();
     String getFacebook();
-    String getWorkType();
     String getEDRPOUcode();
     String getJobTitle();
 
