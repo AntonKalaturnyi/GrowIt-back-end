@@ -184,6 +184,7 @@ public class BorrowerService implements UserDetailsService {
     public Boolean saveLivingAddress(Borrower borrower, AddressDto dto) {
         borrower.setAddress(dto.isSameAddressInPassport() ? borrower.getPassport().getAddressOfRegistration() :
                 addressService.addressFromAddressDto(dto) );
+        borrower.setHomeType(dto.getHomeType());
         borrower.setAddressFilled(true);
         checkIfRegistrationInfoFilled(borrower);
         borrowerRepo.save(borrower);
@@ -321,7 +322,8 @@ public class BorrowerService implements UserDetailsService {
                 addr.getSettlement(),
                 addr.getDistrict(),
                 addr.getRegion(),
-                borrower.getPassport().getAddressOfRegistration().equals(addr)
+                borrower.getHomeType(),
+                borrower.getPassport() != null && borrower.getPassport().getAddressOfRegistration().equals(addr)
         );
     }
 

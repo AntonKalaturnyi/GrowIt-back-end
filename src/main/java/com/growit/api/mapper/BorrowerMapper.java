@@ -29,44 +29,6 @@ public class BorrowerMapper extends AbstractMapper<Borrower, BorrowerDto> {
         this.mapper = mapper;
     }
 
-    @PostConstruct
-    public void setupMapper() {
-        mapper.createTypeMap(Borrower.class, BorrowerDto.class)
-            //    .addMappings(m -> m.skip(BorrowerDto::setCreditHistoryId)).setPostConverter(toDtoConverter())
-                .addMappings(m -> m.skip(BorrowerDto::setWorkSphereString)).setPostConverter(toDtoConverter())
-                .addMappings(m -> m.skip(BorrowerDto::setHomeOwnershipString)).setPostConverter(toDtoConverter());
 
-        mapper.createTypeMap(BorrowerDto.class, Borrower.class)
-                .addMappings(m -> m.skip(Borrower::setCreditHistory)).setPostConverter(toEntityConverter())
-//                .addMappings(m -> m.skip(Borrower::setWorkSphere)).setPostConverter(toEntityConverter())
-                .addMappings(m -> m.skip(Borrower::setHomeOwnership)).setPostConverter(toEntityConverter());
-    }
-
-//    @Override
-//    public void mapSpecificFields(Borrower source, BorrowerDto destination) {
-//    //    destination.setCreditHistoryId(getCreditHistoryId(source));
-//        destination.setWorkSphereString(getWorkSphereString(source));
-//        destination.setHomeOwnershipString(getWorkSphereString(source));
-//    }
-
-    @Override
-    void mapSpecificFields(BorrowerDto source, Borrower destination) {
- //       destination.setCreditHistory(creditHistoryRepo.findById(source.getCreditHistoryId()).orElse(null));
-//        destination.setWorkSphere(workSphereRepo.findBySphereEngLike(source.getWorkSphereString()));
-        destination.setHomeOwnership(homeOwnershipRepo.findByHomeOwnershipEngLike(source.getHomeOwnershipString()));
-
-    }
-
-    private Long getCreditHistoryId(Borrower source) {
-        return Objects.isNull(source) || Objects.isNull(source.getId()) ? null : source.getCreditHistory().getId();
-    }
-
-//    private String getWorkSphereString(Borrower source) {
-//        return Objects.isNull(source) || Objects.isNull(source.getId()) ? null : source.getWorkSphere().getSphereEng();
-//    }
-
-    private String getHomeOwnershipString(Borrower source) {
-        return Objects.isNull(source) || Objects.isNull(source.getId()) ? null : source.getHomeOwnership().getHomeOwnershipEng();
-    }
 }
 
