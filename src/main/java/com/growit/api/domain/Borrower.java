@@ -121,8 +121,8 @@ public class Borrower extends User {
     @OneToMany(mappedBy = "borrower", cascade = CascadeType.ALL, fetch = FetchType.EAGER )
     Set<Loan> loans;
 
-    @ManyToOne
-    private HomeOwnership homeOwnership;
+    @Column(nullable = true)
+    private String homeType;
 
     @OneToOne
     private BorrowerAccount borrowerAccount;

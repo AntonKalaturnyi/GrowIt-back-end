@@ -28,12 +28,14 @@ public class AddressDto extends AbstractDto {
 
     private String region;
 
+    private String homeType;
+
     private boolean sameAddressInPassport;
 
     public AddressDto(@Pattern(regexp = ConstantUtil.VALID_POSTAL_CODE_REGEXP, message = "invalid postal code")
                               String postalCode, String door, String corpsNo,
                       String number, String street, String settlement, String district,
-                      String region, boolean sameAddressInPassport) {
+                      String region, String homeType, boolean sameAddressInPassport) {
 
         this.postalCode = postalCode;
         this.door = door;
@@ -43,6 +45,7 @@ public class AddressDto extends AbstractDto {
         this.settlement = settlement;
         this.district = district;
         this.region = region;
+        this.homeType = homeType;
         this.sameAddressInPassport = sameAddressInPassport;
     }
 }
