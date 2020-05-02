@@ -75,7 +75,8 @@ public class Loan extends AbstractEntity {
     private Borrower borrower;
 
     /* APR, convert to monthly in service if needed  */
-    private Double profitability;
+    @Column(name = "monthly_rate", nullable = true)
+    private Double monthlyRate;
 
     @Column(nullable = true)
     private Boolean latest;
@@ -102,7 +103,7 @@ public class Loan extends AbstractEntity {
                 Objects.equal(getLoanPurpose(), loan.getLoanPurpose()) &&
                 Objects.equal(getDescription(), loan.getDescription()) &&
                 Objects.equal(getStatus(), loan.getStatus()) &&
-                Objects.equal(getProfitability(), loan.getProfitability());
+                Objects.equal(getMonthlyRate(), loan.getMonthlyRate());
     }
 
     @Override
@@ -111,6 +112,6 @@ public class Loan extends AbstractEntity {
                 getAmountApproved(), getAmountToReturn(), getTerm(),
                 getPeriod(), getMonthlyPayment(), getAmountFunded(), getDateReturnDue(),
                 getDateReleasedOnDashboard(), getPercentFunded(), getDtiRatio(), getSafetyRank(),
-                getVerificationScore(), getLoanPurpose(), getDescription(), getStatus(), getProfitability());
+                getVerificationScore(), getLoanPurpose(), getDescription(), getStatus(), getMonthlyRate());
     }
 }
