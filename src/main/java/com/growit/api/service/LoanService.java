@@ -11,6 +11,9 @@ import com.growit.api.repo.LoanRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
+
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
@@ -18,6 +21,8 @@ import java.util.List;
 
 @Service
 public class LoanService {
+
+    private static NumberFormat formatter = new DecimalFormat("#0.00");
 
     private final LoanRepo loanRepo;
     private final LoanPurposeRepo loanPurposeRepo;
@@ -60,7 +65,7 @@ public class LoanService {
                     loan.getVerificationScore(),
                     loan.getAmountApproved(),
                     loan.getTerm(),
-                    String.valueOf(loan.getProfitability()).replace('.', ','),
+                    calculateProfitability(loan.getMonthlyRate(), Integer.parseInt(loan.getTerm().substring(0, loan.getTerm().length() - 1)), loan.getAmountApproved()).replace('.', ','), // String.valueOf((loan.getMonthlyRate() / 30) * 365).replace('.', ','),
                     loan.getLoanPurpose().getPurposeUa(),
                     loan.getDateReleasedOnDashboard().toLocalDate(),
                     loan.getAmountFunded(),
@@ -92,6 +97,11 @@ public class LoanService {
             ));
         }
         return list;
+    }
+
+    private String calculateProfitability(double monthlyRate, int days, int amount) {
+
+        return formatter.format((((((((((((monthlyRate / 30)*days)*0.01)+1)*amount)*0.985)*0.98) / amount) - 1) * 100) / days) * 365);
     }
 
     /**
