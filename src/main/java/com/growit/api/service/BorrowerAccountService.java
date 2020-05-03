@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -32,7 +33,7 @@ public class BorrowerAccountService {
         this.loanRepo = loanRepo;
     }
 
-    @PreAuthorize("hasAuthority('BORROWER_ON_CHECK')") // to be changed: to VERIFIED_BORROWER when verification implemented
+    @PreAuthorize("hasAnyAuthority('BORROWER_ON_CHECK', 'REGISTERED_BORROWER')") // to be changed: to VERIFIED_BORROWER when verification implemented
     public BorrowerAccountDto getAccountData(Borrower borrower) {
         Loan latestLoan = loanRepo.findByBorrowerAndLatestTrue(borrower);
         return borrower.isVerified() ? new BorrowerAccountDto(
@@ -45,10 +46,11 @@ public class BorrowerAccountService {
     }
 
 
-    @PreAuthorize("hasAuthority('BORROWER_ON_CHECK')")
+    @PreAuthorize("hasAnyAuthority('BORROWER_ON_CHECK', 'REGISTERED_BORROWER')")
     public List<BorrowerAccountLoanDto> getPreviousLoans(Borrower borrower) {
         ArrayList<BorrowerAccountLoanDto> list = new ArrayList<>();
         ArrayList<Loan> dbList = (ArrayList) loanRepo.findByBorrowerAndLatestFalseOrderByCloseDateDesc(borrower);
+        if (dbList.isEmpty()) return Collections.emptyList();
         for (Loan loan : dbList) {
             list.add(new BorrowerAccountLoanDto(
                     loan.getStatus().name(),

@@ -36,7 +36,7 @@ public class BorrowerController {
     @PostMapping(value = "/fill-borrower",
             produces = MediaType.APPLICATION_JSON_VALUE,
             consumes = MediaType.APPLICATION_JSON_VALUE)
-    public Integer fillInvestorAndSendSms(@AuthenticationPrincipal Borrower borrower, @Validated(New.class) @RequestBody BorrowerRegDto dto) {
+    public Integer fillBorrowerorAndSendSms(@AuthenticationPrincipal Borrower borrower, @Validated(New.class) @RequestBody BorrowerRegDto dto) {
         return borrowerService.fillPersonalInfoAndSendSmsCode(borrower, dto);
     }
 

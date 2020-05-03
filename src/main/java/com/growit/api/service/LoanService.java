@@ -47,7 +47,7 @@ public class LoanService {
         return true;
     }
 
-    @PreAuthorize("hasAuthority('INVESTOR')")
+    @PreAuthorize("hasAuthority('REGISTERED_INVESTOR')")
     public List<DashboardLoanDto> getDashboardLoanList() {
         ArrayList<DashboardLoanDto> list = new ArrayList<>();
         ArrayList<Loan> dbList = (ArrayList) loanRepo.findAll();

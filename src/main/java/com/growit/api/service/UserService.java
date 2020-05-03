@@ -75,11 +75,6 @@ public class UserService implements UserDetailsService {
                 (investor != null && investor.getEmail() != null) ? investor : new User();
     }
 
-    static void setRegisteredUserRole(User user) {
-        Set<Role> roles = new HashSet<>();
-        roles.add(Role.REGISTERED_USER);
-        user.setRoles(roles);
-    }
 
     static void addInvestorRole(User user) {
         Set<Role> roles = user.getRoles();
