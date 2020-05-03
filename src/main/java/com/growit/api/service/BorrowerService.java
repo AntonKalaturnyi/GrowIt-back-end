@@ -16,7 +16,9 @@ import org.springframework.web.multipart.MultipartFile;
 import java.time.LocalDateTime;
 import java.time.Period;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class BorrowerService implements UserDetailsService {
@@ -57,7 +59,6 @@ public class BorrowerService implements UserDetailsService {
         Borrower borrower = setFromDto(dto);
         borrower.setBirthday(dto.getBirthday());
         BorrowerAccount account = borrowerAccountRepo.save(new BorrowerAccount());
-        UserService.setRegisteredUserRole(borrower);
         account.setBorrower(borrower);
         account = borrowerAccountRepo.save(account);
         borrower.setBorrowerAccount(account);
@@ -87,7 +88,7 @@ public class BorrowerService implements UserDetailsService {
     public ResponseEntity createWithCredentials(AuthDto creds) {
         Borrower borrower;
         Investor investor = investorRepo.findByEmail(creds.getUsername());
-
+        Set<Role> roles = new HashSet<>();
         borrower = new Borrower();
 
         if (investor != null) {
@@ -99,7 +100,8 @@ public class BorrowerService implements UserDetailsService {
         borrower.setContactPersons(new ArrayList<>());
         borrower.setPassword(passwordEncoder.encode(creds.getPassword()));
         borrower.setLastVisit(LocalDateTime.now());
-        UserService.setRegisteredUserRole(borrower);
+        roles.add(Role.REGISTERED_BORROWER);
+        borrower.setRoles(roles);
         borrower.setPersonalFilled(false);
         borrower.setDocsFilled(false);
         borrower.setAddressFilled(false);
@@ -150,7 +152,7 @@ public class BorrowerService implements UserDetailsService {
     }
 
     @Transactional
-    @PreAuthorize("hasAuthority('REGISTERED_USER')")
+    @PreAuthorize("hasAuthority('REGISTERED_BORROWER')")
     public Integer fillPersonalInfoAndSendSmsCode(Borrower borrower, BorrowerRegDto dto) {
         UserService.setUserFields(borrower, dto);
         borrower.setMaritalStatus(dto.getMaritalStatus());
@@ -169,7 +171,7 @@ public class BorrowerService implements UserDetailsService {
     }
 
     @Transactional
-    @PreAuthorize("hasAuthority('REGISTERED_USER')")
+    @PreAuthorize("hasAuthority('REGISTERED_BORROWER')")
     public Boolean savePassportAndItn(BorrowerPassportAndItnDto dto, Borrower borrower, MultipartFile file) {
         borrower.setPassport(passportService.createBorrowerPass(borrower, dto, file));
         borrower.setItn(dto.getItnNumber());
@@ -180,7 +182,7 @@ public class BorrowerService implements UserDetailsService {
     }
 
     @Transactional
-    @PreAuthorize("hasAuthority('REGISTERED_USER')")
+    @PreAuthorize("hasAuthority('REGISTERED_BORROWER')")
     public Boolean saveLivingAddress(Borrower borrower, AddressDto dto) {
         borrower.setAddress(dto.isSameAddressInPassport() ? borrower.getPassport().getAddressOfRegistration() :
                 addressService.addressFromAddressDto(dto) );
@@ -192,7 +194,7 @@ public class BorrowerService implements UserDetailsService {
     }
 
     @Transactional
-    @PreAuthorize("hasAuthority('REGISTERED_USER')")
+    @PreAuthorize("hasAuthority('REGISTERED_BORROWER')")
     public Boolean handleEmployment(Borrower borrower, EmploymentDto dto) {
         borrower.setEmployment( (borrower.getEmployment() != null) ?
                 employmentService.update(borrower.getEmployment(), dto) :
@@ -239,7 +241,7 @@ public class BorrowerService implements UserDetailsService {
     }
 
     @Transactional
-    @PreAuthorize("hasAuthority('REGISTERED_USER')")
+    @PreAuthorize("hasAuthority('REGISTERED_BORROWER')")
     public Boolean handleEducation(Borrower borrower, EducationDto dto) {
         borrower.setEducation(
                 borrower.getEducation() != null ?
@@ -252,7 +254,7 @@ public class BorrowerService implements UserDetailsService {
     }
 
     @Transactional
-    @PreAuthorize("hasAuthority('REGISTERED_USER')")
+    @PreAuthorize("hasAuthority('REGISTERED_BORROWER')")
     public Boolean handleAssets(Borrower borrower, AssetsDto dto) {
         borrower.setFlat(dto.getFlat());
         borrower.setHasHouse(dto.isHasHouse());
@@ -268,7 +270,7 @@ public class BorrowerService implements UserDetailsService {
     }
 
     @Transactional
-    @PreAuthorize("hasAuthority('REGISTERED_USER')")
+    @PreAuthorize("hasAuthority('REGISTERED_BORROWER')")
     public BorrowerRegDto getRegData(Borrower borrower) {
         return new BorrowerRegDto(
                 borrower.getName(),
@@ -286,7 +288,7 @@ public class BorrowerService implements UserDetailsService {
     }
 
     @Transactional
-    @PreAuthorize("hasAuthority('REGISTERED_USER')")
+    @PreAuthorize("hasAuthority('REGISTERED_BORROWER')")
     public BorrowerPassportAndItnDto getDocsData(Borrower borrower) {
         Passport pass = borrower.getPassport();
         Address addr = pass.getAddressOfRegistration();
@@ -310,7 +312,7 @@ public class BorrowerService implements UserDetailsService {
         );
     }
 
-    @PreAuthorize("hasAuthority('REGISTERED_USER')")
+    @PreAuthorize("hasAuthority('REGISTERED_BORROWER')")
     public AddressDto getAddrData(Borrower borrower) {
         Address addr = borrower.getAddress();
         return new AddressDto(
@@ -327,7 +329,7 @@ public class BorrowerService implements UserDetailsService {
         );
     }
 
-    @PreAuthorize("hasAuthority('REGISTERED_USER')")
+    @PreAuthorize("hasAuthority('REGISTERED_BORROWER')")
     public EmploymentDto getEmploymentData(Borrower borrower) {
         Employment empl = borrower.getEmployment();
         List<ContactPerson> contactPersons = borrower.getContactPersons();
@@ -358,7 +360,7 @@ public class BorrowerService implements UserDetailsService {
                 person2.getRelationship());
     }
 
-    @PreAuthorize("hasAuthority('REGISTERED_USER')")
+    @PreAuthorize("hasAuthority('REGISTERED_BORROWER')")
     public EducationDto getEducationData(Borrower borrower) {
         Education education = borrower.getEducation();
         return new EducationDto(
@@ -368,7 +370,7 @@ public class BorrowerService implements UserDetailsService {
     }
 
 
-    @PreAuthorize("hasAuthority('REGISTERED_USER')")
+    @PreAuthorize("hasAuthority('REGISTERED_BORROWER')")
     public AssetsDto getAssetsData(Borrower borrower) {
         return new AssetsDto(
                 borrower.getFlat(),
@@ -379,7 +381,7 @@ public class BorrowerService implements UserDetailsService {
     }
 
 
-    @PreAuthorize("hasAuthority('REGISTERED_USER')")
+    @PreAuthorize("hasAuthority('REGISTERED_BORROWER')")
     public RegSectionsFilledFlagsDto getSectionsFilledFlags(Borrower borrower) {
         return new RegSectionsFilledFlagsDto(
                 borrower.getPersonalFilled(),

@@ -71,14 +71,19 @@ public class InvestorService implements UserDetailsService {
     @Transactional
     public ResponseEntity createWithCredentials(AuthDto creds) {
         Borrower borrower = borrowerRepo.findByEmail(creds.getUsername());
+        Investor investor;
         if (borrower != null) {
-            UserService.addInvestorRole(borrower);
+            // copyFromBorrowerProfile document
+//            UserService.addInvestorRole(borrower);
             return authService.signIn(creds);
+        } else {
+            investor = new Investor();
+            Set<Role> roles = new HashSet<>();
+            roles.add(Role.REGISTERED_INVESTOR);
+            investor.setRoles(roles);
         }
-        Investor investor = new Investor();
         investor.setEmail(creds.getUsername());
         investor.setPassword(passwordEncoder.encode(creds.getPassword()));
-        UserService.setRegisteredUserRole(investor);
         investor.setActive(true); // add email activation for this
         investor.setLastVisit(LocalDateTime.now());
         investorRepo.save(investor);

@@ -3,7 +3,7 @@ package com.growit.api.domain;
 import org.springframework.security.core.GrantedAuthority;
 
 public enum Role implements GrantedAuthority {
-    REGISTERED_USER, INVESTOR, BORROWER_ON_CHECK, VERIFIED_BORROWER, ADMIN;
+    REGISTERED_USER, REGISTERED_INVESTOR, INVESTOR, REGISTERED_BORROWER, BORROWER_ON_CHECK, VERIFIED_BORROWER, ADMIN;
 
     @Override
     public String getAuthority() {
