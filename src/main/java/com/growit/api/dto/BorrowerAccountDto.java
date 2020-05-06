@@ -6,15 +6,21 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = false)
 public class BorrowerAccountDto extends AbstractDto {
 
     private double availableBalance;
-    private double dailyRate;
+    private String dailyRate;
     private String rank;
-    private int score;
+    private String score;
     private String status;
 
+    public BorrowerAccountDto() {
+        this.availableBalance = 0;
+        this.dailyRate = "-";
+        this.rank = "-";
+        this.score = "-";
+        this.status = "no current loans";
+    }
 }

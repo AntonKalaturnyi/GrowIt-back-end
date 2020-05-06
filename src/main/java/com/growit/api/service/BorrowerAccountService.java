@@ -38,9 +38,9 @@ public class BorrowerAccountService {
         Loan latestLoan = loanRepo.findByBorrowerAndLatestTrue(borrower);
         return borrower.isVerified() ? new BorrowerAccountDto(
                 borrower.getBorrowerAccount().getAvailableBalance(),
-                borrower.getDailyLoanRate(),
+                borrower.getDailyLoanRate().toString()  + "%",
                 borrower.getSafetyRank(),
-                borrower.getVerificationScore(),
+                borrower.getVerificationScore().toString(),
                 latestLoan.getStatus().name()
         ) : new BorrowerAccountDto();
     }
