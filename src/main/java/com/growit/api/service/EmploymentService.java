@@ -27,6 +27,7 @@ public class EmploymentService {
     public Employment update(Employment employment, EmploymentDto dto) {
         employment.setLengthOfTotalEmploymentMo(dto.getLengthOfTotalEmploymentMo());
         employment.setLengthOfCurrentEmploymentMo(dto.getLengthOfCurrentEmploymentMo());
+        employment.setTermOfUnemployment(dto.getTermOfUnemployment());
         employment.setEmployerCount(dto.getEmployerCount());
         employment.setWorkSphere(workSphereRepo.findBySphereUaLike(dto.getWorkSphere()));
         employment.setNextPaymentDate(dto.getNextPaymentDate());

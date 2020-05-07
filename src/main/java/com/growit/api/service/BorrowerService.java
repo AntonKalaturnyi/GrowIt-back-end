@@ -184,8 +184,12 @@ public class BorrowerService implements UserDetailsService {
     @Transactional
     @PreAuthorize("hasAuthority('REGISTERED_BORROWER')")
     public Boolean saveLivingAddress(Borrower borrower, AddressDto dto) {
-        borrower.setAddress(dto.isSameAddressInPassport() ? borrower.getPassport().getAddressOfRegistration() :
-                addressService.addressFromAddressDto(dto) );
+
+        if (dto.isSameAddressInPassport() && dto.equals(getPassportAddress(borrower))) {
+            borrower.setAddress(borrower.getPassport().getAddressOfRegistration());
+        } else {
+            borrower.setAddress(addressService.addressFromAddressDto(dto));
+        }
         borrower.setHomeType(dto.getHomeType());
         borrower.setAddressFilled(true);
         checkIfRegistrationInfoFilled(borrower);

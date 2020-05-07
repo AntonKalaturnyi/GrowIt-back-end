@@ -43,6 +43,8 @@ public class Employment extends AbstractEntity {
 
     private int lengthOfCurrentEmploymentMo;  // In months
 
+    private String termOfUnemployment;
+
     private int employerCount;
 
     @Column

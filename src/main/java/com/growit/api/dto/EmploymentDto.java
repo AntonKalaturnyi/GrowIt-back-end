@@ -19,6 +19,8 @@ public class EmploymentDto extends AbstractDto {
 
     private int lengthOfCurrentEmploymentMo;  // In months
 
+    private String termOfUnemployment;
+
     private int employerCount;
 
     private int monthlyIncomeOfficial;
