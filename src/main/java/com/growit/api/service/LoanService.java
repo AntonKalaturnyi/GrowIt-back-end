@@ -33,12 +33,12 @@ public class LoanService {
         this.loanPurposeRepo = loanPurposeRepo;
     }
 
-    @PreAuthorize("hasAuthority('REGISTERED_USER')")
+    @PreAuthorize("hasAuthority('REGISTERED_BORROWER')")
     public Boolean createLoanFromCalculator(Borrower borrower, LoanFromCalculatorDto dto) {
         Loan loan = new Loan();
         loan.setAmountRequested(dto.getAmount());
         loan.setPeriod(dto.getPeriod());
-        loan.setTerm(String.valueOf(loan.getPeriod()));
+        loan.setTerm(String.valueOf(loan.getPeriod()) + "d");
         loan.setDescription(dto.getDescription());
         loan.setBorrower(borrower);
         loan.setLoanPurpose(loanPurposeRepo.findByPurposeUa(dto.getLoanPurpose()));

@@ -80,6 +80,12 @@ public class BorrowerController {
     }
 
     @ResponseStatus(HttpStatus.OK)
+    @GetMapping(value = "/passport-address-data", produces = MediaType.APPLICATION_JSON_VALUE)
+    public AddressDto getAddressFromPassport(@AuthenticationPrincipal Borrower borrower) {
+        return borrower.getPassport().getAddressOfRegistration() != null ? borrowerService.getPassportAddress(borrower) : new AddressDto();
+    }
+
+    @ResponseStatus(HttpStatus.OK)
     @PostMapping(value = "/set-employment",
             produces = MediaType.APPLICATION_JSON_VALUE,
             consumes = MediaType.APPLICATION_JSON_VALUE)

@@ -330,6 +330,23 @@ public class BorrowerService implements UserDetailsService {
     }
 
     @PreAuthorize("hasAuthority('REGISTERED_BORROWER')")
+    public AddressDto getPassportAddress(Borrower borrower) {
+        Address addr = borrower.getPassport().getAddressOfRegistration();
+        return new AddressDto(
+                addr.getPostalCode(),
+                addr.getDoor(),
+                addr.getCorpsNo(),
+                addr.getNumber(),
+                addr.getStreet(),
+                addr.getSettlement(),
+                addr.getDistrict(),
+                addr.getRegion(),
+                "",
+                false
+        );
+    }
+
+    @PreAuthorize("hasAuthority('REGISTERED_BORROWER')")
     public EmploymentDto getEmploymentData(Borrower borrower) {
         Employment empl = borrower.getEmployment();
         List<ContactPerson> contactPersons = borrower.getContactPersons();
