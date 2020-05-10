@@ -1,7 +1,7 @@
 package com.growit.api.service;
 
 import com.growit.api.domain.*;
-import com.growit.api.dto.BorrowerAccountDto;
+import com.growit.api.dto.CalculatorLoanOnFundingDto;
 import com.growit.api.dto.DashboardLoanDto;
 import com.growit.api.dto.LoanFromCalculatorDto;
 import com.growit.api.repo.LoanPurposeRepo;
@@ -15,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
@@ -53,6 +54,7 @@ public class LoanService {
             loan.setVerificationScore(borrower.getVerificationScore());
             loan.setAmountApproved(loan.getAmountRequested());
             loan.setMonthlyRate(borrower.getMonthlyRate());
+            loan.setMonthlyPayment(loan.getAmountApproved());
             loan.setAmountToReturn(calculateAmountToReturn(loan.getMonthlyRate(), loan.getPeriod(), loan.getAmountApproved()));
         } else {
             loan.setStatus(LoanStatus.DRAFTED_ON_CALCULATOR);
@@ -60,6 +62,57 @@ public class LoanService {
         loan.setLoanPurpose(loanPurposeRepo.findByPurposeUa(dto.getLoanPurpose()));
         loanRepo.save(loan);
         return true;
+    }
+
+    @Transactional
+    @PreAuthorize("hasAuthority('VERIFIED_BORROWER')")
+    public boolean deleteCurrentCabinetLoan(Borrower borrower) {
+        Loan loan = loanRepo.findByBorrowerAndLatestTrueAndStatus(borrower, LoanStatus.ON_FUNDING);
+        loanRepo.deleteWithId(loan.getId());
+        return true;
+    }
+
+
+    @PreAuthorize("hasAnyAuthority('BORROWER_ON_CHECK', 'VERIFIEED_BORROWER', 'REGISTERED_BORROWER')")
+    @Transactional
+    public List<CalculatorLoanOnFundingDto> getCurrentCabinetLoan(Borrower borrower) {
+        Loan latestLoan = loanRepo.findByBorrowerAndLatestTrueAndStatus(borrower, LoanStatus.ON_FUNDING);
+        if (latestLoan != null) {
+            CreditHistory history = borrower.getCreditHistory();
+            boolean noOpenCr = history.getCurrentOpenCredits() == null || history.getCurrentOpenCredits() == 0;
+
+            ArrayList<CalculatorLoanOnFundingDto> list = new ArrayList<>();
+            list.add( new CalculatorLoanOnFundingDto(
+                    latestLoan.getId(),
+                    latestLoan.getAmountApproved(),
+                    latestLoan.getTerm(),
+                    latestLoan.getAmountToReturn().toString(), latestLoan.getLoanPurpose().getPurposeEng(),
+                    latestLoan.getDateReleasedOnDashboard().toLocalDate(),
+                    latestLoan.getAmountFunded(),
+                    (int) Math.round( (latestLoan.getAmountFunded() / latestLoan.getAmountApproved()) * 100),
+                    latestLoan.getDescription(),
+                    latestLoan.getCloseDate().toLocalDate().format(DateTimeFormatter.ofPattern("dd.MM.yy"))
+                            + " (" + ((latestLoan.getDateReleasedOnDashboard().plusDays(7).getDayOfYear()) - LocalDateTime.now().getDayOfYear()) + "дн)",
+                    borrower.getRegistrationDate().toLocalDate(),
+                    borrower.getMaritalStatus(),
+                    borrower.getKidsBefore18yo(),
+                    borrower.getKidsAfter18yo(),
+                    borrower.getAddress().getSettlement() + ", " + borrower.getAddress().getRegion(),
+                    borrower.getAge(),
+                    borrower.getSocialStatus(),
+                    borrower.getMonthlyIncomeTotal(),
+                    borrower.getMonthlyExpenses(),
+                    (int) Math.round((borrower.getMonthlyObligations() + latestLoan.getMonthlyPayment()) / borrower.getMonthlyIncomeTotal() * 100), // pti
+                    history.getCurrentOpenCredits(),
+                    noOpenCr ? 0 : history.getCurrentDebtAmount(),
+                    !noOpenCr && history.isHasDelayInCurrentPeriod(),
+                    noOpenCr ? 0 : history.getCurrentOverdueDebtAmount(),
+                    noOpenCr ? 0 : history.getCurrentDelayInDays(),
+                    history.getPayedOffInOtherOrgs(),
+                    history.getPayedInGrowit()
+            ));
+            return list;
+        } return new ArrayList<>();
     }
 
 
