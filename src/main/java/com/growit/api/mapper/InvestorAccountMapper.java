@@ -1,3 +1,4 @@
+/*
 package com.growit.api.mapper;
 
 import com.growit.api.domain.InvestorAccount;
@@ -41,3 +42,4 @@ public class InvestorAccountMapper extends AbstractMapper<InvestorAccount, Inves
         destination.setInvestor(investorRepo.findById(source.getInvestorId()).get());
     }
 }
+*/

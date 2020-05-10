@@ -1,19 +1,21 @@
 package com.growit.api.dto;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
+@AllArgsConstructor
 @EqualsAndHashCode(callSuper = false)
 public class InvestorAccountDto extends AbstractDto {
 
     private double availableBalance;
 
-    private String currency;
+    private double investedFunds;
 
-    private long investorId;
+    /*    private long investorId;
 
     private double expectedProfitability;
 
@@ -29,8 +31,10 @@ public class InvestorAccountDto extends AbstractDto {
 
     private int chargedOffLoans;
 
-    private double currentBalanceAvailable;
+    private double currentBalanceAvailable;*/
 
-    private double investedFunds;
-
+    public InvestorAccountDto() {
+        this.availableBalance = 0;
+        this.investedFunds = 0;
+    }
 }

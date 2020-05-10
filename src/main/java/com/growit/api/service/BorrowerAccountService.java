@@ -38,6 +38,7 @@ public class BorrowerAccountService {
         this.creditHistoryRepo = creditHistoryRepo;
     }
 
+    @Transactional
     @PreAuthorize("hasAnyAuthority('BORROWER_ON_CHECK', 'REGISTERED_BORROWER')") // to be changed: to VERIFIED_BORROWER when verification implemented
     public BorrowerAccountDto getAccountData(Borrower borrower) {
         Loan latestLoan = loanRepo.findByBorrowerAndLatestTrue(borrower);
@@ -51,8 +52,8 @@ public class BorrowerAccountService {
         ) : new BorrowerAccountDto();
     }
 
-    @PreAuthorize("hasAuthority('BORROWER_ON_CHECK')")
     @Transactional
+    @PreAuthorize("hasAuthority('BORROWER_ON_CHECK')")
     public boolean toggleVerification(Borrower borrower) {
         borrower.setVerified(true);
         borrower.setMonthlyRate(20d);
