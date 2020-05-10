@@ -18,7 +18,7 @@ public class Borrower extends User {
     private boolean verified;
 
     @Column(nullable = true)
-    private Double dailyLoanRate;
+    private Double monthlyRate;
 
     private String safetyRank;
 
@@ -85,8 +85,7 @@ public class Borrower extends User {
     @Column(nullable = true)
     private Integer monthlyObligations;
 
-    @ManyToOne
-    private SocialStatus socialStatus;
+    private String  socialStatus;
 
     private String maritalStatus;
 

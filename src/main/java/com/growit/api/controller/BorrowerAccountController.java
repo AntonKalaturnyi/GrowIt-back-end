@@ -34,6 +34,11 @@ public class BorrowerAccountController {
         return borrowerAccountService.getAccountData(borrower);
     }
 
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping(value = "/verification", produces = MediaType.APPLICATION_JSON_VALUE)
+    public boolean toggleVerification(@AuthenticationPrincipal Borrower borrower) {
+        return borrowerAccountService.toggleVerification(borrower);
+    }
 
     @ResponseStatus(HttpStatus.OK)
     @GetMapping(value = "/get-loans", produces = MediaType.APPLICATION_JSON_VALUE)

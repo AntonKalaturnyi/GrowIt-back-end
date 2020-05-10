@@ -20,7 +20,7 @@ public class Loan extends AbstractEntity {
     private Integer amountApproved;  // +
 
     @Column(nullable = true)
-    private Integer amountToReturn;  // +
+    private Double amountToReturn;  // +
 
     private String term; // "12d" - 30 days "12m" - 12 month
 
@@ -31,15 +31,15 @@ public class Loan extends AbstractEntity {
 
     private double amountFunded;
 
-    @Column(name = "date_return_due", updatable = false)
+    @Column(name = "date_return_due")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss.SSS")
     private LocalDateTime dateReturnDue;
 
-    @Column(name = "date_released", updatable = false)
+    @Column(name = "date_released")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss.SSS")
     private LocalDateTime dateReleasedOnDashboard;
 
-    @Column(name = "close_date", updatable = false)
+    @Column(name = "close_date")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss.SSS")
     private LocalDateTime closeDate;
 

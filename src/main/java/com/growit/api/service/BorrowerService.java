@@ -25,7 +25,6 @@ public class BorrowerService implements UserDetailsService {
 
     private final BorrowerRepo borrowerRepo;
     private final BorrowerAccountRepo borrowerAccountRepo;
-    private final SocialStatusRepo socialStatusRepo;
     private final AddressService addressService;
     private final EmploymentService employmentService;
     private final InvestorRepo investorRepo;
@@ -37,13 +36,12 @@ public class BorrowerService implements UserDetailsService {
 
     @Autowired
     public BorrowerService(BorrowerRepo borrowerRepo, BorrowerAccountRepo borrowerAccountRepo, CreditHistoryRepo creditHistoryRepo,
-                           ContactPersonRepo contactPersonRepo, SocialStatusRepo socialStatusRepo, AddressService addressService,
+                           ContactPersonRepo contactPersonRepo, AddressService addressService,
                            EmploymentService employmentService, InvestorRepo investorRepo,
                            AuthService authService, PasswordEncoder passwordEncoder, PassportService passportService,
                            CreditCardRepo creditCardRepo, EducationService educationService) {
         this.borrowerRepo = borrowerRepo;
         this.borrowerAccountRepo = borrowerAccountRepo;
-        this.socialStatusRepo = socialStatusRepo;
         this.addressService = addressService;
         this.employmentService = employmentService;
         this.investorRepo = investorRepo;
@@ -100,6 +98,7 @@ public class BorrowerService implements UserDetailsService {
         borrower.setContactPersons(new ArrayList<>());
         borrower.setPassword(passwordEncoder.encode(creds.getPassword()));
         borrower.setLastVisit(LocalDateTime.now());
+        borrower.setRegistrationDate(LocalDateTime.now());
         roles.add(Role.REGISTERED_BORROWER);
         borrower.setRoles(roles);
         borrower.setPersonalFilled(false);
@@ -143,7 +142,6 @@ public class BorrowerService implements UserDetailsService {
 
         borrower.setMonthlyIncomeOfficial(dto.getMonthlyIncomeOfficial());
         borrower.setMonthlyIncomeAdditional(dto.getMonthlyIncomeAdditional());
-        borrower.setMarried(dto.isMarried());
         borrower.setKidsBefore18yo(dto.getKidsBefore18yo());
         borrower.setKidsAfter18yo(dto.getKidsAfter18yo());
         borrower.setInstagram(dto.getInstagram());
@@ -228,7 +226,7 @@ public class BorrowerService implements UserDetailsService {
         }
 
         borrower.setContactPersons(persons);
-        borrower.setSocialStatus(socialStatusRepo.findByStatusUaLike(dto.getSocialStatus()));
+        borrower.setSocialStatus(dto.getSocialStatus());
         borrower.setMonthlyIncomeOfficial(dto.getMonthlyIncomeOfficial());
         borrower.setMonthlyIncomeAdditional(dto.getMonthlyIncomeAdditional());
         borrower.setAdditionalIncomeSource(dto.getAdditionalIncomeSource());
@@ -358,7 +356,7 @@ public class BorrowerService implements UserDetailsService {
         ContactPerson person2 = contactPersons.get(1);
 
         return new EmploymentDto(
-                borrower.getSocialStatus().getStatusUa(),
+                borrower.getSocialStatus(),
                 empl.getWorkSphere().getSphereUa(),
                 empl.getLengthOfTotalEmploymentMo(),
                 empl.getLengthOfCurrentEmploymentMo(),

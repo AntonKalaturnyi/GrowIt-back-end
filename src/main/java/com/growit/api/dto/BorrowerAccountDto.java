@@ -1,12 +1,9 @@
 package com.growit.api.dto;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
 
 @Data
-@AllArgsConstructor
 @EqualsAndHashCode(callSuper = false)
 public class BorrowerAccountDto extends AbstractDto {
 
@@ -15,6 +12,17 @@ public class BorrowerAccountDto extends AbstractDto {
     private String rank;
     private String score;
     private String status;
+    private boolean verified;
+
+
+    public BorrowerAccountDto(double availableBalance, String dailyRate, String rank, String score, String status, boolean verified) {
+        this.availableBalance = availableBalance;
+        this.dailyRate = dailyRate;
+        this.rank = rank;
+        this.score = score;
+        this.status = status;
+        this.verified = verified;
+    }
 
     public BorrowerAccountDto() {
         this.availableBalance = 0;
@@ -22,5 +30,6 @@ public class BorrowerAccountDto extends AbstractDto {
         this.rank = "-";
         this.score = "-";
         this.status = "no current loans";
+        this.verified = false;
     }
 }

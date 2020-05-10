@@ -41,4 +41,11 @@ public class LoanController {
     }
 
 
+
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping(value = "/calculator-loan", produces = MediaType.APPLICATION_JSON_VALUE)
+    public LoanFromCalculatorDto getCalculatorLoan(@AuthenticationPrincipal Borrower borrower) {
+        return loanService.getCalculatorLoan(borrower);
+    }
+
 }

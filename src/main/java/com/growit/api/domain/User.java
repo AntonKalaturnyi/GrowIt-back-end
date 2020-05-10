@@ -53,9 +53,6 @@ public class User extends AbstractEntity implements UserDetails {
     @OneToOne
     protected Passport passport;
 
-    @Column(name = "married", nullable = true)
-    protected boolean married;
-
     @Email
     @Size(max = 85)
     @Column(length = 85)

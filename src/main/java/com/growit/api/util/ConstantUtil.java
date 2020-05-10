@@ -1,5 +1,7 @@
 package com.growit.api.util;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.Random;
 
 public class ConstantUtil {
@@ -41,4 +43,11 @@ public class ConstantUtil {
         return new Random().nextInt((999999 - 100000) + 1) + 100000;
     }
 
+    public static double round(double value, int places) {
+        if (places < 0) throw new IllegalArgumentException();
+
+        BigDecimal bd = BigDecimal.valueOf(value);
+        bd = bd.setScale(places, RoundingMode.HALF_UP);
+        return bd.doubleValue();
+    }
 }

@@ -1,20 +1,20 @@
 package com.growit.api.service;
 
 import com.growit.api.domain.Borrower;
-import com.growit.api.domain.CreditHistory;
 import com.growit.api.domain.Loan;
+import com.growit.api.domain.Role;
 import com.growit.api.dto.BorrowerAccountDto;
 import com.growit.api.dto.BorrowerAccountLoanDto;
-import com.growit.api.dto.DashboardLoanDto;
 import com.growit.api.mapper.BorrowerAccountMapper;
 import com.growit.api.repo.BorrowerAccountRepo;
+import com.growit.api.repo.BorrowerRepo;
+import com.growit.api.repo.CreditHistoryRepo;
 import com.growit.api.repo.LoanRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
-import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -23,14 +23,19 @@ import java.util.List;
 public class BorrowerAccountService {
 
     private final BorrowerAccountMapper mapper;
+    private final BorrowerRepo borrowerRepo;
     private final BorrowerAccountRepo borrowerAccountRepo;
     private final LoanRepo loanRepo;
+    private final CreditHistoryRepo creditHistoryRepo;
+
 
     @Autowired
-    public BorrowerAccountService(BorrowerAccountMapper mapper, BorrowerAccountRepo borrowerAccountRepo, LoanRepo loanRepo) {
+    public BorrowerAccountService(BorrowerAccountMapper mapper, BorrowerRepo borrowerRepo, BorrowerAccountRepo borrowerAccountRepo, LoanRepo loanRepo, CreditHistoryRepo creditHistoryRepo) {
         this.mapper = mapper;
+        this.borrowerRepo = borrowerRepo;
         this.borrowerAccountRepo = borrowerAccountRepo;
         this.loanRepo = loanRepo;
+        this.creditHistoryRepo = creditHistoryRepo;
     }
 
     @PreAuthorize("hasAnyAuthority('BORROWER_ON_CHECK', 'REGISTERED_BORROWER')") // to be changed: to VERIFIED_BORROWER when verification implemented
@@ -38,13 +43,26 @@ public class BorrowerAccountService {
         Loan latestLoan = loanRepo.findByBorrowerAndLatestTrue(borrower);
         return borrower.isVerified() ? new BorrowerAccountDto(
                 borrower.getBorrowerAccount().getAvailableBalance(),
-                borrower.getDailyLoanRate().toString()  + "%",
+                String.format("%.2f", (borrower.getMonthlyRate() / 30))  + "%",
                 borrower.getSafetyRank(),
                 borrower.getVerificationScore().toString(),
-                latestLoan.getStatus().name()
+                latestLoan != null ? latestLoan.getStatus().name() : "no current loans",  // npe
+                borrower.isVerified()
         ) : new BorrowerAccountDto();
     }
 
+    @PreAuthorize("hasAuthority('BORROWER_ON_CHECK')")
+    @Transactional
+    public boolean toggleVerification(Borrower borrower) {
+        borrower.setVerified(true);
+        borrower.setMonthlyRate(20d);
+        borrower.setSafetyRank("A");
+        borrower.setVerificationScore(83);
+        borrower.setCreditHistory(creditHistoryRepo.findById(432L).get());
+        borrower.getRoles().add(Role.VERIFIED_BORROWER);
+        borrowerRepo.save(borrower);
+        return true;
+    }
 
     @PreAuthorize("hasAnyAuthority('BORROWER_ON_CHECK', 'REGISTERED_BORROWER')")
     public List<BorrowerAccountLoanDto> getPreviousLoans(Borrower borrower) {
@@ -65,6 +83,8 @@ public class BorrowerAccountService {
         }
         return list;
     }
+
+
 
 /*
     public BorrowerAccountDto update(BorrowerAccountDto dto) {

@@ -1,16 +1,16 @@
 package com.growit.api.service;
 
-import com.growit.api.domain.Borrower;
-import com.growit.api.domain.CreditHistory;
-import com.growit.api.domain.Loan;
-import com.growit.api.domain.LoanStatus;
+import com.growit.api.domain.*;
+import com.growit.api.dto.BorrowerAccountDto;
 import com.growit.api.dto.DashboardLoanDto;
 import com.growit.api.dto.LoanFromCalculatorDto;
 import com.growit.api.repo.LoanPurposeRepo;
 import com.growit.api.repo.LoanRepo;
+import com.growit.api.util.ConstantUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
@@ -34,17 +34,42 @@ public class LoanService {
     }
 
     @PreAuthorize("hasAuthority('REGISTERED_BORROWER')")
+    @Transactional
     public Boolean createLoanFromCalculator(Borrower borrower, LoanFromCalculatorDto dto) {
-        Loan loan = new Loan();
+        Loan prev = loanRepo.findByBorrowerAndLatestTrue(borrower);
+        Loan loan = prev == null ? new Loan(): prev;
         loan.setAmountRequested(dto.getAmount());
         loan.setPeriod(dto.getPeriod());
-        loan.setTerm(String.valueOf(loan.getPeriod()) + "d");
+        loan.setTerm(loan.getPeriod() + "d");
         loan.setDescription(dto.getDescription());
         loan.setBorrower(borrower);
+        loan.setLatest(true);
+        if (borrower.getRoles().contains(Role.VERIFIED_BORROWER)) {
+
+            loan.setStatus(LoanStatus.ON_FUNDING);
+            loan.setDateReleasedOnDashboard(LocalDateTime.now());
+            loan.setCloseDate(loan.getDateReleasedOnDashboard().plusDays(7));
+            loan.setSafetyRank(borrower.getSafetyRank());
+            loan.setVerificationScore(borrower.getVerificationScore());
+            loan.setAmountApproved(loan.getAmountRequested());
+            loan.setMonthlyRate(borrower.getMonthlyRate());
+            loan.setAmountToReturn(calculateAmountToReturn(loan.getMonthlyRate(), loan.getPeriod(), loan.getAmountApproved()));
+        } else {
+            loan.setStatus(LoanStatus.DRAFTED_ON_CALCULATOR);
+        }
         loan.setLoanPurpose(loanPurposeRepo.findByPurposeUa(dto.getLoanPurpose()));
-        loan.setStatus(LoanStatus.DRAFTED_ON_CALCULATOR);
         loanRepo.save(loan);
         return true;
+    }
+
+
+    @PreAuthorize("hasAnyAuthority('BORROWER_ON_CHECK', 'VERIFIEED_BORROWER', 'REGISTERED_BORROWER')") // to be changed: to VERIFIED_BORROWER when verification implemented
+    @Transactional
+    public LoanFromCalculatorDto getCalculatorLoan(Borrower borrower) {
+        Loan latestLoan = loanRepo.findByBorrowerAndLatestTrueAndStatus(borrower, LoanStatus.DRAFTED_ON_CALCULATOR);
+        return latestLoan != null ?
+                new LoanFromCalculatorDto(latestLoan.getAmountRequested(), latestLoan.getPeriod(), latestLoan.getLoanPurpose().getPurposeUa(), latestLoan.getDescription()) :
+                new LoanFromCalculatorDto();
     }
 
     @PreAuthorize("hasAuthority('REGISTERED_INVESTOR')")
@@ -83,7 +108,7 @@ public class LoanService {
                     borrower.getKidsAfter18yo(),
                     borrower.getAddress().getSettlement() + ", " + borrower.getAddress().getRegion(),
                     borrower.getAge(),
-                    borrower.getSocialStatus().getStatusUa(),
+                    borrower.getSocialStatus(),
                     borrower.getMonthlyIncomeTotal(),
                     borrower.getMonthlyExpenses(),
                     (int) Math.round((borrower.getMonthlyObligations() + loan.getMonthlyPayment()) / borrower.getMonthlyIncomeTotal() * 100), // pti
@@ -100,8 +125,11 @@ public class LoanService {
     }
 
     private String calculateProfitability(double monthlyRate, int days, int amount) {
-
         return formatter.format((((((((((((monthlyRate / 30)*days)*0.01)+1)*amount)*0.985)*0.98) / amount) - 1) * 100) / days) * 365);
+    }
+
+    private double calculateAmountToReturn(double monthlyRate, int days, int amount) {
+        return ConstantUtil.round(((((monthlyRate / 30)*days)*0.01)+1)*amount , 2);
     }
 
     /**
