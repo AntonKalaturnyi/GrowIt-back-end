@@ -51,6 +51,7 @@ public class InvestorService implements UserDetailsService {
         UserService.setUserFields(investor, dto);
         InvestorAccount account = investorAccountRepo.save(new InvestorAccount());
         account.setInvestor(investor);
+        account.setAvailableBalance(7700);
         account = investorAccountRepo.save(account);
         investor.setAccount(account);
         investor.setInvestments(new HashSet<>());

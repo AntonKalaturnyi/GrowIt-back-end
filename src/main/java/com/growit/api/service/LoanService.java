@@ -177,7 +177,7 @@ public class LoanService {
         return list;
     }
 
-    private String calculateProfitability(double monthlyRate, int days, int amount) {
+    public static String calculateProfitability(double monthlyRate, int days, int amount) {
         return formatter.format((((((((((((monthlyRate / 30)*days)*0.01)+1)*amount)*0.985)*0.98) / amount) - 1) * 100) / days) * 365);
     }
 
