@@ -20,13 +20,6 @@ public class InvestorAccountService {
         this.investorAccountRepo = investorAccountRepo;
     }
 
-/*
-    public InvestorAccountDto update(InvestorAccountDto dto) {
-        dto.setCreated(investorAccountRepo.findById(dto.getId()).get().getCreated());
-        return mapper.toDto(investorAccountRepo.save(mapper.toEntity(dto)) );
-    }
-*/
-
     @Transactional
     @PreAuthorize("hasAnyAuthority('REGISTERED_INVESTOR')")
     public InvestorAccountDto getAccountData(Investor investor) {
