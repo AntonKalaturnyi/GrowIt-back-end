@@ -63,6 +63,7 @@ public class InvestorService implements UserDetailsService {
     public Boolean savePassportAndItn(Investor investor, InvestorPassportAndItnDto dto) {
         investor.setPassport(passportService.createInvestorPass(dto));
         investor.setItn(dto.getItnNumber());
+        investor.getRoles().add(Role.INVESTOR);
         investorRepo.save(investor);
         return true;
     }
