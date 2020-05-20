@@ -33,11 +33,9 @@ public class InvestorAccount extends Account {
     private int late15To30Days;
 
     @Column(nullable = true)
-
     private int late31To60DaysLoans;
 
     @Column(nullable = true)
-
     private int late61To120DaysLoans;
 
     private int chargedOffLoans;
@@ -86,7 +84,7 @@ public class InvestorAccount extends Account {
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(super.hashCode(), getTransactions(),
+        return Objects.hashCode(super.hashCode(),
                 getExpectedProfitability(), getCurrentActiveLoans(),
                 getGracePeriodLoans(), getLate6To14Days(), getLate15To30Days(),
                 getLate31To60DaysLoans(), getLate61To120DaysLoans(), getChargedOffLoans(),

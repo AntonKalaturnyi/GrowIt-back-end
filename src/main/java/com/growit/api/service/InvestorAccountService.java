@@ -3,9 +3,11 @@ package com.growit.api.service;
 import com.growit.api.domain.*;
 import com.growit.api.dto.CabinetInvestmentDto;
 import com.growit.api.dto.InvestorAccountDto;
+import com.growit.api.dto.TransactionDto;
 import com.growit.api.repo.InvestmentRepo;
 import com.growit.api.repo.InvestorAccountRepo;
 import com.growit.api.repo.LoanRepo;
+import com.growit.api.repo.TransactionRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
@@ -23,14 +25,16 @@ public class InvestorAccountService {
     private final InvestorAccountRepo investorAccountRepo;
     private final LoanRepo loanRepo;
     private final InvestmentRepo investmentRepo;
+    private final TransactionRepo transactionRepo;
     private static NumberFormat formatter = new DecimalFormat("#0.00");
 
 
     @Autowired
-    public InvestorAccountService(InvestorAccountRepo investorAccountRepo, LoanRepo loanRepo, InvestmentRepo investmentRepo) {
+    public InvestorAccountService(InvestorAccountRepo investorAccountRepo, LoanRepo loanRepo, InvestmentRepo investmentRepo, TransactionRepo transactionRepo) {
         this.investorAccountRepo = investorAccountRepo;
         this.loanRepo = loanRepo;
         this.investmentRepo = investmentRepo;
+        this.transactionRepo = transactionRepo;
     }
 
     @Transactional
@@ -86,28 +90,37 @@ public class InvestorAccountService {
                             noOpenCr ? 0 : history.getCurrentDelayInDays(),
                             history.getPayedOffInOtherOrgs(),
                             history.getPayedInGrowit()
-
-
-
-/*            private int amount; // Y
-            private int investedAmount; // Y
-            private String term; // Y
-            private String interestRate; // Y
-            private String plannedReturn; //
-            private String loanPurpose; // Y
-            private double amountFunded; // Y
-            private int fulfillment; // Y
-            private String description; // Y
-            private String deadline; // Y
-            private String dateInvested; // Y*/
-
                     )
             );
         }
         return list;
     }
 
+    @Transactional
+    @PreAuthorize("hasAuthority('INVESTOR')")
+    public List<TransactionDto> getTransactions(Investor investor) {
+        ArrayList<TransactionDto> list = new ArrayList<>();
+        ArrayList<Transaction> transactions = (ArrayList) transactionRepo.findAllByAccountOrderByCreatedAsc(investor.getAccount());
+        for (Transaction transaction : transactions) {
+
+            list.add(new TransactionDto(
+                    transaction.getCreated(),
+                    transaction.getAmount(),
+                    transaction.getCommission(),
+                    transaction.getStatus().name(),
+                    transaction.getType(),
+                    transaction.getDescription(),
+                    transaction.getPreviousBalance()
+                    )
+            );
+        }
+        System.out.println("Trans list|" + list + "|");
+        return list;
+    }
+
     public static String calculateReturn(double monthlyRate, int days, int amount) {
         return formatter.format((((((monthlyRate / 30)*days)*0.01)+1)*amount)*0.985);
     }
+
+
 }

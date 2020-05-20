@@ -1,8 +1,8 @@
 package com.growit.api.controller;
 
-import com.growit.api.domain.CreditCard;
+import com.growit.api.domain.Card;
 import com.growit.api.dto.New;
-import com.growit.api.service.CreditCardService;
+import com.growit.api.service.CardService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -12,19 +12,19 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/card")
-public class CreditCardController {
+public class CardController {
 
-    private final CreditCardService creditCardService;
+    private final CardService creditCardService;
 
     @Autowired
-    public CreditCardController(CreditCardService creditCardService) {
+    public CardController(CardService creditCardService) {
         this.creditCardService = creditCardService;
     }
 
     @PreAuthorize("hasAuthority('ADMIN')")
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping(value = "/new", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public CreditCard addCart(@Validated(New.class) @RequestBody CreditCard card) {
+    public Card addCart(@Validated(New.class) @RequestBody Card card) {
         return creditCardService.create(card);
     }
 
