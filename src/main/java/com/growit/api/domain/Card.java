@@ -1,13 +1,18 @@
-package com.growit.api.dto;
+package com.growit.api.domain;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
+import javax.persistence.Entity;
+import javax.persistence.Table;
+
 @Data
+@Entity
 @NoArgsConstructor
+@Table(name = "card")
 @EqualsAndHashCode(callSuper = false)
-public class CreditCardDto extends AbstractDto {
+public class Card extends AbstractEntity {
 
     private String number;
 
@@ -16,4 +21,7 @@ public class CreditCardDto extends AbstractDto {
     private String expYear;
 
     private String CVV;
+
+    private boolean verified;
+
 }

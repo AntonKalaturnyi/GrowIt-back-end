@@ -1,22 +1,22 @@
 package com.growit.api.service;
 
-import com.growit.api.domain.CreditCard;
-import com.growit.api.repo.CreditCardRepo;
+import com.growit.api.domain.Card;
+import com.growit.api.repo.CardRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class CreditCardService {
+public class CardService {
 
-    private final CreditCardRepo creditCardRepo;
+    private final CardRepo creditCardRepo;
 
     @Autowired
-    public CreditCardService(CreditCardRepo creditCardRepo) {
+    public CardService(CardRepo creditCardRepo) {
         this.creditCardRepo = creditCardRepo;
     }
 
     // @PreAuthorize("hasAuthority('REGISTERED_USER')")
-    public CreditCard create(CreditCard card) {
+    public Card create(Card card) {
         return creditCardRepo.save(card);
     }
 }

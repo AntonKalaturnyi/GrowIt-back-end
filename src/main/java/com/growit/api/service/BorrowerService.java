@@ -39,7 +39,7 @@ public class BorrowerService implements UserDetailsService {
                            ContactPersonRepo contactPersonRepo, AddressService addressService,
                            EmploymentService employmentService, InvestorRepo investorRepo,
                            AuthService authService, PasswordEncoder passwordEncoder, PassportService passportService,
-                           CreditCardRepo creditCardRepo, EducationService educationService) {
+                           CardRepo creditCardRepo, EducationService educationService) {
         this.borrowerRepo = borrowerRepo;
         this.borrowerAccountRepo = borrowerAccountRepo;
         this.addressService = addressService;

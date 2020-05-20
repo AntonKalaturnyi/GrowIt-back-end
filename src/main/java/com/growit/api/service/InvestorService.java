@@ -30,18 +30,20 @@ public class InvestorService implements UserDetailsService {
     private final InvestorAccountRepo investorAccountRepo;
     private final BorrowerRepo borrowerRepo;
     private final InvestmentRepo investmentRepo;
+    private final TransactionRepo transactionRepo;
     private final AuthService authService;
     private final LoanRepo loanRepo;
 
     @Autowired
     public InvestorService(InvestorRepo investorRepo, PasswordEncoder passwordEncoder, PassportService passportService, InvestorAccountRepo investorAccountRepo,
-                           BorrowerRepo borrowerRepo, InvestmentRepo investmentRepo, @Lazy AuthService authService, LoanRepo loanRepo) {
+                           BorrowerRepo borrowerRepo, InvestmentRepo investmentRepo, TransactionRepo transactionRepo, @Lazy AuthService authService, LoanRepo loanRepo) {
         this.investorRepo = investorRepo;
         this.passwordEncoder = passwordEncoder;
         this.passportService = passportService;
         this.investorAccountRepo = investorAccountRepo;
         this.borrowerRepo = borrowerRepo;
         this.investmentRepo = investmentRepo;
+        this.transactionRepo = transactionRepo;
         this.authService = authService;
         this.loanRepo = loanRepo;
     }
@@ -49,7 +51,9 @@ public class InvestorService implements UserDetailsService {
     @Transactional
     public Integer fillPersonalInfoAndSendSmsCode(Investor investor, InvestorRegDto dto) {
         UserService.setUserFields(investor, dto);
-        InvestorAccount account = investorAccountRepo.save(new InvestorAccount());
+        InvestorAccount account = new InvestorAccount();
+        account.setTransactions(new HashSet<>());
+        account = investorAccountRepo.save(account);
         account.setInvestor(investor);
         account.setAvailableBalance(7700);
         account = investorAccountRepo.save(account);
@@ -122,6 +126,7 @@ public class InvestorService implements UserDetailsService {
     public boolean makeInvestments(Investor investor, List<InvestmentDto> dtos) {
         investor = investorRepo.save(investor);
         Investment investment;
+        Transaction transaction;
         Loan loan;
         Set<Investment> investments = investor.getInvestments();
         InvestorAccount account = investor.getAccount();
@@ -129,6 +134,8 @@ public class InvestorService implements UserDetailsService {
             if (account.getAvailableBalance() >= dto.getAmount()) {
                 loan = loanRepo.findById(dto.getLoanId()).get();
                 loan.setAmountFunded(loan.getAmountFunded() + dto.getAmount());
+                transaction = new Transaction();
+                transaction.setPreviousBalance(account.getAvailableBalance());
                 account.setAvailableBalance(account.getAvailableBalance() - dto.getAmount());
                 account.setInvestedFunds(account.getInvestedFunds() + dto.getAmount());
                 investment = new Investment();
@@ -136,6 +143,16 @@ public class InvestorService implements UserDetailsService {
                 investment.setLoan(loan);
                 investment.setInvestor(investor);
                 investments.add(investment);
+
+                transaction.setAccount(account);
+                transaction.setType(TransactionTypeInvestor.INVESTMENT.name());
+                transaction.setAmount(dto.getAmount());
+                transaction.setCommission(0);
+                transaction.setStatus(TransactionStatus.DONE);
+                transaction.setDescription("Інвестиція в позику");
+                account.getTransactions().add(transactionRepo.save(transaction));
+
+                System.out.println(" TРАНЗ: " + account.getTransactions());
             } else {
                 throw new AccountOverdraftException("Not enough funds on account to make this investment!");
             }

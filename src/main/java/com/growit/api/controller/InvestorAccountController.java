@@ -5,6 +5,7 @@ import com.growit.api.domain.Investor;
 import com.growit.api.dto.CabinetInvestmentDto;
 import com.growit.api.dto.CalculatorLoanOnFundingDto;
 import com.growit.api.dto.InvestorAccountDto;
+import com.growit.api.dto.TransactionDto;
 import com.growit.api.service.InvestorAccountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -39,5 +40,11 @@ public class InvestorAccountController {
     @GetMapping(value = "/investments", produces = MediaType.APPLICATION_JSON_VALUE)
     public List<CabinetInvestmentDto> getInvestments(@AuthenticationPrincipal Investor investor) {
         return investorAccountService.getInvestments(investor);
+    }
+
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping(value = "/transactions", produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<TransactionDto> getTransactions(@AuthenticationPrincipal Investor investor) {
+        return investorAccountService.getTransactions(investor);
     }
 }

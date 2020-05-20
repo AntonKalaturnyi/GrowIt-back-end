@@ -153,16 +153,16 @@ public class BorrowerController {
     @PostMapping(value = "/new-card",
             produces = MediaType.APPLICATION_JSON_VALUE,
             consumes = MediaType.APPLICATION_JSON_VALUE)
-    CreditCardDto setCreditCard(CreditCardDto dto) {
-        return new CreditCardDto();
+    CardDto setCard(CardDto dto) {
+        return new CardDto();
     }
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping(value = "/contact-persons",
             produces = MediaType.APPLICATION_JSON_VALUE,
             consumes = MediaType.APPLICATION_JSON_VALUE)
-    CreditCardDto setContactPersons(CreditCardDto dto) {
+    CardDto setContactPersons(CardDto dto) {
 
-        return new CreditCardDto();
+        return new CardDto();
     }
 }

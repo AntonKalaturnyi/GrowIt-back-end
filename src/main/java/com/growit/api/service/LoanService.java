@@ -144,7 +144,7 @@ public class LoanService {
                     loan.getAmountApproved(),
                     loan.getTerm(),
                     calculateProfitability(loan.getMonthlyRate(), Integer.parseInt(loan.getTerm().substring(0, loan.getTerm().length() - 1)), loan.getAmountApproved()).replace('.', ','), // String.valueOf((loan.getMonthlyRate() / 30) * 365).replace('.', ','),
-                    loan.getLoanPurpose().getPurposeUa(),
+                    loan.getLoanPurpose().getPurposeEng(),
                     loan.getDateReleasedOnDashboard().toLocalDate(),
                     loan.getAmountFunded(),
                     (int) Math.round( (loan.getAmountFunded() / loan.getAmountApproved()) * 100),

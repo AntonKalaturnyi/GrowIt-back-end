@@ -1,6 +1,6 @@
 package com.growit.api.controller;
 
-import com.growit.api.domain.CreditCard;
+import com.growit.api.domain.Card;
 import com.growit.api.domain.Passport;
 import com.growit.api.dto.BorrowerPassportDto;
 import com.growit.api.dto.Existing;

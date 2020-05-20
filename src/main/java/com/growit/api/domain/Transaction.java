@@ -3,10 +3,7 @@ package com.growit.api.domain;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-
-import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Data
 @Entity
@@ -15,16 +12,41 @@ import javax.persistence.Table;
 @EqualsAndHashCode(callSuper = false)
 public class Transaction extends AbstractEntity {
 
-    private double previousBudget;
-
-    private double transactionBudget;
-
-    /** IN or OUT in ConstantUtil*/
     private String type;
 
+    private double previousBalance;
+
+    /** before commission*/
+    private double amount;
+
+    private double commission;
+
+    /** actual amt, after commission*/
+    private double resultAmount;
+
     private String description;
+
+//    private String cardNumber;
+
+    @Enumerated(EnumType.STRING)
+    private TransactionStatus status;
+
+    @ManyToOne
+    private Card card;
 
     @ManyToOne
     private Account account;
 
+    @Override
+    public String toString() {
+        return "Transaction{" +
+                "type='" + type + '\'' +
+                ", previousBalance=" + previousBalance +
+                ", amount=" + amount +
+                ", commission=" + commission +
+                ", resultAmount=" + resultAmount +
+                ", description='" + description + '\'' +
+                ", status=" + status +
+                '}';
+    }
 }

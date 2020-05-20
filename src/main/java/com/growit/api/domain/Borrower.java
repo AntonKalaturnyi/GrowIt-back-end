@@ -127,7 +127,7 @@ public class Borrower extends User {
     private BorrowerAccount borrowerAccount;
 
     @OneToOne
-    private CreditCard creditCard;
+    private Card creditCard;
 
     @Column(nullable = true)
     private Boolean personalFilled;
