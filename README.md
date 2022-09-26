@@ -131,3 +131,7 @@ put- update Employment
 +static storage config for uploaded photo with passport, ipn
 
 +write tests with UBKI test url sending POST requests
+
+
+![photo_2022-09-26 17 22 39](https://user-images.githubusercontent.com/31220393/192301440-294fb084-fabf-4295-822f-d437008f6fda.jpeg)
+
